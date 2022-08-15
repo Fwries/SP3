@@ -249,9 +249,19 @@ void CEnemy2D::Update(const double dElapsedTime)
 		}
 		/*cout << toX << "    " << toY << endl;*/
 		UpdatePosition();
+
+		if (vec2Index == glm::vec2(16, 12))
+		{
+			sCurrentFSM = ATTACK;
+		}
 		break;
 	}
 	case BLOCKED:
+	{
+
+		break;
+	}
+	case ATTACK:
 	{
 
 		break;
