@@ -33,7 +33,7 @@ CEnemy2D::CEnemy2D(void)
 	, cMap2D(NULL)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
-	, sCurrentFSM(FSM::IDLE)
+	, sCurrentFSM(FSM::MOVING)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
 	, cSoundController(NULL)
@@ -213,170 +213,51 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 	switch (sCurrentFSM)
 	{
-	case IDLE:
-		if (iFSMCounter > iMaxFSMCounter)
+	case MOVING:
+	{
+		//Pathfinding method
+		auto path = cMap2D->PathFind(vec2Index, glm::vec2(16, 12), heuristic::euclidean, 10);
+		//Calculate new destination
+		bool bFirstPosition = true;
+		int firstDest = 0;
+		for (const auto& coord : path)
 		{
-			if (enemyType == SKELE2)
+			if (bFirstPosition == true)
 			{
-				sCurrentFSM = BACKTOSPAWN;
-			}
-			else
-			{
-				sCurrentFSM = PATROL;
-			}
-			iFSMCounter = 0;
-			//cout << "Switching to Patrol State" << endl;
-		}
-		iFSMCounter++;
-		break;
-	case PATROL:
-		if (iFSMCounter > iMaxFSMCounter)
-		{
-			sCurrentFSM = IDLE;
-			iFSMCounter = 0;
-			//cout << "Switching to Idle State" << endl;
-		}
-		else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f)
-		{
-			sCurrentFSM = TOPLAYER;
-			iFSMCounter = 0;
-		}
-		else
-		{
-			// Patrol around
-			// Update the Enemy2D's position for patrol
-			if (MoveCooldown >= MoveTime)
-			{
-				MoveCooldown = 0;
-				UpdatePosition();
-			}
-		}
-		iFSMCounter++;
-		break;
-	case TOPLAYER:
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f)
-		{
-			// Calculate a path to the player
-			auto path = cMap2D->PathFind(vec2Index, cPlayer2D->vec2Index, heuristic::euclidean, 10);
-
-			// Calculate new destination
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				if (bFirstPosition == true)
+				if (firstDest == 0)
 				{
 					// Set a destination
 					i32vec2Destination = coord;
 					// Calculate the direction between enemy2D and this destination
 					i32vec2Direction = i32vec2Destination - vec2Index;
-					bFirstPosition = false;
+					/*std::cout << coord.x << ", " << coord.y << "\n";*/
 				}
-				else
-				{
-					if ((coord - i32vec2Destination) == i32vec2Direction)
-					{
-						// Set a destination
-						i32vec2Destination = coord;
-					}
-					else
-						break;
-				}
-			}
-
-			// Update the Enemy2D's position for TOPLAYER
-			if (MoveCooldown >= MoveTime)
-			{
-				MoveCooldown = 0;
-				UpdatePosition();
-			}
-		}
-		else
-		{
-			if (iFSMCounter > iMaxFSMCounter)
-			{
-				if (enemyType == SKELE2)
-				{
-					sCurrentFSM = BACKTOSPAWN;
-				}
-				else
-				{
-					sCurrentFSM = PATROL;
-				}
-				iFSMCounter = 0;
-			}
-			iFSMCounter++;
-		}
-		break;
-	case ATTACK:
-		if (AttackCooldown >= AttackTime)
-		{
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.0f)
-			{
-				cSoundController->PlaySoundByID(5);
-				cPlayer2D->UpdateHealthLives();
-				AttackCooldown = 0;
-			}
-			else if (enemyType == SKELE2)
-			{
-				sCurrentFSM = BACKTOSPAWN;
 			}
 			else
 			{
-				sCurrentFSM = TOPLAYER;
-			}
-		}
-		break;
-	case BACKTOSPAWN:
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) >= 10.0f)
-		{
-			// Calculate a path to the player
-			auto path = cMap2D->PathFind(vec2Index, Startvec2Index, heuristic::euclidean, 10);
-
-			// Calculate new destination
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				if (bFirstPosition == true)
+				if ((coord - i32vec2Destination) == i32vec2Direction)
 				{
-					// Set a destination
+					// Set a destination:
 					i32vec2Destination = coord;
-					// Calculate the direction between enemy2D and this destination
-					i32vec2Direction = i32vec2Destination - vec2Index;
-					bFirstPosition = false;
 				}
 				else
 				{
-					if ((coord - i32vec2Destination) == i32vec2Direction)
-					{
-						// Set a destination
-						i32vec2Destination = coord;
-					}
-					else
-					{
-						sCurrentFSM = IDLE;
-						break;
-					}
+					break;
 				}
 			}
-
-			// Update the Enemy2D's position for TOPLAYER
-			if (MoveCooldown >= MoveTime)
-			{
-				MoveCooldown = 0;
-				UpdatePosition();
-			}
+			firstDest++;
 		}
-		else
-		{
-			if (iFSMCounter > iMaxFSMCounter)
-			{
-				sCurrentFSM = TOPLAYER;
-				iFSMCounter = 0;
-			}
-			iFSMCounter++;
-		}
+		/*cout << toX << "    " << toY << endl;*/
+		UpdatePosition();
 		break;
+	}
+	case BLOCKED:
+	{
+
+		break;
+	}
 	case DEAD:
+	{
 		if (enemyType == SKULL)
 		{
 			bIsActive = false;
@@ -393,6 +274,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 		}
 		break;
+	}
 	default:
 		break;
 	}

@@ -93,12 +93,10 @@ protected:
 
 	enum FSM
 	{
-		IDLE = 0,
-		PATROL = 1,
-		TOPLAYER = 2,
-		ATTACK = 3,
-		BACKTOSPAWN = 4,
-		DEAD = 5,
+		MOVING = 0,
+		BLOCKED = 1,
+		ATTACK = 2,
+		DEAD = 3,
 		NUM_FSM
 	};
 
