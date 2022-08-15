@@ -165,6 +165,10 @@ protected:
 
 	bool faceLeft;
 
+	//variables for game
+	int HP;
+	int ATK;
+
 	// Max count in a state
 	const int iMaxFSMCounter = 60;
 

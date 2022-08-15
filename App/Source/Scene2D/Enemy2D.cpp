@@ -85,6 +85,9 @@ bool CEnemy2D::Init(void)
 	MoveCooldown = 0;
 	AttackCooldown = 0;
 
+	HP = 20;
+	ATK = 4;
+
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
