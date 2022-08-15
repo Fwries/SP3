@@ -168,6 +168,9 @@ protected:
 	//variables for game
 	int HP;
 	int ATK;
+	float SPE;
+	int TRGE;
+	int ARGE;
 
 	// Max count in a state
 	const int iMaxFSMCounter = 60;

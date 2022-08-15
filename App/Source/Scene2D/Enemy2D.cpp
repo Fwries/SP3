@@ -87,6 +87,9 @@ bool CEnemy2D::Init(void)
 
 	HP = 20;
 	ATK = 4;
+	SPE = 0.5;
+	TRGE = 1;
+	ARGE = 1;
 
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -806,7 +809,7 @@ void CEnemy2D::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x >= 0)
 		{
-			i32vec2NumMicroSteps.x--;
+			i32vec2NumMicroSteps.x -= SPE;
 			if (i32vec2NumMicroSteps.x < 0)
 			{
 				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -837,7 +840,7 @@ void CEnemy2D::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			i32vec2NumMicroSteps.x++;
+			i32vec2NumMicroSteps.x += SPE;
 
 			if (i32vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{
@@ -871,7 +874,7 @@ void CEnemy2D::UpdatePosition(void)
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
-			i32vec2NumMicroSteps.y++;
+			i32vec2NumMicroSteps.y += SPE;
 
 			if (i32vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
 			{
@@ -902,7 +905,7 @@ void CEnemy2D::UpdatePosition(void)
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y >= 0)
 		{
-			i32vec2NumMicroSteps.y--;
+			i32vec2NumMicroSteps.y -= SPE;
 
 			if (i32vec2NumMicroSteps.y <= 0)
 			{
