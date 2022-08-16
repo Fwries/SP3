@@ -380,6 +380,21 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				MapOfTextureIDs.insert(pair<int, int>(10, iTextureID));
 			}
 		}
+
+		// Materials
+		{
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/tile077.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Tiles/tile077.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(135, iTextureID));
+			}
+		}
 	}
 
 	// Load the Life texture
@@ -451,7 +466,12 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
+	// Materials
+	n_wood = 50;
+	X = Y = 0;
 
+	// Rand seeding
+	srand(time(NULL));
 	return true;
 }
 
@@ -476,6 +496,16 @@ void CMap2D::Update(const double dElapsedTime)
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_J))
 	{
 		amtY += 0.01;
+	}
+	while (n_wood>0)
+	{
+		X = rand() % 64;
+		Y = rand() % 64;
+		if (GetMapInfo(X, Y) == 0)
+		{
+			SetMapInfo(X, Y, 135);
+			n_wood--;
+		}
 	}
 }
 
