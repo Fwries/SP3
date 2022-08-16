@@ -54,7 +54,7 @@ float CSettings::ConvertIndexToUVSpace(const AXIS sAxis, const int iIndex, const
 // Update the specifications of the map
 void CSettings::UpdateSpecifications(void)
 {
-	if (true)
+	if (false)
 	{
 		TILE_WIDTH = 0.0625f;
 		TILE_HEIGHT = 0.08333f;

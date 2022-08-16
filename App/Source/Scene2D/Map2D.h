@@ -31,6 +31,9 @@
 // Include Entity2D
 #include "Primitives/Entity2D.h"
 
+// Include Player2D
+#include "Player2D.h"
+
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
 
@@ -137,6 +140,9 @@ protected:
 	// The variable containing the rapidcsv::Document
 	// We will load the CSV file's content into this Document
 	rapidcsv::Document doc;
+
+	// Handle to the CPlayer2D
+	CPlayer2D* cPlayer2D;
 
 	// A 3-D array which stores the values of the tile map
 	Grid*** arrMapInfo;

@@ -449,6 +449,9 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	//// Clear AStar memory
 	//ClearAStar();
 
+	// Create and initialise the CPlayer2D
+	cPlayer2D = CPlayer2D::GetInstance();
+
 	return true;
 }
 
@@ -500,7 +503,7 @@ void CMap2D::Render(void)
 	// get matrix's uniform location and set matrix
 	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
+	//cout << cPlayer2D->vec2Index.x << "   " << cPlayer2D->vec2Index.y << endl;
 	// Render
 	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
@@ -510,7 +513,8 @@ void CMap2D::Render(void)
 			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
 															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
 															0.0f));
-			transform = glm::translate(transform, glm::vec3(amtX, amtY, 0.0f));
+			/*transform = glm::translate(transform, glm::vec3(cPlayer2D->vec2Index.x - cSettings->NUM_TILES_XAXIS / 2, 
+				cPlayer2D->vec2Index.y - cSettings->NUM_TILES_YAXIS / 2, 0.0f));*/
 			//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
 			// Update the shaders with the latest transform
