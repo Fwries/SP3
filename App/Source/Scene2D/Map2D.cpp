@@ -543,8 +543,8 @@ void CMap2D::Render(void)
 			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
 															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
 															0.0f));
-			transform = glm::translate(transform, -glm::vec3(cPlayer2D->vec2Index.x * 0.0625f - (cSettings->NUM_TILES_XAXIS / 2 * 0.0625f),
-				cPlayer2D->vec2Index.y * 0.08333f - (cSettings->NUM_TILES_YAXIS / 2 * 0.08333f), 0.0f));
+			/*transform = glm::translate(transform, -glm::vec3(cPlayer2D->vec2Index.x * 0.0625f - (cSettings->NUM_TILES_XAXIS / 2 * 0.0625f),
+				cPlayer2D->vec2Index.y * 0.08333f - (cSettings->NUM_TILES_YAXIS / 2 * 0.08333f), 0.0f));*/
 			//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
 			// Update the shaders with the latest transform
