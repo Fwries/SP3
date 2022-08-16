@@ -75,6 +75,14 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	// Store the keyboard controller singleton instance here
+	cKeyboardController = CKeyboardController::GetInstance();
+	// Reset all keys since we are starting a new game
+	cKeyboardController->Reset();
+
+	amtX = 0;
+	amtY = 0;
+
 	// Create the arrMapInfo and initialise to 0
 	// Start by initialising the number of levels
 	arrMapInfo = new Grid** [uiNumLevels];
@@ -450,6 +458,22 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 void CMap2D::Update(const double dElapsedTime)
 {
 	//CS: Update the animated sprite
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_Y))
+	{
+		amtX += 0.01;
+	}
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_H))
+	{
+		amtX -= 0.01;
+	}
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_U))
+	{
+		amtY -= 0.01;
+	}
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_J))
+	{
+		amtY += 0.01;
+	}
 }
 
 /**
@@ -478,14 +502,15 @@ void CMap2D::Render(void)
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 	// Render
-	for (unsigned int uiRow = 0; uiRow < 24; uiRow++)
+	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
-		for (unsigned int uiCol = 0; uiCol < 32; uiCol++)
+		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
 		{
 			transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
 															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
 															0.0f));
+			transform = glm::translate(transform, glm::vec3(amtX, amtY, 0.0f));
 			//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
 			// Update the shaders with the latest transform

@@ -31,6 +31,9 @@
 // Include Entity2D
 #include "Primitives/Entity2D.h"
 
+// Include Keyboard controller
+#include "Inputs\KeyboardController.h"
+
 // Include files for AStar
 #include <queue>
 #include <functional>
@@ -195,5 +198,11 @@ protected:
 
 	//CS: Animated Sprite
 	//CSpriteAnimation* animatedCoin;
+
+	float amtX;
+	float amtY;
+
+	// Keyboard Controller singleton instance
+	CKeyboardController* cKeyboardController;
 };
 
