@@ -222,7 +222,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	case MOVING:
 	{
 		//Pathfinding method
-		auto path = cMap2D->PathFind(vec2Index, glm::vec2(16, 12), heuristic::euclidean, 10);
+		auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
 		//Calculate new destination
 		bool bFirstPosition = true;
 		int firstDest = 0;
@@ -256,7 +256,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		/*cout << toX << "    " << toY << endl;*/
 		UpdatePosition();
 
-		if (vec2Index == glm::vec2(16, 12))
+		if (vec2Index == glm::vec2(32, 32))
 		{
 			sCurrentFSM = ATTACK;
 		}
