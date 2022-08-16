@@ -87,9 +87,14 @@ bool CEnemy2D::Init(void)
 
 	HP = 20;
 	ATK = 4;
-	SPE = 0.1;
+	SPE = 0.2;
 	TRGE = 1;
 	ARGE = 1;
+
+	X = 0;
+	Y = 0;
+	elapsed = 0;
+	spawnRate = 1;
 
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -211,6 +216,35 @@ bool CEnemy2D::Init(void)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
+	elapsed += spawnRate;
+	cout << elapsed << endl;
+	if (elapsed % 100 == 0)
+	{
+		int edge = 1 + (rand() % 4);
+		switch (edge)
+		{
+		case 1:
+			X = 1;
+			Y = rand() % 64;
+			break;
+		case 2:
+			X = 63;
+			Y = rand() % 64;
+			break;
+		case 3:
+			X = rand() % 64;
+			Y = 1;
+			break;
+		case 4:
+			X = rand() % 64;
+			Y = 63;
+			break;
+		}
+		if (cMap2D->GetMapInfo(X, Y) == 0)
+		{
+			cMap2D->SetMapInfo(X, Y, 301);
+		}
+	}
 	//cout << bIsActive << endl;
 	if (!bIsActive)
 		return;

@@ -172,6 +172,10 @@ protected:
 	int TRGE;
 	int ARGE;
 
+	int X, Y;
+	int elapsed;
+	int spawnRate;
+
 	// Max count in a state
 	const int iMaxFSMCounter = 60;
 
