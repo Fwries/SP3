@@ -84,7 +84,13 @@ bool CGUI_Scene2D::Init(void)
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Tree as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Plank", "Image/Plank.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Plank", "Image/Materials/Plank.png", 999, 999);
+	cInventoryItem = cInventoryManager->Add("Stone", "Image/Materials/Stone.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Iron", "Image/Materials/Iron.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Silver", "Image/Materials/Silver.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Bronze", "Image/Materials/Bronze.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
@@ -144,6 +150,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 		if (openInventory)
 		{
+			// Enable cursor
+			if (CSettings::GetInstance()->bDisableMousePointer == true)
+				glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
 			ImGuiWindowFlags inventoryBgWinFlags =
 				ImGuiWindowFlags_AlwaysAutoResize |
 				ImGuiWindowFlags_NoMove |
@@ -174,25 +184,160 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						{
 							ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 0.8f, 0.87f, 1.0f));
 							{
-								cInventoryItem = cInventoryManager->GetItem("Plank");
-								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.62f, (float)cSettings->iWindowHeight * 0.17f));
-
-								ImGui::BeginChild("Bomb Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								// Plank UI
 								{
-									ImGui::BeginChild("Bomb Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									cInventoryItem = cInventoryManager->GetItem("Plank");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.62f, (float)cSettings->iWindowHeight * 0.17f));
+
+									ImGui::BeginChild("Plank Child ", ImVec2(110.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 									{
-										ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-											ImVec2(60.0f * relativeScale_x,
-												60.0f * relativeScale_y),
-											ImVec2(0, 1), ImVec2(1, 0));
+										ImGui::BeginChild("Plank Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
+											cInventoryItem->GetCount());
 									}
 									ImGui::EndChild();
-									ImGui::SetWindowFontScale(1.5 * relativeScale_y);
-									ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
-									ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
-										cInventoryItem->GetCount());
 								}
-								ImGui::EndChild();
+								// Stone UI
+								{
+									cInventoryItem = cInventoryManager->GetItem("Stone");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.17f));
+
+									ImGui::BeginChild("Stone Child ", ImVec2(110.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									{
+										ImGui::BeginChild("Stone Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
+											cInventoryItem->GetCount());
+									}
+									ImGui::EndChild();
+								}
+								// Iron UI
+								{
+									cInventoryItem = cInventoryManager->GetItem("Iron");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.62f, (float)cSettings->iWindowHeight * 0.27f));
+
+									ImGui::BeginChild("Iron Child ", ImVec2(110.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									{
+										ImGui::BeginChild("Iron Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
+											cInventoryItem->GetCount());
+									}
+									ImGui::EndChild();
+								}
+								// Silver UI
+								{
+									cInventoryItem = cInventoryManager->GetItem("Silver");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.27f));
+
+									ImGui::BeginChild("Silver Child ", ImVec2(110.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									{
+										ImGui::BeginChild("Silver Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
+											cInventoryItem->GetCount());
+									}
+									ImGui::EndChild();
+								}
+								// Bronze UI
+								{
+									cInventoryItem = cInventoryManager->GetItem("Bronze");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.62f, (float)cSettings->iWindowHeight * 0.37f));
+
+									ImGui::BeginChild("Bronze Child ", ImVec2(110.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									{
+										ImGui::BeginChild("Bronze Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
+											cInventoryItem->GetCount());
+									}
+									ImGui::EndChild();
+								}
+								// Coal UI
+								{
+									cInventoryItem = cInventoryManager->GetItem("Coal");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.37f));
+
+									ImGui::BeginChild("Coal Child ", ImVec2(110.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									{
+										ImGui::BeginChild("Coal Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
+											cInventoryItem->GetCount());
+									}
+									ImGui::EndChild();
+								}
+								// Gold UI
+								{
+									cInventoryItem = cInventoryManager->GetItem("Gold");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.62f, (float)cSettings->iWindowHeight * 0.47f));
+
+									ImGui::BeginChild("Gold Child ", ImVec2(110.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									{
+										ImGui::BeginChild("Gold Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
+											cInventoryItem->GetCount());
+									}
+									ImGui::EndChild();
+								}
 							}
 							ImGui::PopStyleColor();
 						}
@@ -204,8 +349,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			}
 			ImGui::End();
 		}
-		if (openCrafting)
+		else if (openCrafting)
 		{
+			// Enable Cursor
+			if (CSettings::GetInstance()->bDisableMousePointer == true)
+				glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			ImGuiWindowFlags inventoryBgWinFlags =
 				ImGuiWindowFlags_AlwaysAutoResize |
 				ImGuiWindowFlags_NoMove |
@@ -390,17 +538,15 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			}
 			ImGui::End();
 		}
+		else
+		{
+			//Disable Cursor
+			if (CSettings::GetInstance()->bDisableMousePointer == true)
+				glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}
 	}
 	ImGui::PopStyleColor();
 	ImGui::End();
-
-	/*ImGui::Begin("Invisible window", NULL, window_flags);
-	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
-	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-
-	// Display the FPS
-	ImGui::TextColored(ImVec4(0, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
 
 	// Render the Lives
 	ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
@@ -422,6 +568,14 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
 		cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 	ImGui::End();
+	/*ImGui::Begin("Invisible window", NULL, window_flags);
+	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
+	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+
+	// Display the FPS
+	ImGui::TextColored(ImVec4(0, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
+
 
 	// Render the inventory items
 	cInventoryItem = cInventoryManager->GetItem("Coin");
