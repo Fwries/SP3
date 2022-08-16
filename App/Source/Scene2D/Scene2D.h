@@ -6,6 +6,8 @@
  */
 #pragma once
 
+//aaaaa
+
 // Include SingletonTemplate
 #include "DesignPatterns\SingletonTemplate.h"
 
