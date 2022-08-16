@@ -18,6 +18,8 @@
 // Include CInventoryManager
 #include "InventoryManager.h"
 
+#include "Inputs\KeyboardController.h"
+
 // Include GLEW
 #ifndef GLEW_STATIC
 #include <GL/glew.h>
@@ -75,6 +77,9 @@ protected:
 	// Flags for IMGUI
 	ImGuiWindowFlags window_flags;
 	float m_fProgressBar;
+	bool openInventory;
+	bool openCrafting;
+	int recipeNo;
 
 	CSettings* cSettings;
 
@@ -82,4 +87,6 @@ protected:
 	CInventoryManager* cInventoryManager;
 	// The handler containing the instance of CInventoryItem
 	CInventoryItem* cInventoryItem;
+
+	CKeyboardController* cKeyboardController;
 };
