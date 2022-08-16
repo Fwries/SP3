@@ -113,6 +113,7 @@ bool CPlayer2D::Init(void)
 	animatedPlayer->AddAnimation("Hleft", 12, 15);
 	//CS: Play the "idle" animation as default
 	animatedPlayer->PlayAnimation("right", -1, 1.0f);
+	FaceDirection = RIGHT;
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -129,7 +130,6 @@ bool CPlayer2D::Init(void)
 
 	// Get the handler to the CSoundController
 	cSoundController = CSoundController::GetInstance();
-	faceLeft = false;
 	SetHitBox(false);
 
 	return true;
@@ -200,7 +200,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.x = 0;
 		}
 
-		faceLeft = true;
+		FaceDirection = LEFT;
 
 		//CS: Change Color
 		//runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
@@ -228,7 +228,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.x = 0;
 		}
 
-		faceLeft = false;
+		FaceDirection = RIGHT;
 
 		//CS: Change Color
 		//runtimeColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
@@ -255,6 +255,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.y = 0;
 		}
 
+		FaceDirection = UP;
 		//CS: Play the "idle" animation
 		//animatedPlayer->PlayAnimation("idle", -1, 1.0f);
 
@@ -286,6 +287,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.y = 0;
 		}
 
+		FaceDirection = DOWN;
 		//CS: Play the "idle" animation
 		//animatedPlayer->PlayAnimation("idle", -1, 1.0f);
 
@@ -296,8 +298,38 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		cSoundController->PlaySoundByID(4);
 	}
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
+	{
+		switch (FaceDirection)
+		{
+		case LEFT:
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 101);
+			}
+			break;
+		case RIGHT:
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 101);
+			}
+			break;
+		case UP:
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 101);
+			}
+			break;
+		case DOWN:
+			if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 101);
+			}
+			break;
+		}
+	}
 
-	if (faceLeft == true)
+	if (FaceDirection == LEFT)
 	{
 		if (GetHitBox())
 		{
@@ -308,7 +340,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			animatedPlayer->PlayAnimation("left", -1, 1.0f);
 		}
 	}
-	if (faceLeft == false)
+	if (FaceDirection == RIGHT)
 	{
 		if (GetHitBox())
 		{
