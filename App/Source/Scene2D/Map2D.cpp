@@ -478,9 +478,9 @@ void CMap2D::Render(void)
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 	// Render
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+	for (unsigned int uiRow = 0; uiRow < 24; uiRow++)
 	{
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
+		for (unsigned int uiCol = 0; uiCol < 32; uiCol++)
 		{
 			transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),

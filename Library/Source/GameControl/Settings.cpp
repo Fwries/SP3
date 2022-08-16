@@ -54,8 +54,11 @@ float CSettings::ConvertIndexToUVSpace(const AXIS sAxis, const int iIndex, const
 // Update the specifications of the map
 void CSettings::UpdateSpecifications(void)
 {
-	TILE_WIDTH = 2.0f / NUM_TILES_XAXIS;	// 0.0625f;
-	TILE_HEIGHT = 2.0f / NUM_TILES_YAXIS;	// 0.08333f;
+	/*TILE_WIDTH = 2.0f / NUM_TILES_XAXIS;
+	TILE_HEIGHT = 2.0f / NUM_TILES_YAXIS;*/
+
+	TILE_WIDTH = 0.0625f;
+	TILE_HEIGHT = 0.08333f;
 
 	MICRO_STEP_XAXIS = TILE_WIDTH / NUM_STEPS_PER_TILE_XAXIS;
 	MICRO_STEP_YAXIS = TILE_HEIGHT / NUM_STEPS_PER_TILE_YAXIS;
