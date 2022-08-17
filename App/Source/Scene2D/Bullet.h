@@ -32,7 +32,7 @@ public:
 	CBullet(glm::vec2 vec2Index, int direction);
 	virtual ~CBullet();
 
-	void Update();
+	bool Update();
 
 	void PreRender();
 

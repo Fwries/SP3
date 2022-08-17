@@ -44,8 +44,9 @@ CBullet::~CBullet()
 	glDeleteVertexArrays(1, &VAO);
 }
 
-void CBullet::Update()
+bool CBullet::Update()
 {
+	//std::cout << vec2Index.x << " " << vec2Index.y << std::endl;
 	switch (dir)
 	{
 	case DIRECTION::LEFT:
@@ -82,6 +83,8 @@ void CBullet::Update()
 
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
+
+	return true;
 }
 
 void CBullet::PreRender()
