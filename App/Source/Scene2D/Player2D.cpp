@@ -136,10 +136,11 @@ bool CPlayer2D::Init(void)
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Lives icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
+	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Bullets", "Image/Scene2D/Bullet.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 
 	// Get the handler to the CSoundController
 	cSoundController = CSoundController::GetInstance();
@@ -465,6 +466,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	// Interact with the Map
 	InteractWithMap();
+
+	if (cInventoryManager->GetItem("Lives")->GetCount() <= 0)
+	{
+		vec2Index = glm::vec2((float)cSettings->NUM_TILES_XAXIS, (float)cSettings->NUM_TILES_YAXIS);
+		// Subtract to make sure that they are 0 before adding 100 to lives
+		cInventoryManager->GetItem("Lives")->Add(cInventoryManager->GetItem("Lives")->GetCount() - cInventoryManager->GetItem("Lives")->GetCount() + 100);
+	}
 
 	// Randomly generates tiles
 	RandomTileGenerator();
