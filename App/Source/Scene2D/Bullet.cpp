@@ -14,7 +14,7 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	// Make sure to initialize matrix to identity matrix first
 	transform = glm::mat4(1.0f);
 
-	this->vec2Index = glm::i32vec2(0);
+	//this->vec2Index = glm::i32vec2(0);
 
 	vec2NumMicroSteps = glm::i32vec2(0);
 
@@ -84,6 +84,11 @@ bool CBullet::Update()
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 
+	if (vec2UVCoordinate.x < 0 || vec2UVCoordinate.x > cSettings->NUM_TILES_XAXIS
+		|| vec2UVCoordinate.y < 0 || vec2UVCoordinate.y > cSettings->NUM_TILES_YAXIS)
+	{
+		return true;
+	}
 	return true;
 }
 
