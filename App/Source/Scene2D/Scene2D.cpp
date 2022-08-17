@@ -212,7 +212,6 @@ bool CScene2D::Update(const double dElapsedTime)
 	elapsed += spawnRate;
 	int intElapsed = round(elapsed);
 	//cout << intElapsed << endl;
-	cout << remainder(elapsed, 8) << endl;
 	if (remainder(elapsed, 8) >= 0 && remainder(elapsed, 8) <= 0.05)
 	{
 		CEnemy2D* cEnemy2D = new CEnemy2D();
@@ -224,7 +223,6 @@ bool CScene2D::Update(const double dElapsedTime)
 			cEnemy2D->SetPlayer2D(cPlayer2D);
 			enemyVector.push_back(cEnemy2D);
 		}
-		cout << "COCK EATING CROCODILE ESHAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY";
 	}
 
 	// Call all the cEnemy2D's update method before Map2D 
