@@ -1,0 +1,35 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Fortran module files
+*.mod
+*.smod
+
+# Folders
+.vs/
+Debug/
+Release/
+App/Debug/
+App/imgui
+Common/Debug/
+
+# Executables
+*.exe
+*.out
+*.app
+*.suo
+*.json
+*.sqlite
+*.tlog
+*.pdb
+*.idb
+*.ini
