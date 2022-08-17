@@ -469,6 +469,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Randomly generates tiles
 	RandomTileGenerator();
 
+	// Check for Materials around the player
+	CheckMaterialAround();
+
 	//CS: Update the animated sprite
 	animatedPlayer->Update(dElapsedTime);
 
@@ -862,6 +865,70 @@ void CPlayer2D::RandomTileGenerator(void)
 			cMap2D->SetMapInfo(X, Y, 135);
 			n_wood--;
 		}
+	}
+}
+
+void CPlayer2D::CheckMaterialAround(void)
+{
+	// Check Right of Player
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1))
+	{
+	case 135:
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem->Add(1);
+			n_wood++;
+		}
+		break;
+	default:
+		break;
+	}
+	// Check Left of Player
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1))
+	{
+	case 135:
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem->Add(1);
+			n_wood++;
+		}
+		break;
+	default:
+		break;
+	}
+	// Check Top of Player
+	switch (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x))
+	{
+	case 135:
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem->Add(1);
+			n_wood++;
+		}
+		break;
+	default:
+		break;
+	}
+	// Check Bottom of Player
+	switch (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x))
+	{
+	case 135:
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem->Add(1);
+			n_wood++;
+		}
+		break;
+	default:
+		break;
 	}
 }
 
