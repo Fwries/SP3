@@ -788,7 +788,7 @@ std::vector<glm::vec2> CMap2D::PathFind(	const glm::vec2& startPos,
 	if (isBlocked(startPos.y, startPos.x) ||
 		(isBlocked(targetPos.y, targetPos.x)))
 	{
-		cout << "Invalid start or target position." << endl;
+		//cout << "Invalid start or target position." << endl;
 		// Return an empty path
 		std::vector<glm::vec2> path;
 		return path;

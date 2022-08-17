@@ -137,6 +137,7 @@ void CTurret::Update(const double dElapsedTime)
 			nearestLive = currIndex;
 			nearestEnemy = enemyVector[i];
 		}
+
 	}
 
 

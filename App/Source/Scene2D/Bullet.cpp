@@ -53,7 +53,6 @@ void CBullet::Update()
 	if (!bIsActive)
 		return;
 
-	//std::cout << vec2Index.x << " " << vec2Index.y << std::endl;
 	switch (dir)
 	{
 	case DIRECTION::LEFT:
@@ -104,6 +103,11 @@ void CBullet::Update()
 	{
 		bIsActive = false;
 	}
+}
+
+void CBullet::UpdateTurret()
+{
+
 }
 
 void CBullet::PreRender()
