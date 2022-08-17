@@ -452,6 +452,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cInventoryManager->GetItem("Lives")->Add(100);
 	}
 
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_F8))
+	{
+		cInventoryManager->GetItem("Plank")->Add(cInventoryItem->GetMaxCount());
+		cInventoryManager->GetItem("Stone")->Add(cInventoryItem->GetMaxCount());
+		cInventoryManager->GetItem("Iron")->Add(cInventoryItem->GetMaxCount());
+		cInventoryManager->GetItem("Silver")->Add(cInventoryItem->GetMaxCount());
+		cInventoryManager->GetItem("Bronze")->Add(cInventoryItem->GetMaxCount());
+		cInventoryManager->GetItem("Gold")->Add(cInventoryItem->GetMaxCount());
+		cInventoryManager->GetItem("Coal")->Add(cInventoryItem->GetMaxCount());
+	}
+
 	// Randomly generates tiles
 	RandomTileGenerator();
 
@@ -864,7 +875,7 @@ void CPlayer2D::CheckMaterialAround(void)
 		if (cKeyboardController->IsKeyPressed('X'))
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0);
-			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem = cInventoryManager->GetItem("Plank");
 			cInventoryItem->Add(1);
 			n_wood++;
 		}
@@ -881,7 +892,7 @@ void CPlayer2D::CheckMaterialAround(void)
 		if (cKeyboardController->IsKeyPressed('X'))
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0);
-			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem = cInventoryManager->GetItem("Plank");
 			cInventoryItem->Add(1);
 			n_wood++;
 		}
@@ -897,7 +908,7 @@ void CPlayer2D::CheckMaterialAround(void)
 		if (cKeyboardController->IsKeyPressed('X'))
 		{
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 0);
-			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem = cInventoryManager->GetItem("Plank");
 			cInventoryItem->Add(1);
 			n_wood++;
 		}
@@ -913,7 +924,7 @@ void CPlayer2D::CheckMaterialAround(void)
 		if (cKeyboardController->IsKeyPressed('X'))
 		{
 			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 0);
-			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem = cInventoryManager->GetItem("Plank");
 			cInventoryItem->Add(1);
 			n_wood++;
 		}
