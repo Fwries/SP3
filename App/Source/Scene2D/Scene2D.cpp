@@ -271,6 +271,11 @@ bool CScene2D::Update(const double dElapsedTime)
 	{
 		miscVector[i]->Update(dElapsedTime);
 	}
+
+	for (int i = 0; i < turretVector.size(); i++)
+	{
+		turretVector[i]->Update(dElapsedTime);
+	}
 	
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);
@@ -315,23 +320,23 @@ bool CScene2D::Update(const double dElapsedTime)
 
 		// Create and initialise the CEnemy2D
 		enemyVector.clear();
-		while (true)
-		{
-			CEnemy2D* cEnemy2D = new CEnemy2D();
-			// Pass shader to cEnemy2D
-			cEnemy2D->SetShader("Shader2D_Colour");
-			// Initialise the instance
-			if (cEnemy2D->Init() == true)
-			{
-				cEnemy2D->SetPlayer2D(cPlayer2D);
-				enemyVector.push_back(cEnemy2D);
-			}
-			else
-			{
-				// Break out of this loop if the enemy has all been loaded
-				break;
-			}
-		}
+		//while (true)
+		//{
+		//	CEnemy2D* cEnemy2D = new CEnemy2D();
+		//	// Pass shader to cEnemy2D
+		//	cEnemy2D->SetShader("Shader2D_Colour");
+		//	// Initialise the instance
+		//	if (cEnemy2D->Init() == true)
+		//	{
+		//		cEnemy2D->SetPlayer2D(cPlayer2D);
+		//		enemyVector.push_back(cEnemy2D);
+		//	}
+		//	else
+		//	{
+		//		// Break out of this loop if the enemy has all been loaded
+		//		break;
+		//	}
+		//}
 
 		miscVector.clear();
 		while (true)
@@ -368,6 +373,21 @@ bool CScene2D::Update(const double dElapsedTime)
 		//cSoundController->PlaySoundByID(2);
 		PlayerWon = false;
 		return false;
+	}
+
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
+	{
+		//cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+
+		CTurret* cTurret = new CTurret();
+		// Pass shader to cEnemy2D
+		cTurret->SetShader("Shader2D_Colour");
+		// Initialise the instance
+		if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == true)
+		{
+			cTurret->SetPlayer2D(cPlayer2D);
+			turretVector.push_back(cTurret);
+		}
 	}
 
 	return true;
@@ -419,6 +439,16 @@ void CScene2D::Render(void)
 		miscVector[i]->Render();
 		// Call the CMisc2D's PostRender()
 		miscVector[i]->PostRender();
+	}
+
+	for (int i = 0; i < turretVector.size(); i++)
+	{
+		// Call the CMisc2D's PreRender()
+		turretVector[i]->PreRender();
+		// Call the CMisc2D's Render()
+		turretVector[i]->Render();
+		// Call the CMisc2D's PostRender()
+		turretVector[i]->PostRender();
 	}
 
 	// Call the CPlayer2D's PreRender()

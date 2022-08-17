@@ -33,6 +33,8 @@
 #include "Enemy2D.h"
 // Include CMisc2D
 #include "Misc2D.h"
+// Include CTurret
+#include "Turret.h"
 
 // Include vector
 #include <vector>
@@ -74,10 +76,14 @@ protected:
 	CPlayer2D* cPlayer2D;
 	// The handler containing the instance of CPlayer2Ds
 	CMisc2D* cMisc2D;
+	// The handler containing the instance of CPlayer2Ds
+	CTurret* cTurret;
 	// A vector containing the instance of CEnemy2Ds
 	vector<CEntity2D*> enemyVector;
-	// A vector containing the instance of CEnemy2Ds
+	// A vector containing the instance of CMisc2Ds
 	vector<CEntity2D*> miscVector;
+	// A vector containing the instance of CTurret2Ds
+	vector<CEntity2D*> turretVector;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;

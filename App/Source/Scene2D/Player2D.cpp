@@ -92,6 +92,7 @@ bool CPlayer2D::Init(void)
 
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
+
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
@@ -391,37 +392,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	keydownAD = "";
 	keydownWS = "";
-
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
-	{
-		switch (FaceDirection)
-		{
-		case LEFT:
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == 0)
-			{
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 150);
-			}
-			break;
-		case RIGHT:
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == 0)
-			{
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 150);
-			}
-			break;
-		case UP:
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) == 0)
-			{
-				cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 150);
-			}
-			break;
-		case DOWN:
-			if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0)
-			{
-				cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 150);
-			}
-			break;
-		}
-	}
 
 	// Generate bullet & limit its firing rate to 1 bullet every 0.2s
 	static double currTime = 0.0;
