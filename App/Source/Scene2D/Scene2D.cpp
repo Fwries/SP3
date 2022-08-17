@@ -96,6 +96,9 @@ bool CScene2D::Init(void)
 	CShaderManager::GetInstance()->Use("Shader2D");
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
+	elapsed = 0;
+	spawnRate = 0.03;
+
 	// Create and initialise the Map 2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
@@ -145,23 +148,6 @@ bool CScene2D::Init(void)
 
 	// Create and initialise the CEnemy2D
 	enemyVector.clear();
-	while (true)
-	{
-		CEnemy2D* cEnemy2D = new CEnemy2D();
-		// Pass shader to cEnemy2D
-		cEnemy2D->SetShader("Shader2D_Colour");
-		// Initialise the instance
-		if (cEnemy2D->Init() == true)
-		{
-			cEnemy2D->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(cEnemy2D);
-		}
-		else
-		{
-			// Break out of this loop if the enemy has all been loaded
-			break;
-		}
-	}
 
 	/*CTeamMate2D* cTeamMate2D = new CTeamMate2D();
 	if (cTeamMate2D->Init() == false)
@@ -222,6 +208,24 @@ bool CScene2D::Update(const double dElapsedTime)
 	// Call the cPlayer2D's update method before Map2D as we want to capture the inputs before map2D update
 	cPlayer2D->Update(dElapsedTime);
 	cSoundController->PlaySoundByID(1);
+
+	elapsed += spawnRate;
+	int intElapsed = round(elapsed);
+	//cout << intElapsed << endl;
+	cout << remainder(elapsed, 8) << endl;
+	if (remainder(elapsed, 8) >= 0 && remainder(elapsed, 8) <= 0.05)
+	{
+		CEnemy2D* cEnemy2D = new CEnemy2D();
+		// Pass shader to cEnemy2D
+		cEnemy2D->SetShader("Shader2D_Colour");
+		// Initialise the instance
+		if (cEnemy2D->Init() == true)
+		{
+			cEnemy2D->SetPlayer2D(cPlayer2D);
+			enemyVector.push_back(cEnemy2D);
+		}
+		cout << "COCK EATING CROCODILE ESHAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY";
+	}
 
 	// Call all the cEnemy2D's update method before Map2D 
 	// as we want to capture the updates before map2D update	

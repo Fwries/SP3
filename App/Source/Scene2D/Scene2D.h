@@ -97,6 +97,9 @@ protected:
 	int Closest;
 	bool PlayerWon;
 
+	double elapsed;
+	double spawnRate;
+
 	// Constructor
 	CScene2D(void);
 	// Destructor

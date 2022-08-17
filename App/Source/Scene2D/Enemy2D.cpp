@@ -82,6 +82,11 @@ CEnemy2D::~CEnemy2D(void)
   */
 bool CEnemy2D::Init(void)
 {
+
+	// Rand seeding
+	srand(time(NULL));
+
+
 	MoveCooldown = 0;
 	AttackCooldown = 0;
 
@@ -101,36 +106,58 @@ bool CEnemy2D::Init(void)
 
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
-	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-	//if (cMap2D->FindValue(300, uiRow, uiCol) == false)
+	//// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
+	//unsigned int uiRow = -1;
+	//unsigned int uiCol = -1;
+	////if (cMap2D->FindValue(300, uiRow, uiCol) == false)
+	////{
+	////	return false;	// Unable to find the start position of the player, so quit this game
+	////}
+	//
+	//if (cMap2D->FindValue(300, uiRow, uiCol) == true)
+	//{
+	//	enemyType = SKULL;
+	//}
+	//else if (cMap2D->FindValue(301, uiRow, uiCol) == true)
+	//{
+	//	enemyType = SKELE1;
+	//}
+	//else if (cMap2D->FindValue(302, uiRow, uiCol) == true)
+	//{
+	//	enemyType = SKELE2;
+	//}
+	//else
 	//{
 	//	return false;	// Unable to find the start position of the player, so quit this game
 	//}
-	
-	if (cMap2D->FindValue(300, uiRow, uiCol) == true)
-	{
-		enemyType = SKULL;
-	}
-	else if (cMap2D->FindValue(301, uiRow, uiCol) == true)
-	{
-		enemyType = SKELE1;
-	}
-	else if (cMap2D->FindValue(302, uiRow, uiCol) == true)
-	{
-		enemyType = SKELE2;
-	}
-	else
-	{
-		return false;	// Unable to find the start position of the player, so quit this game
-	}
 
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
+	//// Erase the value of the player in the arrMapInfo
+	//cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
 	// Set the start position of the Player to iRow and iCol
-	Startvec2Index = vec2Index = glm::i32vec2(uiCol, uiRow);
+	int edge= rand() % 3;
+	int X = 0, Y = 0;
+	switch (edge)
+	{
+	case 0:
+		X = rand() % 62;
+		Y = 62;
+		break;
+	case 1:
+		X = 1;
+		Y = rand() % 62;
+		break;
+	case 2:
+		X = rand() % 62;
+		Y = 1;
+		break;
+	case 3:
+		X = 62;
+		Y = rand() % 62;
+		break;
+	}
+	enemyType = SKELE1;
+	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
@@ -180,6 +207,7 @@ bool CEnemy2D::Init(void)
 		AttackTime = 0.9f;
 	}
 
+
 	animatedEnemy = CMeshBuilder::GenerateSpriteAnimation(5, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedEnemy->AddAnimation("right", 0, 3);
 	animatedEnemy->AddAnimation("left", 4, 7);
@@ -216,34 +244,7 @@ bool CEnemy2D::Init(void)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
-	elapsed += spawnRate;
-	if (elapsed % 100 == 0)
-	{
-		int edge = 1 + (rand() % 4);
-		switch (edge)
-		{
-		case 1:
-			X = 1;
-			Y = rand() % 64;
-			break;
-		case 2:
-			X = 63;
-			Y = rand() % 64;
-			break;
-		case 3:
-			X = rand() % 64;
-			Y = 1;
-			break;
-		case 4:
-			X = rand() % 64;
-			Y = 63;
-			break;
-		}
-		if (cMap2D->GetMapInfo(X, Y) == 0)
-		{
-			cMap2D->SetMapInfo(X, Y, 301);
-		}
-	}
+	
 	//cout << bIsActive << endl;
 	if (!bIsActive)
 		return;
@@ -715,7 +716,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 100)
 			{
-				/*vec2Index.y++;*/
+				vec2Index.y++;
 				i32vec2NumMicroSteps.y = 0;
 				return true;
 			}
