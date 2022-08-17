@@ -28,6 +28,7 @@ class CMap2D;
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
+#include "Inputs\MouseController.h"
 
 // Include Physics2D
 #include "Physics2D.h"
@@ -40,6 +41,8 @@ class CMap2D;
 
 // Include SoundController
 #include "..\SoundController\SoundController.h"
+
+#include "BulletGenerator.h"
 
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
@@ -71,19 +74,30 @@ protected:
 	enum DIRECTION
 	{
 		LEFT = 0,
-		RIGHT = 1,
-		UP = 2,
-		DOWN = 3,
+		RIGHT,
+		UP,
+		DOWN,
+		LEFT_UP,
+		LEFT_DOWN,
+		RIGHT_UP,
+		RIGHT_DOWN,
 		NUM_DIRECTIONS
 	};
 
+	DIRECTION dir;
+
 	glm::vec2 vec2OldIndex;
+	glm::vec2 vec2OldMicroSteps;
+
+	CBulletGenerator* cBulletGenerator;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
+	
+	CMouseController* cMouseController;
 
 	// Physics
 	CPhysics2D cPhysics2D;

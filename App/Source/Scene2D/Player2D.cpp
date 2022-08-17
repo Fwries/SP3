@@ -61,6 +61,12 @@ CPlayer2D::~CPlayer2D(void)
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
+	if (cBulletGenerator)
+	{
+		delete cBulletGenerator;
+		cBulletGenerator = nullptr;
+	}
+
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 }
@@ -70,10 +76,16 @@ CPlayer2D::~CPlayer2D(void)
   */
 bool CPlayer2D::Init(void)
 {
+	dir = DIRECTION::RIGHT;
+
+	cBulletGenerator = new CBulletGenerator();
+
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 	// Reset all keys since we are starting a new game
 	cKeyboardController->Reset();
+
+	cMouseController = CMouseController::GetInstance();
 
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -126,6 +138,8 @@ bool CPlayer2D::Init(void)
 	// Add a Lives icon as one of the inventory items
 	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryItem = cInventoryManager->Add("Bullets", "Image/Scene2D/Bullet.tga", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	// Get the handler to the CSoundController
 	cSoundController = CSoundController::GetInstance();
@@ -173,12 +187,21 @@ bool CPlayer2D::Reset()
  */
 void CPlayer2D::Update(const double dElapsedTime)
 {
+	static double time = 0.0;
+	time += dElapsedTime;
+
 	// Store the old position
 	vec2OldIndex = vec2Index;
+	vec2OldMicroSteps = vec2NumMicroSteps;
+
+	// To determine the player's direction
+	char* keydownAD = "";
+	char* keydownWS = "";
 
 	// Get keyboard updates
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 	{
+		keydownAD = "A";
 		// Calculate the new position to the left
 		if (vec2Index.x >= 0)
 		{
@@ -207,6 +230,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 	{
+		keydownAD = "D";
 		// Calculate the new position to the right
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
@@ -235,6 +259,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
+		keydownWS = "W";
 		// Calculate the new position up
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
@@ -263,8 +288,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
 	{
+		keydownWS = "S";
 		vec2OldIndex = vec2Index;
-		
+
 		// Calculate the new position down
 		if (vec2Index.y >= 0)
 		{
@@ -297,6 +323,82 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cSoundController->PlaySoundByID(4);
 	}
 
+	if ((keydownAD == "A") && (keydownWS == ""))
+	{
+		dir = DIRECTION::LEFT;
+	}
+	else if ((keydownAD == "D") && (keydownWS == ""))
+	{
+		dir = DIRECTION::RIGHT;
+	}
+	else if ((keydownAD == "") && (keydownWS == "W"))
+	{
+		dir = DIRECTION::UP;
+	}
+	else if ((keydownAD == "") && (keydownWS == "S"))
+	{
+		dir = DIRECTION::DOWN;
+	}
+	else if ((keydownAD == "A") && (keydownWS == "W"))
+	{
+		dir = DIRECTION::LEFT_UP;
+		// Player is trying to move left_up but collided with walls on top
+		if ((vec2OldMicroSteps.y == vec2NumMicroSteps.y) && (vec2OldMicroSteps.x != vec2NumMicroSteps.x))
+			dir = DIRECTION::LEFT;
+		// Player is trying to move left_up but collided with walls at the left
+		else if ((vec2OldMicroSteps.x == vec2NumMicroSteps.x) && (vec2OldMicroSteps.y != vec2NumMicroSteps.y))
+			dir = DIRECTION::UP;
+	}
+	else if ((keydownAD == "A") && (keydownWS == "S"))
+	{
+		dir = DIRECTION::LEFT_DOWN;
+		// Player is trying to move left_down but collided with walls below
+		if ((vec2OldMicroSteps.y == vec2NumMicroSteps.y) && (vec2OldMicroSteps.x != vec2NumMicroSteps.x))
+			dir = DIRECTION::LEFT;
+		// Player is trying to move left_down but collided with walls at the left
+		else if ((vec2OldMicroSteps.x == vec2NumMicroSteps.x) && (vec2OldMicroSteps.y != vec2NumMicroSteps.y))
+			dir = DIRECTION::DOWN;
+	}
+	else if ((keydownAD == "D") && (keydownWS == "W"))
+	{
+		dir = DIRECTION::RIGHT_UP;
+		// Player is trying to move right_up but collided with walls on top
+		if ((vec2OldMicroSteps.y == vec2NumMicroSteps.y) && (vec2OldMicroSteps.x != vec2NumMicroSteps.x))
+			dir = DIRECTION::RIGHT;
+		// Player is trying to move right_up but collided with walls on the right
+		else if ((vec2OldMicroSteps.x == vec2NumMicroSteps.x) && (vec2OldMicroSteps.y != vec2NumMicroSteps.y))
+			dir = DIRECTION::UP;
+	}
+	else if ((keydownAD == "D") && (keydownWS == "S"))
+	{
+		dir = DIRECTION::RIGHT_DOWN;
+		// Player is trying to move right_down but collided with walls below
+		if ((vec2OldMicroSteps.y == vec2NumMicroSteps.y) && (vec2OldMicroSteps.x != vec2NumMicroSteps.x))
+			dir = DIRECTION::RIGHT;
+		// Player is trying to move right_down but collided with walls on the right
+		else if ((vec2OldMicroSteps.x == vec2NumMicroSteps.x) && (vec2OldMicroSteps.y != vec2NumMicroSteps.y))
+			dir = DIRECTION::DOWN;
+	}
+
+	keydownAD = "";
+	keydownWS = "";
+
+	// Generate bullet & limit its firing rate to 1 bullet every 0.2s
+	static double currTime = 0.0;
+	static const double LCLICK_WAIT_TIME = 0.2;
+	if (time > (currTime + LCLICK_WAIT_TIME))
+	{
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT))
+		{
+			currTime = time;
+			cBulletGenerator->GenerateBullet(this->vec2Index, (int)dir);
+			cInventoryManager->GetItem("Bullets")->Remove(1);
+		}
+	}
+
+	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+		cBulletGenerator->GetBulletsVector()[i]->Update();
+
 	if (faceLeft == true)
 	{
 		if (GetHitBox())
@@ -325,10 +427,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//CS: Update the animated sprite
 	animatedPlayer->Update(dElapsedTime);
-	
+
 	// Update the UV Coordinates
-	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
-	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y*cSettings->MICRO_STEP_YAXIS);
+	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
+	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }
 
 /**
@@ -342,6 +444,9 @@ void CPlayer2D::PreRender(void)
 
 	// Activate the shader
 	CShaderManager::GetInstance()->Use(sShaderName);
+
+	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+		cBulletGenerator->GetBulletsVector()[i]->PreRender();
 }
 
 /**
@@ -371,6 +476,8 @@ void CPlayer2D::Render(void)
 		//CS: Render the animated sprite
 		glBindVertexArray(VAO);
 		animatedPlayer->Render();
+		for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+			cBulletGenerator->GetBulletsVector()[i]->Render();
 		glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -382,6 +489,8 @@ void CPlayer2D::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
+	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+		cBulletGenerator->GetBulletsVector()[i]->PostRender();
 }
 
 /**
