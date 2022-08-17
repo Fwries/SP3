@@ -764,6 +764,18 @@ bool CEnemy2D::InteractWithPlayer(void)
 		SetHitBox(false);
 	}
 
+	for (unsigned i = 0; i < cPlayer2D->GetBulletGenerator()->GetBulletsVector().size(); ++i)
+	{
+		if (cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->GetIsActive() == true)
+		{
+			if (glm::length(vec2Index - cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->GetBulletPos()) <= 2)
+			{
+				HP = HP - cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
+				cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->SetbIsActive(false);
+			}
+		}
+	}
+
 	if (GetHitBox() == true)
 	{
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE))

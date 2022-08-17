@@ -888,3 +888,8 @@ void CPlayer2D::UpdateHealthLives(void)
 		CGameManager::GetInstance()->bPlayerLost = true;
 	}
 }
+
+CBulletGenerator* CPlayer2D::GetBulletGenerator()
+{
+	return cBulletGenerator;
+}

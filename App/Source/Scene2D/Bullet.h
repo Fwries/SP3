@@ -27,6 +27,7 @@ private:
 	DIRECTION dir;
 	bool bIsActive;
 	float RotateAngle;
+	int Damage;
 
 public:
 	CMesh* quadMesh;
@@ -41,4 +42,12 @@ public:
 	void Render();
 
 	void PostRender();
+
+	bool GetIsActive();
+
+	int GetDamage();
+
+	void SetbIsActive(bool);
+
+	glm::vec2 GetBulletPos();
 };

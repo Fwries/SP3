@@ -39,6 +39,7 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 
 	bIsActive = true;
 	RotateAngle = 0.0f;
+	Damage = 10;
 }
 
 CBullet::~CBullet()
@@ -150,4 +151,24 @@ void CBullet::PostRender()
 {
 	// Disable blending
 	glDisable(GL_BLEND);
+}
+
+bool CBullet::GetIsActive()
+{
+	return bIsActive;
+}
+
+int CBullet::GetDamage()
+{
+	return Damage;
+}
+
+void CBullet::SetbIsActive(bool yes)
+{
+	bIsActive = yes;
+}
+
+glm::vec2 CBullet::GetBulletPos()
+{
+	return vec2Index;
 }

@@ -70,6 +70,8 @@ public:
 	// Update the health and lives
 	void UpdateHealthLives(void);
 
+	CBulletGenerator* GetBulletGenerator();
+
 protected:
 	enum DIRECTION
 	{
