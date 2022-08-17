@@ -187,10 +187,6 @@ protected:
 	// Reset AStar lists
 	bool ResetAStarLists(void);
 
-	// Variables for Materials
-	int n_wood, n_stone, n_silver, n_iron, n_gold, n_coal, n_bronze;
-	int X, Y;
-
 	// Variables for A-Star PathFinding
 	int m_weight;
 	unsigned int m_nrOfDirections;

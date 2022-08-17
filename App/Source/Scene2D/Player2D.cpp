@@ -146,6 +146,10 @@ bool CPlayer2D::Init(void)
 	FaceDirection = RIGHT;
 	SetHitBox(false);
 
+	// Materials
+	n_wood = 30;
+	X = Y = 0;
+
 	return true;
 }
 
@@ -461,6 +465,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	// Interact with the Map
 	InteractWithMap();
+
+	// Randomly generates tiles
+	RandomTileGenerator();
 
 	//CS: Update the animated sprite
 	animatedPlayer->Update(dElapsedTime);
@@ -841,6 +848,20 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 	default:
 		break;
+	}
+}
+
+void CPlayer2D::RandomTileGenerator(void)
+{
+	while (n_wood > 0)
+	{
+		X = rand() % 64;
+		Y = rand() % 64;
+		if (cMap2D->GetMapInfo(X, Y) == 0)
+		{
+			cMap2D->SetMapInfo(X, Y, 135);
+			n_wood--;
+		}
 	}
 }
 

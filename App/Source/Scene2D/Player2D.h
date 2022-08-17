@@ -118,6 +118,10 @@ protected:
 	bool FaceDirection;
 	bool Hitbox;
 
+	// Variables for Materials
+	int n_wood, n_stone, n_silver, n_iron, n_gold, n_coal, n_bronze;
+	int X, Y;
+
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
 
@@ -141,5 +145,7 @@ protected:
 
 	// Let player interact with the map
 	void InteractWithMap(void);
+
+	void RandomTileGenerator(void);
 };
 

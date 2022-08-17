@@ -467,9 +467,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
-	// Materials
-	n_wood = 30;
-	X = Y = 0;
+
 
 	// Rand seeding
 	srand(time(NULL));
@@ -498,16 +496,7 @@ void CMap2D::Update(const double dElapsedTime)
 	{
 		amtY += 0.01;
 	}
-	while (n_wood>0)
-	{
-		X = rand() % 64;
-		Y = rand() % 64;
-		if (GetMapInfo(X, Y) == 0)
-		{
-			SetMapInfo(X, Y, 135);
-			n_wood--;
-		}
-	}
+	
 }
 
 /**
