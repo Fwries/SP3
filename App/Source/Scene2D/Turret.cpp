@@ -129,6 +129,17 @@ void CTurret::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
+	for (int i = 0; i < enemyVector.size(); i++)
+	{
+		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - enemyVector[i]->vec2Index.y - 1);
+		if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+		{
+			nearestLive = currIndex;
+			nearestEnemy = enemyVector[i];
+		}
+	}
+
+
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, i32vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, i32vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
@@ -227,6 +238,11 @@ void CTurret::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int 
 void CTurret::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
+}
+
+void CTurret::SetEnemyVector(vector<CEntity2D*> NEWenemyVector)
+{
+	enemyVector = NEWenemyVector;
 }
 
 /**

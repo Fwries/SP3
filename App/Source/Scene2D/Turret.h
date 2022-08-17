@@ -80,6 +80,8 @@ public:
 	// Set the handle to cPlayer to this class instance
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
 
+	void SetEnemyVector(vector<CEntity2D*>);
+
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 	bool hitBox;
@@ -116,6 +118,9 @@ protected:
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
+
+	// A vector containing the instance of CEnemy2Ds
+	vector<CEntity2D*> enemyVector;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
@@ -168,6 +173,9 @@ protected:
 
 	// Max count in a state
 	const int iMaxFSMCounter = 60;
+
+	glm::vec2 nearestLive;
+	CEntity2D* nearestEnemy;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);

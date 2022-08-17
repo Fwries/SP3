@@ -386,6 +386,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == true)
 		{
 			cTurret->SetPlayer2D(cPlayer2D);
+			cTurret->SetEnemyVector(enemyVector);
 			turretVector.push_back(cTurret);
 		}
 	}
