@@ -56,6 +56,7 @@ bool CGUI_Scene2D::Init(void)
 	// Store the CFPSCounter singleton instance here
 	cFPSCounter = CFPSCounter::GetInstance();
 
+	cPlayer2D = CPlayer2D::GetInstance();
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -491,7 +492,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 								{
-									ImGui::SetWindowFontScale(1.5 * relativeScale_y);
 									if (ImGui::Button("<", ImVec2(60.0f, 30.0f)))
 									{
 										if (recipeNo != 0)
@@ -568,6 +568,16 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
 		cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 	ImGui::End();
+	// Render Prommpt 
+	if (cPlayer2D->GetMaterialRange() == true)
+	{
+		ImGui::Begin("Prompt", NULL, livesWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.35f, cSettings->iWindowHeight * 0.45f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press 'X' to collect materials");
+		ImGui::End();
+	}
+
 	/*ImGui::Begin("Invisible window", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
 	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));

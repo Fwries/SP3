@@ -151,6 +151,7 @@ bool CPlayer2D::Init(void)
 	// Materials
 	n_wood = 30;
 	X = Y = 0;
+	MaterialRange = false;
 
 	return true;
 }
@@ -843,8 +844,8 @@ void CPlayer2D::RandomTileGenerator(void)
 {
 	while (n_wood > 0)
 	{
-		X = rand() % 64;
-		Y = rand() % 64;
+		X = rand() % 63;
+		Y = rand() % 63;
 		if (cMap2D->GetMapInfo(X, Y) == 0)
 		{
 			cMap2D->SetMapInfo(X, Y, 135);
@@ -859,6 +860,7 @@ void CPlayer2D::CheckMaterialAround(void)
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1))
 	{
 	case 135:
+		MaterialRange = true;
 		if (cKeyboardController->IsKeyPressed('X'))
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0);
@@ -868,12 +870,14 @@ void CPlayer2D::CheckMaterialAround(void)
 		}
 		break;
 	default:
+		MaterialRange = false;
 		break;
 	}
 	// Check Left of Player
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1))
 	{
 	case 135:
+		MaterialRange = true;
 		if (cKeyboardController->IsKeyPressed('X'))
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0);
@@ -889,6 +893,7 @@ void CPlayer2D::CheckMaterialAround(void)
 	switch (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x))
 	{
 	case 135:
+		MaterialRange = true;
 		if (cKeyboardController->IsKeyPressed('X'))
 		{
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 0);
@@ -904,6 +909,7 @@ void CPlayer2D::CheckMaterialAround(void)
 	switch (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x))
 	{
 	case 135:
+		MaterialRange = true;
 		if (cKeyboardController->IsKeyPressed('X'))
 		{
 			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 0);
@@ -915,6 +921,11 @@ void CPlayer2D::CheckMaterialAround(void)
 	default:
 		break;
 	}
+}
+
+bool CPlayer2D::GetMaterialRange(void)
+{
+	return MaterialRange;
 }
 
 /**
