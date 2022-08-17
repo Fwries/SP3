@@ -70,6 +70,8 @@ public:
 	// Update the health and lives
 	void UpdateHealthLives(void);
 
+	bool GetMaterialRange(void);
+
 	CBulletGenerator* GetBulletGenerator();
 
 protected:
@@ -119,6 +121,7 @@ protected:
 	int iJumpCount;
 	bool FaceDirection;
 	bool Hitbox;
+	bool MaterialRange;
 
 	// Variables for Materials
 	int n_wood, n_stone, n_silver, n_iron, n_gold, n_coal, n_bronze;
@@ -151,5 +154,6 @@ protected:
 	void RandomTileGenerator(void);
 
 	void CheckMaterialAround(void);
+
 };
 

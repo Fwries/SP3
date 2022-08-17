@@ -20,6 +20,8 @@
 
 #include "Inputs\KeyboardController.h"
 
+#include "Player2D.h"
+
 // Include GLEW
 #ifndef GLEW_STATIC
 #include <GL/glew.h>
@@ -82,6 +84,8 @@ protected:
 	int recipeNo;
 
 	CSettings* cSettings;
+
+	CPlayer2D* cPlayer2D;
 
 	// The handler containing the instance of CInventoryManager
 	CInventoryManager* cInventoryManager;
