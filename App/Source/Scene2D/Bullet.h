@@ -37,6 +37,8 @@ public:
 
 	void Update();
 
+	void UpdateTurret();
+
 	void PreRender();
 
 	void Render();
