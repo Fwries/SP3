@@ -289,25 +289,29 @@ void CEnemy2D::Update(const double dElapsedTime)
 		}
 		/*cout << toX << "    " << toY << endl;*/
 		UpdatePosition();
-
+		cout << iFSMCounter << endl;
 		glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 		if ((((vec2Index.x >= 32 - 2) &&(vec2Index.x <= 32 + 2)) &&
 			(vec2Index.y >= 32 - 2) && ((vec2Index.y <= 32 + 2))))
 		{
 			sCurrentFSM = ATTACK;
+			iFSMCounter = 0;
 		}
 
 		//Checking HP:
 		if (HP <= 0)
 		{
 			sCurrentFSM = DEAD;
+			iFSMCounter = 0;
 		}
 
+		iFSMCounter++;
 		break;
 	}
 	case BLOCKED:
 	{
 
+		iFSMCounter++;
 		break;
 	}
 	case ATTACK:
@@ -318,7 +322,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 		if (HP <= 0)
 		{
 			sCurrentFSM = DEAD;
+			iFSMCounter = 0;
 		}
+		iFSMCounter++;
 		break;
 	}
 	case DEAD:
@@ -332,12 +338,21 @@ void CEnemy2D::Update(const double dElapsedTime)
 			if (faceLeft == true)
 			{
 				animatedEnemy->PlayAnimation("Dleft", -1, 1.0f);
+				if (iFSMCounter >= 50)
+				{
+					bIsActive = false;
+				}
 			}
 			else
 			{
 				animatedEnemy->PlayAnimation("Dright", -1, 1.0f);
+				if (iFSMCounter >= 50)
+				{
+					bIsActive = false;
+				}
 			}
 		}
+		iFSMCounter++;
 		break;
 	}
 	default:
