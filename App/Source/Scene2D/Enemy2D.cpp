@@ -296,6 +296,13 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ATTACK;
 		}
+
+		//Checking HP:
+		if (HP <= 0)
+		{
+			sCurrentFSM = DEAD;
+		}
+
 		break;
 	}
 	case BLOCKED:
@@ -306,6 +313,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 	case ATTACK:
 	{
 
+
+		//Checking HP:
+		if (HP <= 0)
+		{
+			sCurrentFSM = DEAD;
+		}
 		break;
 	}
 	case DEAD:
