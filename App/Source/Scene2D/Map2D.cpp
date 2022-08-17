@@ -103,8 +103,8 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	// Store the map sizes in cSettings
 	uiCurLevel = 0;
 	this->uiNumLevels = uiNumLevels;
-	cSettings->NUM_TILES_XAXIS = uiNumCols / cSettings->NUM_TILES_MULTIPLIERX;
-	cSettings->NUM_TILES_YAXIS = uiNumRows / cSettings->NUM_TILES_MULTIPLIERY;
+	cSettings->NUM_TILES_XAXIS = uiNumCols;
+	cSettings->NUM_TILES_YAXIS = uiNumRows;
 	cSettings->UpdateSpecifications();
 
 	glGenVertexArrays(1, &VAO);
@@ -624,7 +624,7 @@ void CMap2D::SetNumSteps(const CSettings::AXIS sAxis, const unsigned int uiValue
 void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert)
 {
 	if (bInvert)
-		arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS_MULTIPLIED - uiRow - 1][uiCol].value = iValue;
+		arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value = iValue;
 	else
 		arrMapInfo[uiCurLevel][uiRow][uiCol].value = iValue;
 }
@@ -638,7 +638,7 @@ void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, cons
 int CMap2D::GetMapInfo(const unsigned int uiRow, const int unsigned uiCol, const bool bInvert) const
 {
 	if (bInvert)
-		return arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS_MULTIPLIED - uiRow - 1][uiCol].value;
+		return arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS- uiRow - 1][uiCol].value;
 	else
 		return arrMapInfo[uiCurLevel][uiRow][uiCol].value;
 }
@@ -651,21 +651,21 @@ bool CMap2D::LoadMap(string filename, const unsigned int uiCurLevel)
 	doc = rapidcsv::Document(FileSystem::getPath(filename).c_str());
 
 	// Check if the sizes of CSV data matches the declared arrMapInfo sizes
-	if ((cSettings->NUM_TILES_XAXIS_MULTIPLIED != (unsigned int)doc.GetColumnCount()) ||
-		(cSettings->NUM_TILES_YAXIS_MULTIPLIED != (unsigned int)doc.GetRowCount()))
+	if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
+		(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
 	{
 		cout << "Sizes of CSV map does not match declared arrMapInfo sizes." << endl;
 		return false;
 	}
 
 	// Read the rows and columns of CSV data into arrMapInfo
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS_MULTIPLIED; uiRow++)
+	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
 		// Read a row from the CSV file
 		std::vector<std::string> row = doc.GetRow<std::string>(uiRow);
 		
 		// Load a particular CSV value into the arrMapInfo
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS_MULTIPLIED; ++uiCol)
+		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
 		{
 			arrMapInfo[uiCurLevel][uiRow][uiCol].value = (int)stoi(row[uiCol]);
 		}
