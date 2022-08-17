@@ -25,6 +25,7 @@ private:
 	};
 
 	DIRECTION dir;
+	bool bIsActive;
 
 public:
 	CMesh* quadMesh;
@@ -32,7 +33,7 @@ public:
 	CBullet(glm::vec2 vec2Index, int direction);
 	virtual ~CBullet();
 
-	bool Update();
+	void Update();
 
 	void PreRender();
 

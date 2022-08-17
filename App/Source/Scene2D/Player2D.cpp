@@ -433,14 +433,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
 	{
-		if (cBulletGenerator->GetBulletsVector()[i] != nullptr)
-		{
-			if (cBulletGenerator->GetBulletsVector()[i]->Update() == false)
-			{
-				delete cBulletGenerator->GetBulletsVector()[i];
-				cBulletGenerator->GetBulletsVector()[i] = nullptr;
-			}
-		}
+		cBulletGenerator->GetBulletsVector()[i]->Update();
 	}
 
 	if (FaceDirection == LEFT)
