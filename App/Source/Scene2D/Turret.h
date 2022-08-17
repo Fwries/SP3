@@ -35,6 +35,8 @@ class CMap2D;
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
+#include "BulletGenerator.h"
+
 class CTurret : public CEntity2D
 {
 public:
@@ -81,6 +83,8 @@ public:
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
 
 	void SetEnemyVector(vector<CEntity2D*>);
+
+	CBulletGenerator* GetBulletGenerator();
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
@@ -162,6 +166,8 @@ protected:
 
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
+
+	CBulletGenerator* cBulletGenerator;
 
 	// Current FSM
 	FSM sCurrentFSM;

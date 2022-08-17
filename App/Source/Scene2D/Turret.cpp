@@ -115,6 +115,8 @@ bool CTurret::Init(int uiRow, int uiCol)
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
+	cBulletGenerator = new CBulletGenerator();
+
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 
@@ -129,6 +131,9 @@ void CTurret::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
+	static double time = 0.0;
+	time += dElapsedTime;
+
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - enemyVector[i]->vec2Index.y - 1);
@@ -137,9 +142,23 @@ void CTurret::Update(const double dElapsedTime)
 			nearestLive = currIndex;
 			nearestEnemy = enemyVector[i];
 		}
-
 	}
 
+	//cout << nearestLive.x << " " << nearestLive.y << endl;
+	// Generate bullet & limit its firing rate to 1 bullet every 0.2s
+	static double currTime = 0.0;
+	static const double LCLICK_WAIT_TIME = 0.2;
+	if (time > (currTime + LCLICK_WAIT_TIME))
+	{
+		currTime = time;
+		cBulletGenerator->GenerateBullet(this->vec2Index, nearestLive);
+	}
+	//cout << cBulletGenerator->GetBulletsVector().size() << endl;
+	
+	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+	{
+		cBulletGenerator->GetBulletsVector()[i]->Update();
+	}
 
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, i32vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
@@ -244,6 +263,11 @@ void CTurret::SetPlayer2D(CPlayer2D* cPlayer2D)
 void CTurret::SetEnemyVector(vector<CEntity2D*> NEWenemyVector)
 {
 	enemyVector = NEWenemyVector;
+}
+
+CBulletGenerator* CTurret::GetBulletGenerator()
+{
+	return cBulletGenerator;
 }
 
 /**

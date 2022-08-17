@@ -19,6 +19,11 @@ void CBulletGenerator::GenerateBullet(glm::vec2 vec2Index, int direction)
 	bulletsVector.push_back(new CBullet(vec2Index, direction));
 }
 
+void CBulletGenerator::GenerateBullet(glm::vec2 vec2Index, glm::vec2 Targetvec2Index)
+{
+	bulletsVector.push_back(new CBullet(vec2Index, Targetvec2Index));
+}
+
 std::vector<CBullet*> CBulletGenerator::GetBulletsVector() const
 {
 	return bulletsVector;

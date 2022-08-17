@@ -14,7 +14,40 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	// Make sure to initialize matrix to identity matrix first
 	transform = glm::mat4(1.0f);
 
-	//this->vec2Index = glm::i32vec2(0);
+	vec2NumMicroSteps = glm::i32vec2(0);
+
+	vec2UVCoordinate = glm::vec2(0.0f);
+
+	cSettings = CSettings::GetInstance();
+
+	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+
+	CShaderManager::GetInstance()->Use("Shader2D_Colour");
+	SetShader("Shader2D_Colour");
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	// Load the player texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.tga", true);
+	if (iTextureID == 0)
+	{
+		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
+	}
+
+	FromTurret = false;
+	bIsActive = true;
+	RotateAngle = 0.0f;
+	Damage = 4;
+}
+
+CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index)
+{
+	this->vec2Index = vec2Index;
+	Targetvec2Index = targetvec2Index;
+
+	// Make sure to initialize matrix to identity matrix first
+	transform = glm::mat4(1.0f);
 
 	vec2NumMicroSteps = glm::i32vec2(0);
 
@@ -37,6 +70,7 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
 	}
 
+	FromTurret = true;
 	bIsActive = true;
 	RotateAngle = 0.0f;
 	Damage = 4;
@@ -53,46 +87,68 @@ void CBullet::Update()
 	if (!bIsActive)
 		return;
 
-	switch (dir)
+	if (FromTurret == true)
 	{
-	case DIRECTION::LEFT:
-		--vec2Index.x;
-		RotateAngle = 270;
-		break;
-	case DIRECTION::RIGHT:
-		++vec2Index.x;
-		RotateAngle = 90;
-		break;
-	case DIRECTION::UP:
-		++vec2Index.y;
-		RotateAngle = 0;
-		break;
-	case DIRECTION::DOWN:
-		--vec2Index.y;
-		RotateAngle = 180;
-		break;
-	case DIRECTION::LEFT_UP:
-		--vec2Index.x;
-		++vec2Index.y;
-		RotateAngle = 315;
-		break;
-	case DIRECTION::LEFT_DOWN:
-		--vec2Index.x;
-		--vec2Index.y;
-		RotateAngle = 225;
-		break;
-	case DIRECTION::RIGHT_UP:
-		++vec2Index.x;
-		++vec2Index.y;
-		RotateAngle = 45;
-		break;
-	case DIRECTION::RIGHT_DOWN:
-		++vec2Index.x;
-		--vec2Index.y;
-		RotateAngle = 135;
-		break;
-	default:
-		break;
+		if (vec2Index.x > Targetvec2Index.x)
+		{
+			--vec2Index.x;
+		}
+		if (vec2Index.x < Targetvec2Index.x)
+		{
+			++vec2Index.x;
+		}
+		if (vec2Index.y > Targetvec2Index.y)
+		{
+			--vec2Index.y;
+		}
+		if (vec2Index.y > Targetvec2Index.y)
+		{
+			++vec2Index.y;
+		}
+	}
+	else if (FromTurret == false)
+	{
+		switch (dir)
+		{
+		case DIRECTION::LEFT:
+			--vec2Index.x;
+			RotateAngle = 270;
+			break;
+		case DIRECTION::RIGHT:
+			++vec2Index.x;
+			RotateAngle = 90;
+			break;
+		case DIRECTION::UP:
+			++vec2Index.y;
+			RotateAngle = 0;
+			break;
+		case DIRECTION::DOWN:
+			--vec2Index.y;
+			RotateAngle = 180;
+			break;
+		case DIRECTION::LEFT_UP:
+			--vec2Index.x;
+			++vec2Index.y;
+			RotateAngle = 315;
+			break;
+		case DIRECTION::LEFT_DOWN:
+			--vec2Index.x;
+			--vec2Index.y;
+			RotateAngle = 225;
+			break;
+		case DIRECTION::RIGHT_UP:
+			++vec2Index.x;
+			++vec2Index.y;
+			RotateAngle = 45;
+			break;
+		case DIRECTION::RIGHT_DOWN:
+			++vec2Index.x;
+			--vec2Index.y;
+			RotateAngle = 135;
+			break;
+		default:
+			break;
+		}
 	}
 
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
@@ -103,11 +159,6 @@ void CBullet::Update()
 	{
 		bIsActive = false;
 	}
-}
-
-void CBullet::UpdateTurret()
-{
-
 }
 
 void CBullet::PreRender()

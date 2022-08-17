@@ -28,16 +28,18 @@ private:
 	bool bIsActive;
 	float RotateAngle;
 	int Damage;
+	bool FromTurret;
+
+	glm::vec2 Targetvec2Index;
 
 public:
 	CMesh* quadMesh;
 
 	CBullet(glm::vec2 vec2Index, int direction);
+	CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index);
 	virtual ~CBullet();
 
 	void Update();
-
-	void UpdateTurret();
 
 	void PreRender();
 
