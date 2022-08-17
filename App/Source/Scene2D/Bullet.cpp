@@ -38,6 +38,7 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	}
 
 	bIsActive = true;
+	RotateAngle = 0.0f;
 }
 
 CBullet::~CBullet()
@@ -56,31 +57,39 @@ void CBullet::Update()
 	{
 	case DIRECTION::LEFT:
 		--vec2Index.x;
+		RotateAngle = 270;
 		break;
 	case DIRECTION::RIGHT:
 		++vec2Index.x;
+		RotateAngle = 90;
 		break;
 	case DIRECTION::UP:
 		++vec2Index.y;
+		RotateAngle = 0;
 		break;
 	case DIRECTION::DOWN:
 		--vec2Index.y;
+		RotateAngle = 180;
 		break;
 	case DIRECTION::LEFT_UP:
 		--vec2Index.x;
 		++vec2Index.y;
+		RotateAngle = 315;
 		break;
 	case DIRECTION::LEFT_DOWN:
 		--vec2Index.x;
 		--vec2Index.y;
+		RotateAngle = 225;
 		break;
 	case DIRECTION::RIGHT_UP:
 		++vec2Index.x;
 		++vec2Index.y;
+		RotateAngle = 45;
 		break;
 	case DIRECTION::RIGHT_DOWN:
 		++vec2Index.x;
 		--vec2Index.y;
+		RotateAngle = 135;
 		break;
 	default:
 		break;
@@ -121,9 +130,8 @@ void CBullet::Render()
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
-													vec2UVCoordinate.y,
-													0.0f));
+	//transform = glm::rotate(transform, RotateAngle * (3.14159256f / 180), glm::vec3(1.0f, 0.0f, 0.0f));
+	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x, vec2UVCoordinate.y, 0.0f));
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 

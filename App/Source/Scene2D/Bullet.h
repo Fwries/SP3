@@ -26,6 +26,7 @@ private:
 
 	DIRECTION dir;
 	bool bIsActive;
+	float RotateAngle;
 
 public:
 	CMesh* quadMesh;
