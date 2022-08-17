@@ -101,7 +101,7 @@ bool CGUI_Scene2D::Init(void)
 	openInventory = false;
 
 	// Variables for buildings
-	turretEquipped = false;
+	itemEquipped = 0;
 
 	return true;
 }
@@ -368,9 +368,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 											ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 											{
 												ImGui::SetWindowFontScale(0.5 * relativeScale_y);
-												if (ImGui::Button(((turretEquipped==false) ? ("Equip") : ("Equipped")), ImVec2(60.0f, 20.0f)))
+												if (ImGui::Button(((itemEquipped==1) ? ("Equipped") : ("Equip")), ImVec2(60.0f, 20.0f)))
 												{
-													turretEquipped = !turretEquipped;
+													itemEquipped = 1;
 												}
 											}
 											ImGui::PopStyleColor();

@@ -84,7 +84,7 @@ protected:
 	int recipeNo;
 
 	// Variables for Buildings
-	bool turretEquipped;
+	int itemEquipped;
 
 	CSettings* cSettings;
 
