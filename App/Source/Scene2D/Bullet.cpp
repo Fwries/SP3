@@ -14,7 +14,7 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	// Make sure to initialize matrix to identity matrix first
 	transform = glm::mat4(1.0f);
 
-	this->vec2Index = glm::i32vec2(0);
+	//this->vec2Index = glm::i32vec2(0);
 
 	vec2NumMicroSteps = glm::i32vec2(0);
 
@@ -36,6 +36,8 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	{
 		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
 	}
+
+	bIsActive = true;
 }
 
 CBullet::~CBullet()
@@ -46,6 +48,10 @@ CBullet::~CBullet()
 
 void CBullet::Update()
 {
+	if (!bIsActive)
+		return;
+
+	//std::cout << vec2Index.x << " " << vec2Index.y << std::endl;
 	switch (dir)
 	{
 	case DIRECTION::LEFT:
@@ -82,10 +88,19 @@ void CBullet::Update()
 
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
+
+	if (vec2Index.x < 0 || vec2Index.x > cSettings->NUM_TILES_XAXIS
+		|| vec2Index.y < 0 || vec2Index.y > cSettings->NUM_TILES_YAXIS)
+	{
+		bIsActive = false;
+	}
 }
 
 void CBullet::PreRender()
 {
+	if (!bIsActive)
+		return;
+
 	// Activate blending mode
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -96,6 +111,9 @@ void CBullet::PreRender()
 
 void CBullet::Render()
 {
+	if (!bIsActive)
+		return;
+
 	glBindVertexArray(VAO);
 	// Get matrix's uniform location and set matrix
 	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");

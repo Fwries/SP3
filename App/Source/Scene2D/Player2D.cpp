@@ -280,6 +280,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.y = 0;
 		}
 
+		FaceDirection = UP;
+
 		//CS: Play the "idle" animation
 		//animatedPlayer->PlayAnimation("idle", -1, 1.0f);
 
@@ -311,6 +313,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.y = 0;
 		}
+
+		FaceDirection = DOWN;
 
 		//CS: Play the "idle" animation
 		//animatedPlayer->PlayAnimation("idle", -1, 1.0f);
@@ -428,7 +432,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+	{
 		cBulletGenerator->GetBulletsVector()[i]->Update();
+	}
 
 	if (FaceDirection == LEFT)
 	{

@@ -87,7 +87,7 @@ bool CEnemy2D::Init(void)
 
 	HP = 20;
 	ATK = 4;
-	SPE = 0.2;
+	SPE = 1;
 	TRGE = 1;
 	ARGE = 1;
 
@@ -217,7 +217,6 @@ bool CEnemy2D::Init(void)
 void CEnemy2D::Update(const double dElapsedTime)
 {
 	elapsed += spawnRate;
-	cout << elapsed << endl;
 	if (elapsed % 100 == 0)
 	{
 		int edge = 1 + (rand() % 4);
@@ -290,7 +289,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 		/*cout << toX << "    " << toY << endl;*/
 		UpdatePosition();
 
-		if (vec2Index == glm::vec2(32, 32))
+		glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+		if ((((vec2Index.x >= 32 - 2) &&(vec2Index.x <= 32 + 2)) &&
+			(vec2Index.y >= 32 - 2) && ((vec2Index.y <= 32 + 2))))
 		{
 			sCurrentFSM = ATTACK;
 		}
@@ -655,7 +656,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 100)
 			{
-				vec2Index.x++;
+				/*vec2Index.x++;*/
 				i32vec2NumMicroSteps.x = 0;
 				return true;
 			}
@@ -674,7 +675,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 100)
 			{
-				vec2Index.x++;
+				/*vec2Index.x++;*/
 				i32vec2NumMicroSteps.x = 0;
 				return true;
 			}
@@ -694,7 +695,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 100)
 			{
-				vec2Index.y++;
+				/*vec2Index.y++;*/
 				i32vec2NumMicroSteps.y = 0;
 				return true;
 			}
@@ -714,7 +715,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 100)
 			{
-				vec2Index.y++;
+				/*vec2Index.y++;*/
 				i32vec2NumMicroSteps.y = 0;
 				return true;
 			}
@@ -837,10 +838,9 @@ void CEnemy2D::UpdatePosition(void)
 	// Store the old position
 	i32vec2OldIndex = vec2Index;
 
-	// if the player is to the left or right of the enemy2D, then jump to attack
+	//Left movement
 	if (i32vec2Direction.x < 0)
 	{
-		// Move left
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x >= 0)
 		{
@@ -851,33 +851,25 @@ void CEnemy2D::UpdatePosition(void)
 				vec2Index.x--;
 			}
 		}
-
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
-
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(LEFT) == false)
 		{
 			if (AdjustPosition(LEFT) == false)
 			{
-				FlipHorizontalDirection();
+				/*FlipHorizontalDirection();*/
 				//vec2Index = i32vec2OldIndex;
 				i32vec2NumMicroSteps.x = 0;
+				vec2Index.x++;
 			}
 		}
-
-		// Check if enemy2D is in mid-air, such as walking off a platform
-		//if (IsMidAir() == true)
-		//{
-		//	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-		//}
-
-		// Interact with the Player
 		InteractWithPlayer();
 	}
+
+	//Right movement
 	else if (i32vec2Direction.x > 0)
 	{
-		// Move right
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
@@ -889,32 +881,24 @@ void CEnemy2D::UpdatePosition(void)
 				vec2Index.x++;
 			}
 		}
-
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
-
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(RIGHT) == false)
 		{
 			if (AdjustPosition(RIGHT) == false)
 			{
-				FlipHorizontalDirection();
+				/*FlipHorizontalDirection();*/
 				/*vec2Index = i32vec2OldIndex;*/
 				i32vec2NumMicroSteps.x = 0;
+				vec2Index.x--;
 			}
 		}
-
-		// Check if enemy2D is in mid-air, such as walking off a platform
-		//if (IsMidAir() == true)
-		//{
-		//	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-		//}
-
-		// Interact with the Player
 		InteractWithPlayer();
 	}
 
-	// if the player is above the enemy2D, then move upwards
+
+	// Upward movement
 	if (i32vec2Direction.y > 0)
 	{
 		const int iOldIndex = vec2Index.y;
@@ -928,23 +912,24 @@ void CEnemy2D::UpdatePosition(void)
 				vec2Index.y++;
 			}
 		}
-
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(UP);
-
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(UP) == false)
 		{
 			if (AdjustPosition(UP) == false)
 			{
-				FlipHorizontalDirection();
+				/*FlipHorizontalDirection();*/
 				/*vec2Index = i32vec2OldIndex;*/
 				i32vec2NumMicroSteps.y = 0;
+				vec2Index.y--;
 			}
 		}
 		InteractWithPlayer();
 	}
-	// if the player is below the enemy2D, then move downward
+
+
+	// Downward movement
 	if (i32vec2Direction.y < 0)
 	{
 		const int iOldIndex = vec2Index.y;
@@ -957,18 +942,17 @@ void CEnemy2D::UpdatePosition(void)
 				vec2Index.y--;
 			}
 		}
-
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(DOWN);
-
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(DOWN) == false)
 		{
 			if (AdjustPosition(DOWN) == false)
 			{
-				FlipHorizontalDirection();
+				/*FlipHorizontalDirection();*/
 				vec2Index = i32vec2OldIndex;
 				i32vec2NumMicroSteps.y = 0;
+				vec2Index.y++;
 			}
 		}
 		InteractWithPlayer();

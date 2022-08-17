@@ -25,6 +25,7 @@ private:
 	};
 
 	DIRECTION dir;
+	bool bIsActive;
 
 public:
 	CMesh* quadMesh;
