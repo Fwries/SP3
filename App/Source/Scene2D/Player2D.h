@@ -149,5 +149,7 @@ protected:
 	void InteractWithMap(void);
 
 	void RandomTileGenerator(void);
+
+	void CheckMaterialAround(void);
 };
 
