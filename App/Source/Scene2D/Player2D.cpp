@@ -470,8 +470,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (cInventoryManager->GetItem("Lives")->GetCount() <= 0)
 	{
 		vec2Index = glm::vec2((float)cSettings->NUM_TILES_XAXIS / 2.f, (float)cSettings->NUM_TILES_YAXIS / 2.f);
-		// Subtract to make sure that they are 0 before adding 100 to lives
-		cInventoryManager->GetItem("Lives")->Add(cInventoryManager->GetItem("Lives")->GetCount() - cInventoryManager->GetItem("Lives")->GetCount() + 100);
+		// Make sure that the lives are 0 before adding 100 to lives
+		cInventoryManager->GetItem("Lives")->Add((cInventoryManager->GetItem("Lives")->GetCount() * 0) + 100);
 	}
 
 	// Randomly generates tiles
