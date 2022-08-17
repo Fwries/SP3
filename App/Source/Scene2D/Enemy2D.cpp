@@ -289,7 +289,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 		}
 		/*cout << toX << "    " << toY << endl;*/
 		UpdatePosition();
-		cout << iFSMCounter << endl;
 		glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 		if ((((vec2Index.x >= 32 - 2) &&(vec2Index.x <= 32 + 2)) &&
 			(vec2Index.y >= 32 - 2) && ((vec2Index.y <= 32 + 2))))

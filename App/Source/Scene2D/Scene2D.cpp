@@ -212,7 +212,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	elapsed += spawnRate;
 	int intElapsed = round(elapsed);
 	//cout << intElapsed << endl;
-	if (remainder(elapsed, 8) >= 0 && remainder(elapsed, 8) <= 0.05)
+	if (remainder(elapsed, 8) >= 0 && remainder(elapsed, 8) <= 0.03)
 	{
 		CEnemy2D* cEnemy2D = new CEnemy2D();
 		// Pass shader to cEnemy2D
