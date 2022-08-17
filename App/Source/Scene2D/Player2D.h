@@ -115,7 +115,7 @@ protected:
 
 	// Count the number of jumps
 	int iJumpCount;
-	bool faceLeft;
+	bool FaceDirection;
 	bool Hitbox;
 
 	// Handler to the CSoundController

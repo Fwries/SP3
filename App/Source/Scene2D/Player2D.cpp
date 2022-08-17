@@ -143,7 +143,7 @@ bool CPlayer2D::Init(void)
 
 	// Get the handler to the CSoundController
 	cSoundController = CSoundController::GetInstance();
-	faceLeft = false;
+	FaceDirection = RIGHT;
 	SetHitBox(false);
 
 	return true;
@@ -223,7 +223,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.x = 0;
 		}
 
-		faceLeft = true;
+		FaceDirection = LEFT;
 
 		//CS: Change Color
 		//runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
@@ -252,7 +252,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.x = 0;
 		}
 
-		faceLeft = false;
+		FaceDirection = RIGHT;
 
 		//CS: Change Color
 		//runtimeColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
@@ -383,6 +383,37 @@ void CPlayer2D::Update(const double dElapsedTime)
 	keydownAD = "";
 	keydownWS = "";
 
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
+	{
+		switch (FaceDirection)
+		{
+		case LEFT:
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 101);
+			}
+			break;
+		case RIGHT:
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 101);
+			}
+			break;
+		case UP:
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 101);
+			}
+			break;
+		case DOWN:
+			if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 101);
+			}
+			break;
+		}
+	}
+
 	// Generate bullet & limit its firing rate to 1 bullet every 0.2s
 	static double currTime = 0.0;
 	static const double LCLICK_WAIT_TIME = 0.2;
@@ -399,7 +430,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
 		cBulletGenerator->GetBulletsVector()[i]->Update();
 
-	if (faceLeft == true)
+	if (FaceDirection == LEFT)
 	{
 		if (GetHitBox())
 		{
@@ -410,7 +441,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			animatedPlayer->PlayAnimation("left", -1, 1.0f);
 		}
 	}
-	if (faceLeft == false)
+	if (FaceDirection == RIGHT)
 	{
 		if (GetHitBox())
 		{
