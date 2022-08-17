@@ -58,6 +58,12 @@ public:
 	unsigned int NUM_TILES_XAXIS;
 	unsigned int NUM_TILES_YAXIS;
 
+	const unsigned NUM_TILES_MULTIPLIERX = 4;
+	const unsigned NUM_TILES_MULTIPLIERY = 4;
+
+	unsigned NUM_TILES_XAXIS_MULTIPLIED;
+	unsigned NUM_TILES_YAXIS_MULTIPLIED;
+
 	float TILE_WIDTH;
 	float TILE_HEIGHT;
 
