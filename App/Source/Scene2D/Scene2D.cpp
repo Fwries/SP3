@@ -212,7 +212,6 @@ bool CScene2D::Update(const double dElapsedTime)
 	elapsed += spawnRate;
 	int intElapsed = round(elapsed);
 	//cout << intElapsed << endl;
-	cout << remainder(elapsed, 8) << endl;
 	if (remainder(elapsed, 8) >= 0 && remainder(elapsed, 8) <= 0.05)
 	{
 		CEnemy2D* cEnemy2D = new CEnemy2D();
