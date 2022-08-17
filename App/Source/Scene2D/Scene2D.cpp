@@ -223,7 +223,6 @@ bool CScene2D::Update(const double dElapsedTime)
 			cEnemy2D->SetPlayer2D(cPlayer2D);
 			enemyVector.push_back(cEnemy2D);
 		}
-		cout << "COCK EATING CROCODILE ESHAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY";
 	}
 
 	// Call all the cEnemy2D's update method before Map2D 
