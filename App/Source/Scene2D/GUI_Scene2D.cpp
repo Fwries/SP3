@@ -92,12 +92,17 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Bronze", "Image/Materials/Bronze.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Turret", "Image/Tiles/tile038.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	recipeNo = 0;
 	openCrafting = false;
 	openInventory = false;
+
+	// Variables for buildings
+	turretEquipped = false;
+
 	return true;
 }
 
@@ -339,6 +344,41 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 									}
 									ImGui::EndChild();
 								}
+								// Turret UI
+								{
+									cInventoryItem = cInventoryManager->GetItem("Turret");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.47f));
+
+									ImGui::BeginChild("Turret Child ", ImVec2(110.0f * relativeScale_x, 85.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									{
+										ImGui::BeginChild("Turret Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x%d",
+											cInventoryItem->GetCount());
+										ImGui::BeginChild("Turret Function ", ImVec2(60.0f * relativeScale_x, 20.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+											{
+												ImGui::SetWindowFontScale(0.5 * relativeScale_y);
+												if (ImGui::Button(((turretEquipped==false) ? ("Equip") : ("Equipped")), ImVec2(60.0f, 20.0f)))
+												{
+													turretEquipped = !turretEquipped;
+												}
+											}
+											ImGui::PopStyleColor();
+										}
+										ImGui::EndChild();
+									}
+									ImGui::EndChild();
+								}
 							}
 							ImGui::PopStyleColor();
 						}
@@ -387,12 +427,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 0.8f, 0.87f, 1.0f));
 								{
-									cInventoryItem = cInventoryManager->GetItem("Plank");
-									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.50f, (float)cSettings->iWindowHeight * 0.32f));
-
-									ImGui::BeginChild("Bomb Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									cInventoryItem = cInventoryManager->GetItem("Turret");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.27f, (float)cSettings->iWindowHeight * 0.42f));
+									ImGui::BeginChild("Turret Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 									{
-										ImGui::BeginChild("Bomb Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										ImGui::BeginChild("Turret Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 										{
 											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
 												ImVec2(60.0f * relativeScale_x,
@@ -404,11 +443,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 									ImGui::EndChild();
 
 									cInventoryItem = cInventoryManager->GetItem("Plank");
-									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.27f, (float)cSettings->iWindowHeight * 0.32f));
-
-									ImGui::BeginChild("Tree Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.50f, (float)cSettings->iWindowHeight * 0.32f));
+									ImGui::BeginChild("Plank Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 									{
-										ImGui::BeginChild("Tree Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										ImGui::BeginChild("Plank Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 										{
 											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
 												ImVec2(60.0f * relativeScale_x,
@@ -416,6 +454,27 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 												ImVec2(0, 1), ImVec2(1, 0));
 										}
 										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x3");
+									}
+									ImGui::EndChild(); 
+
+									cInventoryItem = cInventoryManager->GetItem("Stone");
+									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.50f, (float)cSettings->iWindowHeight * 0.52f));
+									ImGui::BeginChild("Stone Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+									{
+										ImGui::BeginChild("Stone Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+										{
+											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+												ImVec2(60.0f * relativeScale_x,
+													60.0f * relativeScale_y),
+												ImVec2(0, 1), ImVec2(1, 0));
+										}
+										ImGui::EndChild();
+										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x3");
 									}
 									ImGui::EndChild();
 								}
@@ -471,6 +530,12 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										switch (recipeNo)
 										{
 										case 0:
+											if (cInventoryManager->GetItem("Plank")->GetCount() >= 3 && cInventoryManager->GetItem("Plank")->GetCount() >= 3)
+											{
+												cInventoryManager->GetItem("Plank")->Remove(3);
+												cInventoryManager->GetItem("Stone")->Remove(3);
+												cInventoryManager->GetItem("Turret")->Add(1);
+											}
 											break;
 										case 1:
 											break;

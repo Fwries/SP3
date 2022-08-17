@@ -83,6 +83,9 @@ protected:
 	bool openCrafting;
 	int recipeNo;
 
+	// Variables for Buildings
+	bool turretEquipped;
+
 	CSettings* cSettings;
 
 	CPlayer2D* cPlayer2D;
