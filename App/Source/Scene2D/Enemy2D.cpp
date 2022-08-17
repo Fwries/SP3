@@ -217,7 +217,6 @@ bool CEnemy2D::Init(void)
 void CEnemy2D::Update(const double dElapsedTime)
 {
 	elapsed += spawnRate;
-	cout << elapsed << endl;
 	if (elapsed % 100 == 0)
 	{
 		int edge = 1 + (rand() % 4);
