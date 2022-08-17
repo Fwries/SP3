@@ -399,25 +399,25 @@ void CPlayer2D::Update(const double dElapsedTime)
 		case LEFT:
 			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == 0)
 			{
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 101);
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 150);
 			}
 			break;
 		case RIGHT:
 			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == 0)
 			{
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 101);
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 150);
 			}
 			break;
 		case UP:
 			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) == 0)
 			{
-				cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 101);
+				cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 150);
 			}
 			break;
 		case DOWN:
 			if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0)
 			{
-				cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 101);
+				cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 150);
 			}
 			break;
 		}

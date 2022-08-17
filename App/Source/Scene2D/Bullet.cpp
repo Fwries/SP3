@@ -39,7 +39,7 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 
 	bIsActive = true;
 	RotateAngle = 0.0f;
-	Damage = 10;
+	Damage = 4;
 }
 
 CBullet::~CBullet()
