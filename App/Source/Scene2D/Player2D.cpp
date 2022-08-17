@@ -470,8 +470,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (cInventoryManager->GetItem("Lives")->GetCount() <= 0)
 	{
 		vec2Index = glm::vec2((float)cSettings->NUM_TILES_XAXIS / 2.f, (float)cSettings->NUM_TILES_YAXIS / 2.f);
-		// Make sure that the lives are 0 before adding 100 to lives
-		cInventoryManager->GetItem("Lives")->Remove(cInventoryManager->GetItem("Lives")->GetCount());
+		cInventoryManager->GetItem("Plank")->Remove(cInventoryManager->GetItem("Plank")->GetCount());
+		cInventoryManager->GetItem("Stone")->Remove(cInventoryManager->GetItem("Stone")->GetCount());
+		cInventoryManager->GetItem("Iron")->Remove(cInventoryManager->GetItem("Iron")->GetCount());
+		cInventoryManager->GetItem("Silver")->Remove(cInventoryManager->GetItem("Silver")->GetCount());
+		cInventoryManager->GetItem("Bronze")->Remove(cInventoryManager->GetItem("Bronze")->GetCount());
+		cInventoryManager->GetItem("Gold")->Remove(cInventoryManager->GetItem("Gold")->GetCount());
+		cInventoryManager->GetItem("Coal")->Remove(cInventoryManager->GetItem("Coal")->GetCount());
+		cInventoryManager->GetItem("Coin")->Remove(cInventoryManager->GetItem("Coin")->GetCount());
 		cInventoryManager->GetItem("Lives")->Add(100);
 	}
 
