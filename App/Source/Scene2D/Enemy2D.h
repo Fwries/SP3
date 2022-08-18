@@ -187,6 +187,8 @@ protected:
 
 	bool faceLeft;
 
+	bool targetableTurret;
+
 	//variables for game
 	int HP;
 	int ATK;
