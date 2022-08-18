@@ -1069,6 +1069,7 @@ void CEnemy2D::UpdatePosition(void)
 			}
 		}
 		InteractWithPlayer();
+		faceLeft = true;
 	}
 
 	//Right movement
@@ -1098,6 +1099,7 @@ void CEnemy2D::UpdatePosition(void)
 			}
 		}
 		InteractWithPlayer();
+		faceLeft = false;
 	}
 
 
