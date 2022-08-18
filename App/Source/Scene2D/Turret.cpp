@@ -140,12 +140,16 @@ void CTurret::Update(const double dElapsedTime)
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
-		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - enemyVector[i]->vec2Index.y - 1);
-		if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+		cout << enemyVector[i]->GetIsActive() << endl;
+		if (enemyVector[i]->GetIsActive() == true)
 		{
-			nearestLive = currIndex;
-			nearestEnemyInt = i;
-			nearestEnemy = enemyVector[i];
+			glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - enemyVector[i]->vec2Index.y - 1);
+			if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+			{
+				nearestLive = currIndex;
+				nearestEnemyInt = i;
+				nearestEnemy = enemyVector[i];
+			}
 		}
 	}
 
