@@ -550,7 +550,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 						{
 							cScene2D->getTurretVec()[i]->SetGetTurretHP((cScene2D->getTurretVec()[i]->GetTurretHP() - ATK));
 							iFSMCounter = 0;
-							cout << cScene2D->getTurretVec()[i]->GetTurretHP() << "     " << cScene2D->getTurretVec().size() << endl;
+							/*cout << cScene2D->getTurretVec()[i]->GetTurretHP() << "     " << cScene2D->getTurretVec().size() << endl;*/
 						}
 					}
 				}
