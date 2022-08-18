@@ -19,12 +19,15 @@
 
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
+class CEnemy2D;
 
 // Include Settings
 #include "GameControl\Settings.h"
 
 // Include Physics2D
 #include "Physics2D.h"
+
+#include "Enemy2D.h"
 
 // Include Player2D
 #include "Player2D.h"
@@ -90,6 +93,8 @@ public:
 	void findNearestEnemy();
 
 	CBulletGenerator* GetBulletGenerator();
+
+	glm::vec2 getTurretPos();
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;

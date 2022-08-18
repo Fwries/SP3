@@ -573,3 +573,8 @@ void CTurret::findNearestEnemy()
 		}
 	}
 }
+
+glm::vec2 CTurret::getTurretPos()
+{
+	return vec2Index;
+}

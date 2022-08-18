@@ -159,7 +159,8 @@ bool CEnemy2D::Init(void)
 		return false;
 	}
 	//Determining enemy type randomly
-	int randType = rand() % 3;
+	//int randType = rand() % 3;
+	int randType = 2;
 	switch (randType)
 	{
 	case 0:
@@ -314,7 +315,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKELE1:
 			{
 				//Pathfinding method
-				auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
+				auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
 				int firstDest = 0;
@@ -346,8 +347,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				/*cout << toX << "    " << toY << endl;*/
 				UpdatePosition();
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				if ((((vec2Index.x >= 31 - 1) && (vec2Index.x <= 32 + 1)) &&
-					(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
+				if (cPhysics2D.CalculateDistance(vec2Index, glm::vec2(30, 34)) < 1.0f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -398,50 +398,102 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			case VAMPIRE:
 			{
-				//Pathfinding method
-				auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
-				//Calculate new destination
-				bool bFirstPosition = true;
-				int firstDest = 0;
-				for (const auto& coord : path)
+				//Check if there is a targetable turret in the map
+				bool targetableTurret = false;
+				for (int i = 0; i < /*y*/ 63; i++)
 				{
-					if (bFirstPosition == true)
+					for (int j = 0; j < /*x*/ 63; j++)
 					{
-						// Set a destination
-						i32vec2Destination = coord;
-						// Calculate the direction between enemy2D and this destination
-						i32vec2Direction = i32vec2Destination - vec2Index;
-						/*std::cout << coord.x << ", " << coord.y << "\n";*/
-						bFirstPosition = false;
-					}
-					else
-					{
-						if ((coord - i32vec2Destination) == i32vec2Direction)
+						if (cMap2D->GetMapInfo(i, j) == 150)
 						{
-							// Set a destination:
-							i32vec2Destination = coord;
-						}
-						else
-						{
+							targetableTurret = true;
 							break;
 						}
 					}
-					firstDest++;
+				}
+				cout << targetableTurret << endl;
+
+				//Pathfinding method
+				if (targetableTurret == true)
+				{
+					glm::vec2 posToGo = findNearestTurret();
+					cout << findNearestTurret().x << "   " << findNearestTurret().y << endl;
+					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
+					//Calculate new destination
+					bool bFirstPosition = true;
+					for (const auto& coord : path)
+					{
+						if (bFirstPosition == true)
+						{
+							// Set a destination
+							i32vec2Destination = coord;
+							// Calculate the direction between enemy2D and this destination
+							i32vec2Direction = i32vec2Destination - vec2Index;
+							/*std::cout << coord.x << ", " << coord.y << "\n";*/
+							bFirstPosition = false;
+						}
+						else
+						{
+							if ((coord - i32vec2Destination) == i32vec2Direction)
+							{
+								// Set a destination:
+								i32vec2Destination = coord;
+							}
+							else
+							{
+								break;
+							}
+						}
+					}
+					UpdatePosition();
+					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+					//Insert damaging part here
+					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.0f)
+					{
+						sCurrentFSM = ATTACK;
+						iFSMCounter = 0;
+					}
+				}
+				else
+				{
+					auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
+					//Calculate new destination
+					bool bFirstPosition = true;
+					for (const auto& coord : path)
+					{
+						if (bFirstPosition == true)
+						{
+							// Set a destination
+							i32vec2Destination = coord;
+							// Calculate the direction between enemy2D and this destination
+							i32vec2Direction = i32vec2Destination - vec2Index;
+							/*std::cout << coord.x << ", " << coord.y << "\n";*/
+							bFirstPosition = false;
+						}
+						else
+						{
+							if ((coord - i32vec2Destination) == i32vec2Direction)
+							{
+								// Set a destination:
+								i32vec2Destination = coord;
+							}
+							else
+							{
+								break;
+							}
+						}
+					}
 				}
 				UpdatePosition();
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				//Insert damaging part here
-				if ((((vec2Index.x >= 31 - 1) && (vec2Index.x <= 32 + 1)) &&
-					(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
+				if (cPhysics2D.CalculateDistance(vec2Index, glm::vec2(30, 34)) < 1.0f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
 				}
-				break;
 			}
 
 		}
-
 
 		//Checking HP: (Should be outside of enemy type check cos everyone needs this)
 		if (HP <= 0)
@@ -479,6 +531,16 @@ void CEnemy2D::Update(const double dElapsedTime)
 					cPlayer2D->changeBaseHP(ATK);
 					iFSMCounter = 0;
 				}
+				break;
+			}
+			case VAMPIRE:
+			{
+				if (iFSMCounter >= 40)
+				{
+					cPlayer2D->changeBaseHP(ATK);
+					iFSMCounter = 0;
+				}
+				break;
 			}
 		}
 		//Checking HP:
@@ -1067,7 +1129,7 @@ void CEnemy2D::UpdatePosition(void)
 			if (AdjustPosition(LEFT) == false)
 			{
 				FlipHorizontalDirection();
-				//vec2Index = i32vec2OldIndex;
+				vec2Index = i32vec2OldIndex;
 				i32vec2NumMicroSteps.x = 0;
 			}
 		}
@@ -1097,7 +1159,7 @@ void CEnemy2D::UpdatePosition(void)
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(RIGHT) == false)
 		{
-			if (AdjustPosition(RIGHT) == false)
+			/*if (AdjustPosition(RIGHT) == false)*/
 			{
 				FlipHorizontalDirection();
 				/*vec2Index = i32vec2OldIndex;*/
@@ -1171,4 +1233,20 @@ void CEnemy2D::UpdatePosition(void)
 		}
 		InteractWithPlayer();
 	}
+}
+
+glm::vec2& CEnemy2D::findNearestTurret()
+{
+	nearestLive = glm::vec2(1000, 1000);
+	for (int i = 0; i < cScene2D->getTurretVec().size(); i++)
+	{
+		glm::vec2 currIndex = glm::vec2(cScene2D->getTurretVec()[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - cScene2D->getTurretVec()[i]->vec2Index.y - 1);
+		if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+		{
+			nearestLive = currIndex;
+			nearestTurretInt = i;
+			nearestTurret = cScene2D->getTurretVec()[i];
+		}
+	}
+	return nearestTurret->getTurretPos();
 }

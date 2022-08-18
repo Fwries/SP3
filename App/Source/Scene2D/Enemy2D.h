@@ -7,6 +7,7 @@
 #pragma once
 
 class CScene2D;
+class CTurret;
 
 // Include shader
 #include "RenderControl\shader.h"
@@ -30,6 +31,8 @@ class CMap2D;
 
 // Include Player2D
 #include "Player2D.h"
+
+#include "Turret.h"
 
 #include "Scene2D.h"
 
@@ -81,6 +84,9 @@ public:
 	// Set the handle to cPlayer to this class instance
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
 
+	//Getting nearest turret
+	glm::vec2& findNearestTurret();
+
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 	bool hitBox;
@@ -121,6 +127,9 @@ protected:
 	};
 
 	glm::vec2 i32vec2OldIndex;
+	glm::vec2 nearestLive;
+	CTurret* nearestTurret;
+	int nearestTurretInt;
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
