@@ -108,14 +108,16 @@ protected:
 	{
 		SKULL = 0,
 		SKELE1 = 1,
-		SKELE2 = 2
+		VAMPIRE = 2,
+		NUMENEMYTYPES
 	};
 
 	enum Status
 	{
 		NORMAL = 0,
 		BURN = 1,
-		FREEZE = 2
+		FREEZE = 2,
+		NUMOFSTATUSES
 	};
 
 	glm::vec2 i32vec2OldIndex;

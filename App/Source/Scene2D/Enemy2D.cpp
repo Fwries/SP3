@@ -124,7 +124,7 @@ bool CEnemy2D::Init(void)
 	//}
 	//else if (cMap2D->FindValue(302, uiRow, uiCol) == true)
 	//{
-	//	enemyType = SKELE2;
+	//	enemyType = VAMPIRE;
 	//}
 	//else
 	//{
@@ -136,7 +136,7 @@ bool CEnemy2D::Init(void)
 
 
 	//Set the position of the enemy randomly on the edge of the map
-	int edge= rand() % 3;
+	int edge= rand() % 4;
 	int X = 0, Y = 0;
 	switch (edge)
 	{
@@ -162,7 +162,7 @@ bool CEnemy2D::Init(void)
 		return false;
 	}
 	//Determining enemy type randomly
-	int randType = rand() % 2;
+	int randType = rand() % 3;
 	switch (randType)
 	{
 	case 0:
@@ -171,10 +171,14 @@ bool CEnemy2D::Init(void)
 	case 1:
 		enemyType = SKULL;
 		break;
+	case 2:
+		enemyType = VAMPIRE;
+		break;
 	default:
 		enemyType = SKELE1;
 		break;
 	}
+	cout << enemyType << endl;
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
@@ -211,13 +215,13 @@ bool CEnemy2D::Init(void)
 		MoveTime = 0.03;
 		AttackTime = 0.9f;
 	}
-	else if (enemyType == SKELE2)
+	else if (enemyType == VAMPIRE)
 	{
 		// Load the enemy2D texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Skeleton2.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Vampire.png", true);
 		if (iTextureID == 0)
 		{
-			cout << "Image/Skeleton2.png" << endl;
+			cout << "Image/Vampire.png" << endl;
 			return false;
 		}
 
@@ -295,47 +299,143 @@ void CEnemy2D::Update(const double dElapsedTime)
 	{
 	case MOVING:
 	{
-		//Pathfinding method
-		auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
-		//Calculate new destination
-		bool bFirstPosition = true;
-		int firstDest = 0;
-		for (const auto& coord : path)
+		switch (enemyType)
 		{
-			if (bFirstPosition == true)
+			//Monster1
+			case SKELE1:
 			{
-				// Set a destination
-				i32vec2Destination = coord;
-				// Calculate the direction between enemy2D and this destination
-				i32vec2Direction = i32vec2Destination - vec2Index;
-				/*std::cout << coord.x << ", " << coord.y << "\n";*/
-				bFirstPosition = false;
+				//Pathfinding method
+				auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
+				//Calculate new destination
+				bool bFirstPosition = true;
+				int firstDest = 0;
+				for (const auto& coord : path)
+				{
+					if (bFirstPosition == true)
+					{
+						// Set a destination
+						i32vec2Destination = coord;
+						// Calculate the direction between enemy2D and this destination
+						i32vec2Direction = i32vec2Destination - vec2Index;
+						/*std::cout << coord.x << ", " << coord.y << "\n";*/
+						bFirstPosition = false;
+					}
+					else
+					{
+						if ((coord - i32vec2Destination) == i32vec2Direction)
+						{
+							// Set a destination:
+							i32vec2Destination = coord;
+						}
+						else
+						{
+							break;
+						}
+					}
+					firstDest++;
+				}
+				/*cout << toX << "    " << toY << endl;*/
+				UpdatePosition();
+				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+				if ((((vec2Index.x >= 31 - 1) && (vec2Index.x <= 32 + 1)) &&
+					(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
+				{
+					sCurrentFSM = ATTACK;
+					iFSMCounter = 0;
+				}
+				break;
 			}
-			else
+			case SKULL:
 			{
-				if ((coord - i32vec2Destination) == i32vec2Direction)
+				//Pathfinding method
+				auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
+				//Calculate new destination
+				bool bFirstPosition = true;
+				int firstDest = 0;
+				for (const auto& coord : path)
 				{
-					// Set a destination:
-					i32vec2Destination = coord;
+					if (bFirstPosition == true)
+					{
+						// Set a destination
+						i32vec2Destination = coord;
+						// Calculate the direction between enemy2D and this destination
+						i32vec2Direction = i32vec2Destination - vec2Index;
+						/*std::cout << coord.x << ", " << coord.y << "\n";*/
+						bFirstPosition = false;
+					}
+					else
+					{
+						if ((coord - i32vec2Destination) == i32vec2Direction)
+						{
+							// Set a destination:
+							i32vec2Destination = coord;
+						}
+						else
+						{
+							break;
+						}
+					}
+					firstDest++;
 				}
-				else
+				UpdatePosition();
+				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+				//Insert damaging part here
+				if ((((vec2Index.x >= 31 - 1) && (vec2Index.x <= 32 + 1)) &&
+					(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
 				{
-					break;
+					sCurrentFSM = ATTACK;
+					iFSMCounter = 0;
 				}
+				break;
 			}
-			firstDest++;
-		}
-		/*cout << toX << "    " << toY << endl;*/
-		UpdatePosition();
-		glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-		if ((((vec2Index.x >= 31 - 1) &&(vec2Index.x <= 32 + 1)) &&
-			(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
-		{
-			sCurrentFSM = ATTACK;
-			iFSMCounter = 0;
+			case VAMPIRE:
+			{
+				//Pathfinding method
+				auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
+				//Calculate new destination
+				bool bFirstPosition = true;
+				int firstDest = 0;
+				for (const auto& coord : path)
+				{
+					if (bFirstPosition == true)
+					{
+						// Set a destination
+						i32vec2Destination = coord;
+						// Calculate the direction between enemy2D and this destination
+						i32vec2Direction = i32vec2Destination - vec2Index;
+						/*std::cout << coord.x << ", " << coord.y << "\n";*/
+						bFirstPosition = false;
+					}
+					else
+					{
+						if ((coord - i32vec2Destination) == i32vec2Direction)
+						{
+							// Set a destination:
+							i32vec2Destination = coord;
+						}
+						else
+						{
+							break;
+						}
+					}
+					firstDest++;
+				}
+				UpdatePosition();
+				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+				//Insert damaging part here
+				if ((((vec2Index.x >= 31 - 1) && (vec2Index.x <= 32 + 1)) &&
+					(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
+				{
+					sCurrentFSM = ATTACK;
+					iFSMCounter = 0;
+				}
+				break;
+			}
+
 		}
 
-		//Checking HP:
+
+		//Checking HP: (Should be outside of enemy type check cos everyone needs this)
 		if (HP <= 0)
 		{
 			sCurrentFSM = DEAD;
@@ -373,7 +473,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			bIsActive = false;
 		}
-		else if (enemyType == SKELE1 || enemyType == SKELE2)
+		else if (enemyType == SKELE1 || enemyType == VAMPIRE)
 		{
 			if (faceLeft == true)
 			{
@@ -434,7 +534,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				bIsActive = false;
 
 			}
-			else if ((enemyType == SKELE1 || enemyType == SKELE2) && sCurrentFSM != DEAD)
+			else if ((enemyType == SKELE1 || enemyType == VAMPIRE) && sCurrentFSM != DEAD)
 			{
 				cPlayer2D->SetHitBox(true);
 				sCurrentFSM = ATTACK;
@@ -855,7 +955,7 @@ bool CEnemy2D::InteractWithPlayer(void)
 				sCurrentFSM = DEAD;
 				bIsActive = false;
 			}
-			else if (enemyType == SKELE1 || enemyType == SKELE2)
+			else if (enemyType == SKELE1 || enemyType == VAMPIRE)
 			{
 				cSoundController->PlaySoundByID(8);
 				sCurrentFSM = DEAD;
