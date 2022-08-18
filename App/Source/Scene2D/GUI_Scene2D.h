@@ -69,6 +69,9 @@ public:
 	// Return itemEquipped
 	int GetEquipped(void);
 
+	// Return UI state
+	bool GetUIState(void);
+
 protected:
 	// Constructor
 	CGUI_Scene2D(void);
@@ -85,6 +88,7 @@ protected:
 	bool openInventory;
 	bool openCrafting;
 	int recipeNo;
+	unsigned int iTextureID;
 
 	// Variables for Buildings
 	int itemEquipped;
