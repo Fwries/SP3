@@ -156,6 +156,10 @@ bool CEnemy2D::Init(void)
 		Y = rand() % 62;
 		break;
 	}
+	if (cMap2D->GetMapInfo(X, Y) != 0)
+	{
+		return false;
+	}
 	enemyType = SKELE1;
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
 	// By default, microsteps should be zero
@@ -261,7 +265,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 					if (HP <= 0)
 					{
 						cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + (cScene2D->getTurretVec()[j]->GetNearestEnemy()));
-						cScene2D->getTurretVec()[j]->findNearestEnemy();
 					}
 				}
 			}
@@ -727,7 +730,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 100)
 			{
-				vec2Index.x--;
+				vec2Index.x++;
 				i32vec2NumMicroSteps.x = 0;
 				return true;
 			}
