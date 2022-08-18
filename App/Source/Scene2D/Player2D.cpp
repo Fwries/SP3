@@ -141,6 +141,8 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Bullets", "Image/Scene2D/Bullet.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryItem = cInventoryManager->Add("Base HP", "Image/Scene2D/Base.tga", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 
 	// Get the handler to the CSoundController

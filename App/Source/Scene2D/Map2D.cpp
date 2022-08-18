@@ -415,10 +415,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		//Base
 		{
 			//Top left
-			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/baseTL.png", true);
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/BaseTL.tga", true);
 			if (iTextureID == 0)
 			{
-				cout << "Image/baseTL.png" << endl;
+				cout << "Image/Scene2D/BaseTL.tga" << endl;
 				return false;
 			}
 			else
@@ -427,10 +427,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				MapOfTextureIDs.insert(pair<int, int>(136, iTextureID));
 			}
 			//Top right
-			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/baseTR.png", true);
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/BaseTR.tga", true);
 			if (iTextureID == 0)
 			{
-				cout << "Image/baseTR.png" << endl;
+				cout << "Image/Scene2D/BaseTR.tga" << endl;
 				return false;
 			}
 			else
@@ -439,10 +439,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				MapOfTextureIDs.insert(pair<int, int>(137, iTextureID));
 			}
 			//Bottom left
-			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/baseBL.png", true);
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/BaseBL.tga", true);
 			if (iTextureID == 0)
 			{
-				cout << "Image/baseBL.png" << endl;
+				cout << "Image/Scene2D/BaseBL.tga" << endl;
 				return false;
 			}
 			else
@@ -451,10 +451,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				MapOfTextureIDs.insert(pair<int, int>(138, iTextureID));
 			}
 			//Bottom right
-			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/baseBR.png", true);
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/BaseBR.tga", true);
 			if (iTextureID == 0)
 			{
-				cout << "Image/baseBR.png" << endl;
+				cout << "Image/Scene2D/BaseBR.tga" << endl;
 				return false;
 			}
 			else
