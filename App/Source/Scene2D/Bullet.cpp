@@ -90,10 +90,10 @@ void CBullet::Update()
 
 	if (FromTurret == true)
 	{
-		if (vec2Index == Targetvec2Index)
+		/*if (vec2Index == Targetvec2Index)
 		{
 			bIsActive = false;
-		}
+		}*/
 		if (vec2Index.y > Targetvec2Index.y)
 		{
 			--vec2Index.y;
