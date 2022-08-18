@@ -236,6 +236,8 @@ bool CEnemy2D::Init(void)
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
+	cScene2D = CScene2D::GetInstance();
+
 	return true;
 }
 
@@ -244,7 +246,22 @@ bool CEnemy2D::Init(void)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
-	
+	//Turret damage handler
+	for (unsigned j = 0; j < cScene2D->getTurretVec().size(); ++j)
+	{
+		for (unsigned i = 0; i < cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().size(); ++i)
+		{
+			if (cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetIsActive() == true)
+			{
+				if (glm::length(vec2Index - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetBulletPos()) <= 2)
+				{
+					HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
+					cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->SetbIsActive(false);
+				}
+			}
+		}
+	}
+
 	//cout << bIsActive << endl;
 	if (!bIsActive)
 		return;
@@ -803,6 +820,7 @@ bool CEnemy2D::InteractWithPlayer(void)
 			}
 		}
 	}
+
 
 	if (GetHitBox() == true)
 	{

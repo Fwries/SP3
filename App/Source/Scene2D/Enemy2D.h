@@ -6,6 +6,8 @@
  */
 #pragma once
 
+class CScene2D;
+
 // Include shader
 #include "RenderControl\shader.h"
 
@@ -28,6 +30,8 @@ class CMap2D;
 
 // Include Player2D
 #include "Player2D.h"
+
+#include "Scene2D.h"
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
@@ -184,6 +188,8 @@ protected:
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
+
+	CScene2D* cScene2D;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);

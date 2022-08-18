@@ -6,6 +6,8 @@
  */
 #pragma once
 
+class CEnemy2D;
+
 //aaaaa
 
 // Include SingletonTemplate
@@ -68,6 +70,8 @@ public:
 	void PostRender(void);
 
 	bool GetPlayerWon();
+
+	vector<CTurret*> getTurretVec(void);
 
 protected:
 	// The handler containing the instance of the 2D Map
