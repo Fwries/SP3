@@ -20,6 +20,7 @@
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
 class CEnemy2D;
+class CScene2D;
 
 // Include Settings
 #include "GameControl\Settings.h"
@@ -31,6 +32,7 @@ class CEnemy2D;
 
 // Include Player2D
 #include "Player2D.h"
+#include "Scene2D.h"
 
 // Include InventoryManager
 #include "InventoryManager.h"
@@ -129,6 +131,8 @@ protected:
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
+
+	CScene2D* cScene2D;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;

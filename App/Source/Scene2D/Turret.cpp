@@ -80,6 +80,8 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	cScene2D = CScene2D::GetInstance();
+
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -140,8 +142,11 @@ void CTurret::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
+
+	//Monster damage handler
 	if (TurretHP <= 0)
 	{
+		cScene2D->getTurretVec().erase(cScene2D->getTurretVec().begin() + i);
 		cMap2D->SetMapInfo(vec2Index.x, vec2Index.y, 0);
 		bIsActive = false;
 		return;

@@ -398,8 +398,8 @@ bool CScene2D::Update(const double dElapsedTime)
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
 					}
-					cInventoryManager->GetItem("Turret")->Remove(1);
 				}
 				break;
 			default:

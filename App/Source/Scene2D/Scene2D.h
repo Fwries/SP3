@@ -7,6 +7,7 @@
 #pragma once
 
 class CEnemy2D;
+class CTurret;
 
 //aaaaa
 
