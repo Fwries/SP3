@@ -161,8 +161,8 @@ bool CEnemy2D::Init(void)
 		return false;
 	}
 	//Determining enemy type randomly
-	//int randType = rand() % 3;
-	int randType = 2;
+	int randType = rand() % 3;
+	//int randType = 2;
 	switch (randType)
 	{
 	case 0:
