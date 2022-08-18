@@ -83,7 +83,7 @@ protected:
 	// A vector containing the instance of CMisc2Ds
 	vector<CEntity2D*> miscVector;
 	// A vector containing the instance of CTurret2Ds
-	vector<CEntity2D*> turretVector;
+	vector<CTurret*> turretVector;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;

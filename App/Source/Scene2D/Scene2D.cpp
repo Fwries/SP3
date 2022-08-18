@@ -274,6 +274,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	for (int i = 0; i < turretVector.size(); i++)
 	{
+		turretVector[i]->SetEnemyVector(enemyVector);
 		turretVector[i]->Update(dElapsedTime);
 	}
 	
