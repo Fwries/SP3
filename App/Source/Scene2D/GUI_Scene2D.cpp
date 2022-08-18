@@ -381,7 +381,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 								{
 									ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
 									ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
-									ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
+									ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
 									{
 										ImGui::SetWindowFontScale(0.5 * relativeScale_y);
 										if (ImGui::Button((" "), ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
@@ -413,131 +413,140 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGuiWindowFlags_NoResize |
 				ImGuiWindowFlags_NoCollapse |
 				ImGuiWindowFlags_NoScrollbar |
-				ImGuiWindowFlags_NoTitleBar;
-			ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.25f, (float)cSettings->iWindowHeight * 0.25f));
-			ImGui::SetNextWindowSize(ImVec2(400.0f * relativeScale_x, 300.0f * relativeScale_y));
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoBackground;
+			ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.20f, (float)cSettings->iWindowHeight * 0.25f));
+			ImGui::SetNextWindowSize(ImVec2(500.0f * relativeScale_x, 300.0f * relativeScale_y));
 			ImGui::Begin("Crafting Background", NULL, inventoryBgWinFlags);
 			{
-				ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.25f, (float)cSettings->iWindowHeight * 0.25f));
-				ImGui::SetNextWindowSize(ImVec2(400.0f * relativeScale_x, 25.0f * relativeScale_y));
-				ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+				iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Crafting.png", true);
+				ImGui::Image((void*)(intptr_t)iTextureID,
+					ImVec2(500.0f * relativeScale_x,
+						300.0f * relativeScale_y),
+					ImVec2(0, 1), ImVec2(1, 0));
+
+				ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.5f, 1.0f, 1.0f));
 				{
-					ImGui::Begin("Carfting Title", NULL, inventoryButtonWinFlags);
+					ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.20f, (float)cSettings->iWindowHeight * 0.25f));
+					ImGui::SetNextWindowSize(ImVec2(500.0f * relativeScale_x, 300.0f * relativeScale_y));
+					ImGui::Begin("Recipe", NULL, inventoryBgWinFlags);
 					{
-						ImGui::SameLine((float)cSettings->iWindowWidth * 0.2f);
-						ImGui::Text("Crafting");
-					}
-					ImGui::End();;
-
-					ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.5f, 1.0f, 1.0f));
-					{
-						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.2625f, (float)cSettings->iWindowHeight * 0.305f));
-						ImGui::SetNextWindowSize(ImVec2(380.0f * relativeScale_x, 255.0f * relativeScale_y));
-						ImGui::Begin("Recipe", NULL, inventoryBgWinFlags);
+						if (recipeNo == 0)
 						{
-							if (recipeNo == 0)
+							cInventoryItem = cInventoryManager->GetItem("Turret");
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.64f, (float)cSettings->iWindowHeight * 0.47f));
+							ImGui::BeginChild("Turret Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 							{
-								ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 0.8f, 0.87f, 1.0f));
+								ImGui::BeginChild("Turret Image ", ImVec2(65.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
-									cInventoryItem = cInventoryManager->GetItem("Turret");
-									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.27f, (float)cSettings->iWindowHeight * 0.42f));
-									ImGui::BeginChild("Turret Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-									{
-										ImGui::BeginChild("Turret Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-										{
-											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-												ImVec2(60.0f * relativeScale_x,
-													60.0f * relativeScale_y),
-												ImVec2(0, 1), ImVec2(1, 0));
-										}
-										ImGui::EndChild();
-									}
-									ImGui::EndChild();
-
-									cInventoryItem = cInventoryManager->GetItem("Plank");
-									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.50f, (float)cSettings->iWindowHeight * 0.32f));
-									ImGui::BeginChild("Plank Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-									{
-										ImGui::BeginChild("Plank Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-										{
-											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-												ImVec2(60.0f * relativeScale_x,
-													60.0f * relativeScale_y),
-												ImVec2(0, 1), ImVec2(1, 0));
-										}
-										ImGui::EndChild();
-										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
-										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
-										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x3");
-									}
-									ImGui::EndChild(); 
-
-									cInventoryItem = cInventoryManager->GetItem("Stone");
-									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.50f, (float)cSettings->iWindowHeight * 0.52f));
-									ImGui::BeginChild("Stone Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-									{
-										ImGui::BeginChild("Stone Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-										{
-											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-												ImVec2(60.0f * relativeScale_x,
-													60.0f * relativeScale_y),
-												ImVec2(0, 1), ImVec2(1, 0));
-										}
-										ImGui::EndChild();
-										ImGui::SetWindowFontScale(1.5 * relativeScale_y);
-										ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
-										ImGui::TextColored(ImVec4(0, 0, 0, 1), "x3");
-									}
-									ImGui::EndChild();
+									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+										ImVec2(65.0f * relativeScale_x,
+											65.0f * relativeScale_y),
+										ImVec2(0, 1), ImVec2(1, 0));
 								}
-								ImGui::PopStyleColor();
+								ImGui::EndChild();
 							}
-							else if (recipeNo == 1)
+							ImGui::EndChild();
+
+							cInventoryItem = cInventoryManager->GetItem("Plank");
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.32f, (float)cSettings->iWindowHeight * 0.38f));
+							ImGui::BeginChild("Plank Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 							{
-								ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 0.8f, 0.87f, 1.0f));
+								ImGui::BeginChild("Plank Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
-									cInventoryItem = cInventoryManager->GetItem("Plank");
-									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.50f, (float)cSettings->iWindowHeight * 0.32f));
-
-									ImGui::BeginChild("Bomb Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-									{
-										ImGui::BeginChild("Bomb Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-										{
-											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-												ImVec2(60.0f * relativeScale_x,
-													60.0f * relativeScale_y),
-												ImVec2(0, 1), ImVec2(1, 0));
-										}
-										ImGui::EndChild();
-									}
-									ImGui::EndChild();
-
-									cInventoryItem = cInventoryManager->GetItem("Plank");
-									ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.27f, (float)cSettings->iWindowHeight * 0.32f));
-
-									ImGui::BeginChild("Tree Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-									{
-										ImGui::BeginChild("Tree Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
-										{
-											ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-												ImVec2(60.0f * relativeScale_x,
-													60.0f * relativeScale_y),
-												ImVec2(0, 1), ImVec2(1, 0));
-										}
-										ImGui::EndChild();
-									}
-									ImGui::EndChild();
+									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+										ImVec2(60.0f * relativeScale_x,
+											60.0f * relativeScale_y),
+										ImVec2(0, 1), ImVec2(1, 0));
 								}
-								ImGui::PopStyleColor();
+								ImGui::EndChild();
+								ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x3");
 							}
+							ImGui::EndChild(); 
 
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.34f, (float)cSettings->iWindowHeight * 0.48f));
+							ImGui::BeginChild("Plus Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							{
+							iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Plus.png", true);
+							ImGui::Image((void*)(intptr_t)iTextureID,
+								ImVec2(60.0f * relativeScale_x,
+									60.0f * relativeScale_y),
+								ImVec2(0, 1), ImVec2(1, 0)); 
+							}
+							ImGui::EndChild();
+
+							cInventoryItem = cInventoryManager->GetItem("Stone");
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.32f, (float)cSettings->iWindowHeight * 0.58f));
+							ImGui::BeginChild("Stone Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							{
+								ImGui::BeginChild("Stone Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+										ImVec2(60.0f * relativeScale_x,
+											60.0f * relativeScale_y),
+										ImVec2(0, 1), ImVec2(1, 0));
+								}
+								ImGui::EndChild();
+								ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x3");
+							}
+							ImGui::EndChild();
+						}
+						else if (recipeNo == 1)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Plank");
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.50f, (float)cSettings->iWindowHeight * 0.32f));
+
+							ImGui::BeginChild("Bomb Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							{
+								ImGui::BeginChild("Bomb Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+										ImVec2(60.0f * relativeScale_x,
+											60.0f * relativeScale_y),
+										ImVec2(0, 1), ImVec2(1, 0));
+								}
+								ImGui::EndChild();
+							}
+							ImGui::EndChild();
+
+							cInventoryItem = cInventoryManager->GetItem("Plank");
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.27f, (float)cSettings->iWindowHeight * 0.32f));
+
+							ImGui::BeginChild("Tree Child ", ImVec2(90.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							{
+								ImGui::BeginChild("Tree Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+										ImVec2(60.0f * relativeScale_x,
+											60.0f * relativeScale_y),
+										ImVec2(0, 1), ImVec2(1, 0));
+								}
+								ImGui::EndChild();
+							}
+							ImGui::EndChild();
+						}
+
+						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.47f, (float)cSettings->iWindowHeight * 0.67f));
+						ImGui::BeginChild("Craft button", ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+						{
+							iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Craft.png", true);
+							ImGui::Image((void*)(intptr_t)iTextureID,
+								ImVec2(90.0f * relativeScale_x,
+									30.0f * relativeScale_y),
+								ImVec2(0, 1), ImVec2(1, 0));
 							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.47f, (float)cSettings->iWindowHeight * 0.67f));
-							ImGui::BeginChild("Craft button", ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							ImGui::BeginChild("Craft button function", ImVec2(90.0f * relativeScale_x, 30.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 							{
-								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+								ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+								ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
 								{
-									ImGui::SetWindowFontScale(1.5 * relativeScale_y);
-									if (ImGui::Button("Craft", ImVec2(65.0f, 30.0f)))
+									if (ImGui::Button("  ", ImVec2(90.0f*relativeScale_x, 30.0f*relativeScale_y)))
 									{
 										switch (recipeNo)
 										{
@@ -560,16 +569,28 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										}
 									}
 								}
-								ImGui::PopStyleColor();
+								ImGui::PopStyleColor(3); 
 							}
 							ImGui::EndChild();
+						}
+						ImGui::EndChild();
 
+						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.25f, (float)cSettings->iWindowHeight * 0.67f));
+						ImGui::BeginChild("Left button", ImVec2(30.0f * relativeScale_x, 30.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+						{
+							iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/LeftButton.png", true);
+							ImGui::Image((void*)(intptr_t)iTextureID,
+								ImVec2(30.0f * relativeScale_x,
+									30.0f * relativeScale_y),
+								ImVec2(0, 1), ImVec2(1, 0));
 							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.25f, (float)cSettings->iWindowHeight * 0.67f));
-							ImGui::BeginChild("Left button", ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							ImGui::BeginChild("Left button function", ImVec2(30.0f * relativeScale_x, 30.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 							{
-								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+								ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+								ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
 								{
-									if (ImGui::Button("<", ImVec2(60.0f, 30.0f)))
+									if (ImGui::Button(" ", ImVec2(30.0f*relativeScale_x, 30.0f*relativeScale_y)))
 									{
 										if (recipeNo != 0)
 										{
@@ -581,17 +602,29 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										}
 									}
 								}
-								ImGui::PopStyleColor();
+								ImGui::PopStyleColor(3);
 							}
 							ImGui::EndChild();
+						}
+						ImGui::EndChild();
 
 
-							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.65f, (float)cSettings->iWindowHeight * 0.67f));
-							ImGui::BeginChild("Right button", ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.76f, (float)cSettings->iWindowHeight * 0.67f));
+						ImGui::BeginChild("Right button", ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+						{
+							iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/RightButton.png", true);
+							ImGui::Image((void*)(intptr_t)iTextureID,
+								ImVec2(30.0f * relativeScale_x,
+									30.0f * relativeScale_y),
+								ImVec2(0, 1), ImVec2(1, 0));
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.76f, (float)cSettings->iWindowHeight * 0.67f));
+							ImGui::BeginChild("Right button function", ImVec2(30.0f * relativeScale_x, 30.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 							{
-								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+								ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+								ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
 								{
-									if (ImGui::Button(">", ImVec2(60.0f, 30.0f)))
+									if (ImGui::Button(" ", ImVec2(30.0f*relativeScale_x, 30.0f*relativeScale_y)))
 									{
 										if (recipeNo != 3)
 										{
@@ -603,13 +636,13 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										}
 									}
 								}
-								ImGui::PopStyleColor();
+								ImGui::PopStyleColor(3);
 							}
 							ImGui::EndChild();
 						}
-						ImGui::End();
+						ImGui::EndChild();
 					}
-					ImGui::PopStyleColor();
+					ImGui::End();
 				}
 				ImGui::PopStyleColor();
 			}
