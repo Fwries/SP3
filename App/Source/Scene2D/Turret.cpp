@@ -140,7 +140,6 @@ void CTurret::Update(const double dElapsedTime)
 
 	findNearestEnemy();
 
-	//cout << nearestLive.x << " " << nearestLive.y << endl;
 	// Generate bullet & limit its firing rate to 1 bullet every 0.2s
 	static double currTime = 0.0;
 	static const double TURRET_WAIT_TIME = 0.5;
@@ -547,6 +546,7 @@ void CTurret::UpdatePosition(void)
 
 void CTurret::findNearestEnemy()
 {
+	nearestLive = glm::vec2(1000, 1000);
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - enemyVector[i]->vec2Index.y - 1);
