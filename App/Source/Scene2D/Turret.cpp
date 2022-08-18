@@ -147,13 +147,15 @@ void CTurret::Update(const double dElapsedTime)
 	//cout << nearestLive.x << " " << nearestLive.y << endl;
 	// Generate bullet & limit its firing rate to 1 bullet every 0.2s
 	static double currTime = 0.0;
-	static const double LCLICK_WAIT_TIME = 0.2;
-	if (time > (currTime + LCLICK_WAIT_TIME))
+	static const double TURRET_WAIT_TIME = 0.5;
+	if (glm::length(vec2Index - nearestLive) <= 10)
 	{
-		currTime = time;
-		cBulletGenerator->GenerateBullet(this->vec2Index, nearestLive);
+		if (time > (currTime + TURRET_WAIT_TIME))
+		{
+			currTime = time;
+			cBulletGenerator->GenerateBullet(this->vec2Index, nearestLive);
+		}
 	}
-	//cout << cBulletGenerator->GetBulletsVector().size() << endl;
 	
 	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
 	{
