@@ -134,7 +134,8 @@ bool CEnemy2D::Init(void)
 	//// Erase the value of the player in the arrMapInfo
 	//cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
-	// Set the start position of the Player to iRow and iCol
+
+	//Set the position of the enemy randomly on the edge of the map
 	int edge= rand() % 3;
 	int X = 0, Y = 0;
 	switch (edge)
@@ -160,7 +161,20 @@ bool CEnemy2D::Init(void)
 	{
 		return false;
 	}
-	enemyType = SKELE1;
+	//Determining enemy type randomly
+	int randType = rand() % 2;
+	switch (randType)
+	{
+	case 0:
+		enemyType = SKELE1;
+		break;
+	case 1:
+		enemyType = SKULL;
+		break;
+	default:
+		enemyType = SKELE1;
+		break;
+	}
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
