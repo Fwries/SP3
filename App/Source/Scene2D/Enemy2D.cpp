@@ -290,8 +290,8 @@ void CEnemy2D::Update(const double dElapsedTime)
 		/*cout << toX << "    " << toY << endl;*/
 		UpdatePosition();
 		glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-		if ((((vec2Index.x >= 32 - 2) &&(vec2Index.x <= 32 + 2)) &&
-			(vec2Index.y >= 32 - 2) && ((vec2Index.y <= 32 + 2))))
+		if ((((vec2Index.x >= 31 - 1) &&(vec2Index.x <= 32 + 1)) &&
+			(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
@@ -309,14 +309,17 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 	case BLOCKED:
 	{
-
+		
 		iFSMCounter++;
 		break;
 	}
 	case ATTACK:
 	{
-
-
+		if (iFSMCounter >= 40)
+		{
+			cPlayer2D->changeBaseHP(ATK);
+			iFSMCounter = 0;
+		}
 		//Checking HP:
 		if (HP <= 0)
 		{
