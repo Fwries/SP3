@@ -91,7 +91,7 @@ bool CEnemy2D::Init(void)
 	AttackCooldown = 0;
 
 	HP = 20;
-	ATK = 4;
+	ATK = 1;
 	SPE = 1;
 	TRGE = 1;
 	ARGE = 1;
@@ -264,14 +264,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			if (bFirstPosition == true)
 			{
-				if (firstDest == 0)
-				{
-					// Set a destination
-					i32vec2Destination = coord;
-					// Calculate the direction between enemy2D and this destination
-					i32vec2Direction = i32vec2Destination - vec2Index;
-					/*std::cout << coord.x << ", " << coord.y << "\n";*/
-				}
+				// Set a destination
+				i32vec2Destination = coord;
+				// Calculate the direction between enemy2D and this destination
+				i32vec2Direction = i32vec2Destination - vec2Index;
+				/*std::cout << coord.x << ", " << coord.y << "\n";*/
+				bFirstPosition = false;
 			}
 			else
 			{
@@ -706,7 +704,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 100)
 			{
-				vec2Index.x++;
+				vec2Index.x--;
 				i32vec2NumMicroSteps.x = 0;
 				return true;
 			}
@@ -726,7 +724,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 100)
 			{
-				vec2Index.y++;
+				vec2Index.y--;
 				i32vec2NumMicroSteps.y = 0;
 				return true;
 			}
