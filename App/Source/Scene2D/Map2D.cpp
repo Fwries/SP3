@@ -395,6 +395,17 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				// Store the texture ID into MapOfTextureIDs
 				MapOfTextureIDs.insert(pair<int, int>(135, iTextureID));
 			}
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/tile087.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Tiles/tile087.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(140, iTextureID));
+			}
 		}
 
 		// Turrets

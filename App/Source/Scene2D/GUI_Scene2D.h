@@ -66,6 +66,9 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	// Return itemEquipped
+	int GetEquipped(void);
+
 protected:
 	// Constructor
 	CGUI_Scene2D(void);

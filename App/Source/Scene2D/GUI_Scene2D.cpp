@@ -92,7 +92,7 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Bronze", "Image/Materials/Bronze.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
-	cInventoryItem = cInventoryManager->Add("Turret", "Image/Tiles/tile038.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Turret", "Image/Tiles/tile038.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
@@ -153,7 +153,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			openCrafting = !openCrafting;
 			openInventory = false;
 		}
-
+		// Check items in inv
+		if (cInventoryManager->GetItem("Turret")->GetCount() == 0)
+		{
+			itemEquipped = 0;
+		}
 		if (openInventory)
 		{
 			// Enable cursor
@@ -709,4 +713,9 @@ void CGUI_Scene2D::Render(void)
  */
 void CGUI_Scene2D::PostRender(void)
 {
+}
+
+int CGUI_Scene2D::GetEquipped(void)
+{
+	return itemEquipped;
 }
