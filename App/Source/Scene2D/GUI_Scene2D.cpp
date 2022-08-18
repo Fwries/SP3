@@ -92,7 +92,7 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Bronze", "Image/Materials/Bronze.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
-	cInventoryItem = cInventoryManager->Add("Turret", "Image/Tiles/tile038.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("Turret", "Image/Tiles/tile038.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
