@@ -97,6 +97,10 @@ protected:
 	// Game Manager
 	CGameManager* cGameManager;
 
+	// Inventory
+	CInventoryItem* cInventoryItem;
+	CInventoryManager* cInventoryManager;
+
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
 

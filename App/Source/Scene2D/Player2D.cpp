@@ -150,6 +150,7 @@ bool CPlayer2D::Init(void)
 
 	// Materials
 	n_wood = 30;
+	n_stone = 30;
 	X = Y = 0;
 	MaterialRange = false;
 
@@ -855,12 +856,22 @@ void CPlayer2D::RandomTileGenerator(void)
 {
 	while (n_wood > 0)
 	{
-		X = rand() % 63;
-		Y = rand() % 63;
+		X = rand() % 62 + 1;
+		Y = rand() % 62 + 1;
 		if (cMap2D->GetMapInfo(X, Y) == 0)
 		{
 			cMap2D->SetMapInfo(X, Y, 135);
 			n_wood--;
+		}
+	}
+	while (n_stone > 0)
+	{
+		X = rand() % 62 + 1;
+		Y = rand() % 62 + 1;
+		if (cMap2D->GetMapInfo(X, Y) == 0)
+		{
+			cMap2D->SetMapInfo(X, Y, 140);
+			n_stone--;
 		}
 	}
 }
@@ -878,6 +889,16 @@ void CPlayer2D::CheckMaterialAround(void)
 			cInventoryItem = cInventoryManager->GetItem("Plank");
 			cInventoryItem->Add(1);
 			n_wood++;
+		}
+		break; 
+	case 140:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem->Add(1);
+			n_stone++;
 		}
 		break;
 	default:
@@ -897,6 +918,16 @@ void CPlayer2D::CheckMaterialAround(void)
 			n_wood++;
 		}
 		break;
+	case 140:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem->Add(1);
+			n_stone++;
+		}
+		break;
 	default:
 		break;
 	}
@@ -913,6 +944,16 @@ void CPlayer2D::CheckMaterialAround(void)
 			n_wood++;
 		}
 		break;
+	case 140:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem->Add(1);
+			n_stone++;
+		}
+		break;
 	default:
 		break;
 	}
@@ -927,6 +968,16 @@ void CPlayer2D::CheckMaterialAround(void)
 			cInventoryItem = cInventoryManager->GetItem("Plank");
 			cInventoryItem->Add(1);
 			n_wood++;
+		}
+		break;
+	case 140:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Stone");
+			cInventoryItem->Add(1);
+			n_stone++;
 		}
 		break;
 	default:

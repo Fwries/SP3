@@ -96,6 +96,9 @@ bool CScene2D::Init(void)
 	CShaderManager::GetInstance()->Use("Shader2D");
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
+	// Initialise Inventory
+	cInventoryManager = cInventoryManager->GetInstance();
+
 	elapsed = 0;
 	spawnRate = 0.03;
 
@@ -375,20 +378,33 @@ bool CScene2D::Update(const double dElapsedTime)
 		return false;
 	}
 
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
+	if (cGUI_Scene2D->GetEquipped() != 0)
 	{
-		//cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
-
-		CTurret* cTurret = new CTurret();
-		// Pass shader to cEnemy2D
-		cTurret->SetShader("Shader2D_Colour");
-		// Initialise the instance
-		if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == true)
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
 		{
-			cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
-			cTurret->SetPlayer2D(cPlayer2D);
-			cTurret->SetEnemyVector(enemyVector);
-			turretVector.push_back(cTurret);
+			//cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+			switch (cGUI_Scene2D->GetEquipped())
+			{
+			case 1:
+				if (cInventoryManager->GetItem("Turret")->GetCount() > 0)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cTurret->SetPlayer2D(cPlayer2D);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+					}
+					cInventoryManager->GetItem("Turret")->Remove(1);
+				}
+				break;
+			default:
+				break;
+			}
 		}
 	}
 

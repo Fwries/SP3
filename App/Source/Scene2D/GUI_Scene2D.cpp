@@ -700,3 +700,8 @@ void CGUI_Scene2D::Render(void)
 void CGUI_Scene2D::PostRender(void)
 {
 }
+
+int CGUI_Scene2D::GetEquipped(void)
+{
+	return itemEquipped;
+}
