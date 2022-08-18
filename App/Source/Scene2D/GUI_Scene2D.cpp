@@ -153,7 +153,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			openCrafting = !openCrafting;
 			openInventory = false;
 		}
-
+		// Check items in inv
+		if (cInventoryManager->GetItem("Turret")->GetCount() == 0)
+		{
+			itemEquipped = 0;
+		}
 		if (openInventory)
 		{
 			// Enable cursor
