@@ -182,6 +182,9 @@ void CTurret::PreRender(void)
 
 	// Activate the shader
 	CShaderManager::GetInstance()->Use(sShaderName);
+
+	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+		cBulletGenerator->GetBulletsVector()[i]->PreRender();
 }
 
 /**
@@ -213,6 +216,8 @@ void CTurret::Render(void)
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	quadMesh->Render();
 	//animatedMisc->Render();
+	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+		cBulletGenerator->GetBulletsVector()[i]->Render();
 	glBindVertexArray(0);
 
 }
@@ -227,6 +232,8 @@ void CTurret::PostRender(void)
 
 	// Disable blending
 	glDisable(GL_BLEND);
+	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+		cBulletGenerator->GetBulletsVector()[i]->PostRender();
 }
 
 /**
