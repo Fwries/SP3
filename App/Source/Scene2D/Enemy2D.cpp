@@ -684,7 +684,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 100)
 			{
-				/*vec2Index.x++;*/
+				vec2Index.x++;
 				i32vec2NumMicroSteps.x = 0;
 				return true;
 			}
@@ -703,7 +703,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 100)
 			{
-				/*vec2Index.x++;*/
+				vec2Index.x++;
 				i32vec2NumMicroSteps.x = 0;
 				return true;
 			}
@@ -723,7 +723,7 @@ bool CEnemy2D::AdjustPosition(DIRECTION eDirection)
 			}
 			else if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 100)
 			{
-				/*vec2Index.y++;*/
+				vec2Index.y++;
 				i32vec2NumMicroSteps.y = 0;
 				return true;
 			}
@@ -901,7 +901,6 @@ void CEnemy2D::UpdatePosition(void)
 				/*FlipHorizontalDirection();*/
 				//vec2Index = i32vec2OldIndex;
 				i32vec2NumMicroSteps.x = 0;
-				vec2Index.x++;
 			}
 		}
 		InteractWithPlayer();
@@ -931,7 +930,6 @@ void CEnemy2D::UpdatePosition(void)
 				/*FlipHorizontalDirection();*/
 				/*vec2Index = i32vec2OldIndex;*/
 				i32vec2NumMicroSteps.x = 0;
-				vec2Index.x--;
 			}
 		}
 		InteractWithPlayer();
@@ -962,7 +960,6 @@ void CEnemy2D::UpdatePosition(void)
 				/*FlipHorizontalDirection();*/
 				/*vec2Index = i32vec2OldIndex;*/
 				i32vec2NumMicroSteps.y = 0;
-				vec2Index.y--;
 			}
 		}
 		InteractWithPlayer();
@@ -992,7 +989,6 @@ void CEnemy2D::UpdatePosition(void)
 				/*FlipHorizontalDirection();*/
 				vec2Index = i32vec2OldIndex;
 				i32vec2NumMicroSteps.y = 0;
-				vec2Index.y++;
 			}
 		}
 		InteractWithPlayer();
