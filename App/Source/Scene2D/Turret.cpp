@@ -161,7 +161,7 @@ void CTurret::Update(const double dElapsedTime)
 		if (time > (currTime + TURRET_WAIT_TIME))
 		{
 			currTime = time;
-			cBulletGenerator->GenerateBullet(this->vec2Index, nearestLive);
+			cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index);
 		}
 	}
 	
