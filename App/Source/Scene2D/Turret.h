@@ -47,7 +47,7 @@ public:
 	virtual ~CTurret(void);
 
 	// Init
-	bool Init(int, int);
+	bool Init(int, int, bool);
 
 	// Update
 	void Update(const double dElapsedTime);
@@ -187,6 +187,8 @@ protected:
 	int nearestEnemyInt;
 
 	int TurretHP;
+	int TurretDamage;
+	int TurretElement;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);

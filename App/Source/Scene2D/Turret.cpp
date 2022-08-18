@@ -75,7 +75,7 @@ CTurret::~CTurret(void)
 /**
   @brief Initialise this instance
   */
-bool CTurret::Init(int uiRow, int uiCol)
+bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -113,7 +113,19 @@ bool CTurret::Init(int uiRow, int uiCol)
 
 	cBulletGenerator = new CBulletGenerator();
 
-	TurretHP = 100;
+	if (IsWall)
+	{
+		turretType = WALL;
+		TurretHP = 5;
+		TurretDamage = 0;
+	}
+	else
+	{
+		turretType = BASE;
+		TurretHP = 6;
+		TurretDamage = 4;
+	}
+
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 
@@ -135,26 +147,29 @@ void CTurret::Update(const double dElapsedTime)
 		return;
 	}
 
-	static double time = 0.0;
-	time += dElapsedTime;
-
-	findNearestEnemy();
-
-	// Generate bullet & limit its firing rate to 1 bullet every 0.2s
-	static double currTime = 0.0;
-	static const double TURRET_WAIT_TIME = 0.5;
-	if (glm::length(vec2Index - nearestLive) <= 10)
+	if (turretType != WALL)
 	{
-		if (time > (currTime + TURRET_WAIT_TIME))
+		static double time = 0.0;
+		time += dElapsedTime;
+
+		findNearestEnemy();
+
+		// Generate bullet & limit its firing rate to 1 bullet every 0.2s
+		static double currTime = 0.0;
+		static const double TURRET_WAIT_TIME = 1.5;
+		if (glm::length(vec2Index - nearestLive) <= 10)
 		{
-			currTime = time;
-			cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index);
+			if (time > (currTime + TURRET_WAIT_TIME))
+			{
+				currTime = time;
+				cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement);
+			}
 		}
-	}
-	
-	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
-	{
-		cBulletGenerator->GetBulletsVector()[i]->Update();
+
+		for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
+		{
+			cBulletGenerator->GetBulletsVector()[i]->Update();
+		}
 	}
 
 	// Update the UV Coordinates

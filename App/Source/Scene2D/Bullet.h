@@ -24,7 +24,15 @@ private:
 		NUM_DIRECTIONS
 	};
 
+	enum ELEMENT
+	{
+		NONE = 0,
+		FLAME = 1,
+		FREEZE = 2,
+	};
+
 	DIRECTION dir;
+	int ElementType;
 	bool bIsActive;
 	float RotateAngle;
 	int Damage;
@@ -36,7 +44,7 @@ public:
 	CMesh* quadMesh;
 
 	CBullet(glm::vec2 vec2Index, int direction);
-	CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index);
+	CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT);
 	virtual ~CBullet();
 
 	void Update();

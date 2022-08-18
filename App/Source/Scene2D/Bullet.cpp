@@ -41,7 +41,7 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	Damage = 4;
 }
 
-CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index)
+CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT)
 {
 	this->vec2Index = vec2Index;
 	Targetvec2Index = targetvec2Index;
@@ -74,7 +74,8 @@ CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index)
 	FromTurret = true;
 	bIsActive = true;
 	RotateAngle = 0.0f;
-	Damage = 4;
+	Damage = NEWDamage;
+	ElementType = NewELEMENT;
 }
 
 CBullet::~CBullet()
