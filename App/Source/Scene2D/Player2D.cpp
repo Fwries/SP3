@@ -961,3 +961,9 @@ CBulletGenerator* CPlayer2D::GetBulletGenerator()
 {
 	return cBulletGenerator;
 }
+
+void CPlayer2D::changeBaseHP(int amount)
+{
+	cInventoryItem = cInventoryManager->GetItem("Base HP");
+	cInventoryItem->Remove(amount);
+}

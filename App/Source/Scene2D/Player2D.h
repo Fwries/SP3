@@ -74,6 +74,8 @@ public:
 
 	CBulletGenerator* GetBulletGenerator();
 
+	void changeBaseHP(int amount);
+
 protected:
 	enum DIRECTION
 	{
