@@ -87,6 +87,8 @@ public:
 
 	void SetGetTurretHP(int);
 
+	void findNearestEnemy();
+
 	CBulletGenerator* GetBulletGenerator();
 
 	// boolean flag to indicate if this enemy is active

@@ -72,6 +72,7 @@ public:
 	bool GetPlayerWon();
 
 	vector<CTurret*> getTurretVec(void);
+	vector<CEntity2D*>& getEnemyVec(void);
 
 protected:
 	// The handler containing the instance of the 2D Map

@@ -500,3 +500,7 @@ vector<CTurret*> CScene2D::getTurretVec(void)
 {
 	return turretVector;
 }
+vector<CEntity2D*>& CScene2D::getEnemyVec(void)
+{
+	return enemyVector;
+}

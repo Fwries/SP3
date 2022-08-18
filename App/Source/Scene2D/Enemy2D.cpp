@@ -246,6 +246,7 @@ bool CEnemy2D::Init(void)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
+	cout << cScene2D->getEnemyVec().size() << endl;
 	//Turret damage handler
 	for (unsigned j = 0; j < cScene2D->getTurretVec().size(); ++j)
 	{
@@ -257,6 +258,14 @@ void CEnemy2D::Update(const double dElapsedTime)
 				{
 					HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
 					cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->SetbIsActive(false);
+
+					if (HP <= 0)
+					{
+						cout << endl << cScene2D->getTurretVec()[j]->GetNearestEnemy() << "       " << cScene2D->getEnemyVec().size() << endl;
+						cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + (cScene2D->getTurretVec()[j]->GetNearestEnemy()));
+						cScene2D->getTurretVec()[j]->findNearestEnemy();
+						break;
+					}
 				}
 			}
 		}
