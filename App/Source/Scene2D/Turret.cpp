@@ -117,6 +117,7 @@ bool CTurret::Init(int uiRow, int uiCol)
 
 	cBulletGenerator = new CBulletGenerator();
 
+	TurretHP = 100;
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 
@@ -130,6 +131,13 @@ void CTurret::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return;
+
+	if (TurretHP <= 0)
+	{
+		cMap2D->SetMapInfo(vec2Index.x, vec2Index.y, 0);
+		bIsActive = false;
+		return;
+	}
 
 	static double time = 0.0;
 	time += dElapsedTime;
@@ -272,6 +280,16 @@ void CTurret::SetPlayer2D(CPlayer2D* cPlayer2D)
 void CTurret::SetEnemyVector(vector<CEntity2D*> NEWenemyVector)
 {
 	enemyVector = NEWenemyVector;
+}
+
+int CTurret::GetTurretHP()
+{
+	return TurretHP;
+}
+
+void CTurret::SetGetTurretHP(int newTurretHP)
+{
+	TurretHP = newTurretHP;
 }
 
 CBulletGenerator* CTurret::GetBulletGenerator()

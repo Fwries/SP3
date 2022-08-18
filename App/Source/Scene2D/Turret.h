@@ -84,6 +84,10 @@ public:
 
 	void SetEnemyVector(vector<CEntity2D*>);
 
+	int GetTurretHP();
+
+	void SetGetTurretHP(int);
+
 	CBulletGenerator* GetBulletGenerator();
 
 	// boolean flag to indicate if this enemy is active
@@ -182,6 +186,8 @@ protected:
 
 	glm::vec2 nearestLive;
 	CEntity2D* nearestEnemy;
+
+	int TurretHP;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
