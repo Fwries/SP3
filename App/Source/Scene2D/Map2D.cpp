@@ -397,7 +397,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				MapOfTextureIDs.insert(pair<int, int>(135, iTextureID));
 			}
 			// Silver
-			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/SilverTile.png", true);
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/StoneTile.png", true);
 			if (iTextureID == 0)
 			{
 				cout << "Image/Tiles/SilverTile.png" << endl;
