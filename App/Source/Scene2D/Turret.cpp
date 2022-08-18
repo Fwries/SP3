@@ -144,6 +144,7 @@ void CTurret::Update(const double dElapsedTime)
 		if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
 		{
 			nearestLive = currIndex;
+			nearestEnemyInt = i;
 			nearestEnemy = enemyVector[i];
 		}
 	}
@@ -267,6 +268,11 @@ void CTurret::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int 
 void CTurret::SetEnemyVector(vector<CEntity2D*> NEWenemyVector)
 {
 	enemyVector = NEWenemyVector;
+}
+
+int CTurret::GetNearestEnemy()
+{
+	return nearestEnemyInt;
 }
 
 int CTurret::GetTurretHP()

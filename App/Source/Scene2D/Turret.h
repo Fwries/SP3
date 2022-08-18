@@ -81,6 +81,8 @@ public:
 
 	void SetEnemyVector(vector<CEntity2D*>);
 
+	int GetNearestEnemy();
+
 	int GetTurretHP();
 
 	void SetGetTurretHP(int);
@@ -179,6 +181,7 @@ protected:
 
 	glm::vec2 nearestLive;
 	CEntity2D* nearestEnemy;
+	int nearestEnemyInt;
 
 	int TurretHP;
 
