@@ -384,10 +384,11 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 		// Materials
 		{
-			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/tile077.png", true);
+			// Wood
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/WoodTile.png", true);
 			if (iTextureID == 0)
 			{
-				cout << "Image/Tiles/tile077.png" << endl;
+				cout << "Image/Tiles/WoodTile.png" << endl;
 				return false;
 			}
 			else
@@ -395,16 +396,65 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				// Store the texture ID into MapOfTextureIDs
 				MapOfTextureIDs.insert(pair<int, int>(135, iTextureID));
 			}
-			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/tile087.png", true);
+			// Silver
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/SilverTile.png", true);
 			if (iTextureID == 0)
 			{
-				cout << "Image/Tiles/tile087.png" << endl;
+				cout << "Image/Tiles/SilverTile.png" << endl;
 				return false;
 			}
 			else
 			{
 				// Store the texture ID into MapOfTextureIDs
 				MapOfTextureIDs.insert(pair<int, int>(140, iTextureID));
+			}
+			// Iron
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/IronTile.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Tiles/IronTile.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(141, iTextureID));
+			}
+			// Silver
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/SilverTile.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Tiles/SilverTile.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(142, iTextureID));
+			}
+			// Bronze
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/BronzeTile.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Tiles/BronzeTile.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(143, iTextureID));
+			}
+			// Gold
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/GoldTile.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Tiles/GoldTile.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(144, iTextureID));
 			}
 		}
 

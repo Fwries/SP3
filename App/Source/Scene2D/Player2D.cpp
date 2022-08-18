@@ -151,8 +151,12 @@ bool CPlayer2D::Init(void)
 	SetHitBox(false);
 
 	// Materials
-	n_wood = 30;
-	n_stone = 30;
+	n_wood = 20;
+	n_stone = 20;
+	n_iron = 10;
+	n_bronze = 10;
+	n_gold = 5;
+	n_silver = 5;
 	X = Y = 0;
 	MaterialRange = false;
 
@@ -876,6 +880,46 @@ void CPlayer2D::RandomTileGenerator(void)
 			n_stone--;
 		}
 	}
+	while (n_iron > 0)
+	{
+		X = rand() % 62 + 1;
+		Y = rand() % 62 + 1;
+		if (cMap2D->GetMapInfo(X, Y) == 0)
+		{
+			cMap2D->SetMapInfo(X, Y, 141);
+			n_iron--;
+		}
+	}
+	while (n_silver > 0)
+	{
+		X = rand() % 62 + 1;
+		Y = rand() % 62 + 1;
+		if (cMap2D->GetMapInfo(X, Y) == 0)
+		{
+			cMap2D->SetMapInfo(X, Y, 142);
+			n_silver--;
+		}
+	}
+	while (n_bronze > 0)
+	{
+		X = rand() % 62 + 1;
+		Y = rand() % 62 + 1;
+		if (cMap2D->GetMapInfo(X, Y) == 0)
+		{
+			cMap2D->SetMapInfo(X, Y, 143);
+			n_bronze--;
+		}
+	}
+	while (n_gold > 0)
+	{
+		X = rand() % 62 + 1;
+		Y = rand() % 62 + 1;
+		if (cMap2D->GetMapInfo(X, Y) == 0)
+		{
+			cMap2D->SetMapInfo(X, Y, 144);
+			n_gold--;
+		}
+	}
 }
 
 void CPlayer2D::CheckMaterialAround(void)
@@ -901,6 +945,46 @@ void CPlayer2D::CheckMaterialAround(void)
 			cInventoryItem = cInventoryManager->GetItem("Stone");
 			cInventoryItem->Add(1);
 			n_stone++;
+		}
+		break;
+	case 141:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Iron");
+			cInventoryItem->Add(1);
+			n_iron++;
+		}
+		break;
+	case 142:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Silver");
+			cInventoryItem->Add(1);
+			n_silver++;
+		}
+		break;
+	case 143:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Bronze");
+			cInventoryItem->Add(1);
+			n_bronze++;
+		}
+		break;
+	case 144:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Gold");
+			cInventoryItem->Add(1);
+			n_gold++;
 		}
 		break;
 	default:
@@ -930,6 +1014,46 @@ void CPlayer2D::CheckMaterialAround(void)
 			n_stone++;
 		}
 		break;
+	case 141:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Iron");
+			cInventoryItem->Add(1);
+			n_iron++;
+		}
+		break;
+	case 142:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Silver");
+			cInventoryItem->Add(1);
+			n_silver++;
+		}
+		break;
+	case 143:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Bronze");
+			cInventoryItem->Add(1);
+			n_bronze++;
+		}
+		break;
+	case 144:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0);
+			cInventoryItem = cInventoryManager->GetItem("Gold");
+			cInventoryItem->Add(1);
+			n_gold++;
+		}
+		break;
 	default:
 		break;
 	}
@@ -956,6 +1080,46 @@ void CPlayer2D::CheckMaterialAround(void)
 			n_stone++;
 		}
 		break;
+	case 141:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Iron");
+			cInventoryItem->Add(1);
+			n_iron++;
+		}
+		break;
+	case 142:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Silver");
+			cInventoryItem->Add(1);
+			n_silver++;
+		}
+		break;
+	case 143:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Bronze");
+			cInventoryItem->Add(1);
+			n_bronze++;
+		}
+		break;
+	case 144:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Gold");
+			cInventoryItem->Add(1);
+			n_gold++;
+		}
+		break;
 	default:
 		break;
 	}
@@ -980,6 +1144,46 @@ void CPlayer2D::CheckMaterialAround(void)
 			cInventoryItem = cInventoryManager->GetItem("Stone");
 			cInventoryItem->Add(1);
 			n_stone++;
+		}
+		break;
+	case 141:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Iron");
+			cInventoryItem->Add(1);
+			n_iron++;
+		}
+		break;
+	case 142:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Silver");
+			cInventoryItem->Add(1);
+			n_silver++;
+		}
+		break;
+	case 143:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Bronze");
+			cInventoryItem->Add(1);
+			n_bronze++;
+		}
+		break;
+	case 144:
+		MaterialRange = true;
+		if (cKeyboardController->IsKeyPressed('X'))
+		{
+			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 0);
+			cInventoryItem = cInventoryManager->GetItem("Gold");
+			cInventoryItem->Add(1);
+			n_gold++;
 		}
 		break;
 	default:
