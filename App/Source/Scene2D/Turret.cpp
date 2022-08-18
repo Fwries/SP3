@@ -146,7 +146,6 @@ void CTurret::Update(const double dElapsedTime)
 	//Monster damage handler
 	if (TurretHP <= 0)
 	{
-		cScene2D->getTurretVec().erase(cScene2D->getTurretVec().begin() + i);
 		cMap2D->SetMapInfo(vec2Index.x, vec2Index.y, 0);
 		bIsActive = false;
 		return;
