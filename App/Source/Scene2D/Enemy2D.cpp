@@ -90,9 +90,6 @@ bool CEnemy2D::Init(void)
 	MoveCooldown = 0;
 	AttackCooldown = 0;
 
-	HP = 20;
-	ATK = 1;
-	SPE = 1;
 	TRGE = 1;
 	ARGE = 1;
 
@@ -167,15 +164,27 @@ bool CEnemy2D::Init(void)
 	{
 	case 0:
 		enemyType = SKELE1;
+		HP = 20;
+		ATK = 1;
+		SPE = 1;
 		break;
 	case 1:
 		enemyType = SKULL;
+		HP = 12;
+		ATK = 4;
+		SPE = 1.5;
 		break;
 	case 2:
 		enemyType = VAMPIRE;
+		HP = 20;
+		ATK = 1;
+		SPE = 1;
 		break;
 	default:
 		enemyType = SKELE1;
+		HP = 20;
+		ATK = 1;
+		SPE = 1;
 		break;
 	}
 	cout << enemyType << endl;
@@ -348,7 +357,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKULL:
 			{
 				//Pathfinding method
-				auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
+				auto path = cMap2D->PathFind(vec2Index, cPlayer2D->vec2Index, heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
 				int firstDest = 0;
@@ -380,8 +389,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				UpdatePosition();
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 				//Insert damaging part here
-				if ((((vec2Index.x >= 31 - 1) && (vec2Index.x <= 32 + 1)) &&
-					(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
+				if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 1.0f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -453,10 +461,25 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 	case ATTACK:
 	{
-		if (iFSMCounter >= 40)
+		switch (enemyType)
 		{
-			cPlayer2D->changeBaseHP(ATK);
-			iFSMCounter = 0;
+			case SKELE1:
+			{
+				if (iFSMCounter >= 40)
+				{
+					cPlayer2D->changeBaseHP(ATK);
+					iFSMCounter = 0;
+				}
+				break;
+			}
+			case SKULL:
+			{
+				if (iFSMCounter >= 40)
+				{
+					cPlayer2D->changeBaseHP(ATK);
+					iFSMCounter = 0;
+				}
+			}
 		}
 		//Checking HP:
 		if (HP <= 0)
