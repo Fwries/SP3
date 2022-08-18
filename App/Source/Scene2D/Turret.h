@@ -115,6 +115,7 @@ protected:
 	{
 		WALL = 0,
 		BASE = 1,
+		FIRE = 11,
 	};
 
 	glm::vec2 i32vec2OldIndex;
