@@ -411,6 +411,58 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				MapOfTextureIDs.insert(pair<int, int>(150, iTextureID));
 			}
 		}
+
+		//Base
+		{
+			//Top left
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/baseTL.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/baseTL.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(136, iTextureID));
+			}
+			//Top right
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/baseTR.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/baseTR.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(137, iTextureID));
+			}
+			//Bottom left
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/baseBL.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/baseBL.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(138, iTextureID));
+			}
+			//Bottom right
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/baseBR.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/baseBR.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(139, iTextureID));
+			}
+		}
 	}
 
 	// Load the Life texture
