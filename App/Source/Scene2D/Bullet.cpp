@@ -70,6 +70,7 @@ CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index)
 		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
 	}
 
+	//Targetvec2Index.y = -Targetvec2Index.y;
 	FromTurret = true;
 	bIsActive = true;
 	RotateAngle = 0.0f;
@@ -89,6 +90,18 @@ void CBullet::Update()
 
 	if (FromTurret == true)
 	{
+		if (vec2Index == Targetvec2Index)
+		{
+			bIsActive = false;
+		}
+		if (vec2Index.y > Targetvec2Index.y)
+		{
+			--vec2Index.y;
+		}
+		if (vec2Index.y < Targetvec2Index.y)
+		{
+			++vec2Index.y;
+		}
 		if (vec2Index.x > Targetvec2Index.x)
 		{
 			--vec2Index.x;
@@ -97,14 +110,6 @@ void CBullet::Update()
 		{
 			++vec2Index.x;
 		}
-		if (vec2Index.y > Targetvec2Index.y)
-		{
-			--vec2Index.y;
-		}
-		if (vec2Index.y > Targetvec2Index.y)
-		{
-			++vec2Index.y;
-		}
 	}
 	else if (FromTurret == false)
 	{
@@ -112,39 +117,39 @@ void CBullet::Update()
 		{
 		case DIRECTION::LEFT:
 			--vec2Index.x;
-			RotateAngle = 270;
+			//RotateAngle = 270;
 			break;
 		case DIRECTION::RIGHT:
 			++vec2Index.x;
-			RotateAngle = 90;
+			//RotateAngle = 90;
 			break;
 		case DIRECTION::UP:
 			++vec2Index.y;
-			RotateAngle = 0;
+			//RotateAngle = 0;
 			break;
 		case DIRECTION::DOWN:
 			--vec2Index.y;
-			RotateAngle = 180;
+			//RotateAngle = 180;
 			break;
 		case DIRECTION::LEFT_UP:
 			--vec2Index.x;
 			++vec2Index.y;
-			RotateAngle = 315;
+			//RotateAngle = 315;
 			break;
 		case DIRECTION::LEFT_DOWN:
 			--vec2Index.x;
 			--vec2Index.y;
-			RotateAngle = 225;
+			//RotateAngle = 225;
 			break;
 		case DIRECTION::RIGHT_UP:
 			++vec2Index.x;
 			++vec2Index.y;
-			RotateAngle = 45;
+			//RotateAngle = 45;
 			break;
 		case DIRECTION::RIGHT_DOWN:
 			++vec2Index.x;
 			--vec2Index.y;
-			RotateAngle = 135;
+			//RotateAngle = 135;
 			break;
 		default:
 			break;
