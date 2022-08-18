@@ -79,9 +79,6 @@ public:
 	// Set the UV coordinates of the enemy2D
 	glm::vec2 Getvec2UVCoordinates(void) const;
 
-	// Set the handle to cPlayer to this class instance
-	void SetPlayer2D(CPlayer2D* cPlayer2D);
-
 	void SetEnemyVector(vector<CEntity2D*>);
 
 	int GetTurretHP();
@@ -112,11 +109,10 @@ protected:
 		NUM_FSM
 	};
 
-	enum MiscType
+	enum TurretType
 	{
-		COIN = 0,
-		BONE = 1,
-		A = 2
+		WALL = 0,
+		BASE = 1,
 	};
 
 	glm::vec2 i32vec2OldIndex;
@@ -168,15 +164,12 @@ protected:
 	// Current color
 	glm::vec4 runtimeColour;
 
-	// Handle to the CPlayer2D
-	CPlayer2D* cPlayer2D;
-
 	CBulletGenerator* cBulletGenerator;
 
 	// Current FSM
 	FSM sCurrentFSM;
 
-	MiscType miscType;
+	TurretType turretType;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;

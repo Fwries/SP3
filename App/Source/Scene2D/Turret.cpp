@@ -32,7 +32,6 @@ CTurret::CTurret(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
-	, cPlayer2D(NULL)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
@@ -63,9 +62,6 @@ CTurret::~CTurret(void)
 		delete quadMesh;
 		quadMesh = NULL;
 	}
-
-	// We won't delete this since it was created elsewhere
-	cPlayer2D = NULL;
 
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
@@ -266,15 +262,6 @@ void CTurret::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int 
 {
 	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
 	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
-}
-
-/**
- @brief Set the handle to cPlayer to this class instance
- @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
- */
-void CTurret::SetPlayer2D(CPlayer2D* cPlayer2D)
-{
-	this->cPlayer2D = cPlayer2D;
 }
 
 void CTurret::SetEnemyVector(vector<CEntity2D*> NEWenemyVector)
@@ -542,25 +529,6 @@ bool CTurret::AdjustPosition(DIRECTION eDirection)
 	cout << "CTurret::CheckPosition: Unknown direction." << endl;
 	}
 
-	return false;
-}
-
-/**
- @brief Let enemy2D interact with the player.
- */
-bool CTurret::InteractWithPlayer(void)
-{
-	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-	
-	// Check if the enemy2D is within 1.5 indices of the player2D
-	if (((vec2Index.x >= i32vec2PlayerPos.x) && 
-		(vec2Index.x <= i32vec2PlayerPos.x))
-		&& 
-		((vec2Index.y >= i32vec2PlayerPos.y) &&
-		(vec2Index.y <= i32vec2PlayerPos.y)))
-	{
-		return true;
-	}
 	return false;
 }
 
