@@ -69,9 +69,6 @@ public:
 	// Return itemEquipped
 	int GetEquipped(void);
 
-	// Return UI state
-	bool GetUIState(void);
-
 protected:
 	// Constructor
 	CGUI_Scene2D(void);

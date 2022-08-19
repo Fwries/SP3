@@ -39,6 +39,7 @@ class CMap2D;
 // Include InventoryManager
 #include "InventoryManager.h"
 
+
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
@@ -119,6 +120,7 @@ protected:
 	// InventoryItem
 	CInventoryItem* cInventoryItem;
 
+
 	// Count the number of jumps
 	int iJumpCount;
 	bool FaceDirection;
@@ -128,6 +130,10 @@ protected:
 	// Variables for Materials
 	int n_wood, n_stone, n_silver, n_iron, n_gold, n_coal, n_bronze;
 	int X, Y;
+
+	// variables for GUI
+	bool openCrafting;
+	bool openInventory;
 
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
