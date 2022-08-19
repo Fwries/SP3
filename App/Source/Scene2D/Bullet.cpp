@@ -35,13 +35,15 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
 	}
 
+	runtimeColour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+
 	FromTurret = false;
 	bIsActive = true;
 	RotateAngle = 0.0f;
 	Damage = 4;
 }
 
-CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT)
+CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT, glm::vec4 Colour)
 {
 	this->vec2Index = vec2Index;
 	Targetvec2Index = targetvec2Index;
@@ -75,6 +77,7 @@ CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, 
 	RotateAngle = 0.0f;
 	Damage = NEWDamage;
 	ElementType = NewELEMENT;
+	runtimeColour = Colour;
 
 	DivVector = Targetvec2Index - vec2Index;
 }
@@ -183,6 +186,7 @@ void CBullet::Render()
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x, vec2UVCoordinate.y, 0.0f));
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
 
 	// Bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);

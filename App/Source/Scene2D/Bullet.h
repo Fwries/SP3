@@ -41,11 +41,14 @@ private:
 	glm::vec2 Targetvec2Index;
 	glm::vec2 DivVector;
 
+	// Current color
+	glm::vec4 runtimeColour;
+
 public:
 	CMesh* quadMesh;
 
 	CBullet(glm::vec2 vec2Index, int direction);
-	CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT);
+	CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT, glm::vec4 Colour);
 	virtual ~CBullet();
 
 	void Update();
