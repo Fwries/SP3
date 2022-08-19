@@ -701,34 +701,34 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	/*ImGui::Begin("Invisible window", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
 	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);*/
 
 	// Display the FPS
-	ImGui::TextColored(ImVec4(0, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
+	//ImGui::TextColored(ImVec4(0, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
 
 
-	// Render the inventory items
-	cInventoryItem = cInventoryManager->GetItem("Coin");
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));  // Set a background color
-	ImGuiWindowFlags inventoryWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
-	ImGui::Begin("Image", NULL, inventoryWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
-	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-		ImVec2(cInventoryItem->vec2Size.x * relativeScale_x, cInventoryItem->vec2Size.y * relativeScale_y),
-		ImVec2(0, 1), ImVec2(1, 0));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Coins: %d", cInventoryItem->GetCount());
-	ImGui::End();
-	ImGui::PopStyleColor();
+	//// Render the inventory items
+	//cInventoryItem = cInventoryManager->GetItem("Coin");
+	//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));  // Set a background color
+	//ImGuiWindowFlags inventoryWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+	//	ImGuiWindowFlags_NoTitleBar |
+	//	ImGuiWindowFlags_NoMove |
+	//	ImGuiWindowFlags_NoResize |
+	//	ImGuiWindowFlags_NoCollapse |
+	//	ImGuiWindowFlags_NoScrollbar;
+	//ImGui::Begin("Image", NULL, inventoryWindowFlags);
+	//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
+	//ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+	//ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+	//	ImVec2(cInventoryItem->vec2Size.x * relativeScale_x, cInventoryItem->vec2Size.y * relativeScale_y),
+	//	ImVec2(0, 1), ImVec2(1, 0));
+	//ImGui::SameLine();
+	//ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Coins: %d", cInventoryItem->GetCount());
+	//ImGui::End();
+	//ImGui::PopStyleColor();
 
-	ImGui::End();*/
+	//ImGui::End();
 }
 
 
