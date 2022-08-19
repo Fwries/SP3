@@ -40,7 +40,7 @@ float CSettings::ConvertIndexToUVSpace(const AXIS sAxis, const int iIndex, const
 		if (bInvert)
 			fResult = 1.0f - (float)(iIndex + 1)*TILE_HEIGHT + TILE_HEIGHT / 2.0f + fOffset;
 		else
-			fResult = -1.0f + (float)iIndex* TILE_HEIGHT + TILE_HEIGHT / 2.0f + fOffset;
+			fResult = -1.0f + (float)iIndex*TILE_HEIGHT + TILE_HEIGHT / 2.0f + fOffset;
 	}
 	else if (sAxis == z)
 	{
