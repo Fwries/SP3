@@ -89,7 +89,7 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
-	//i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -97,7 +97,7 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 	//CS: Create the Quad Mesh using the mesh builder
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/tile038.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret.png", true);
 	if (iTextureID == 0)
 	{
 		cout << "Image/Tiles/tile038.png" << endl;
@@ -115,6 +115,7 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 
 	cBulletGenerator = new CBulletGenerator();
 
+	time = 0.0;
 	currTime = 0.0;
 
 	if (IsWall)
@@ -150,14 +151,13 @@ void CTurret::Update(const double dElapsedTime)
 	//Monster damage handler
 	if (TurretHP <= 0)
 	{
-		cMap2D->SetMapInfo(vec2Index.x, vec2Index.y, 0);
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
 		bIsActive = false;
 		return;
 	}
 
 	if (turretType != WALL)
 	{
-		static double time = 0.0;
 		time += dElapsedTime;
 
 		findNearestEnemy();

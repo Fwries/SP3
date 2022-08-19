@@ -39,6 +39,7 @@ private:
 	bool FromTurret;
 
 	glm::vec2 Targetvec2Index;
+	glm::vec2 DivVector;
 
 public:
 	CMesh* quadMesh;

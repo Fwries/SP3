@@ -200,6 +200,7 @@ protected:
 	int TurretElement;
 	double TurretCooldown;
 
+	double time;
 	double currTime;
 
 	// Constraint the enemy2D's position within a boundary

@@ -70,12 +70,13 @@ CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, 
 		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
 	}
 
-	//Targetvec2Index.y = -Targetvec2Index.y;
 	FromTurret = true;
 	bIsActive = true;
 	RotateAngle = 0.0f;
 	Damage = NEWDamage;
 	ElementType = NewELEMENT;
+
+	DivVector = Targetvec2Index - vec2Index;
 }
 
 CBullet::~CBullet()
@@ -95,22 +96,8 @@ void CBullet::Update()
 		{
 			bIsActive = false;
 		}
-		if (vec2Index.y > Targetvec2Index.y)
-		{
-			--vec2Index.y;
-		}
-		if (vec2Index.y < Targetvec2Index.y)
-		{
-			++vec2Index.y;
-		}
-		if (vec2Index.x > Targetvec2Index.x)
-		{
-			--vec2Index.x;
-		}
-		if (vec2Index.x < Targetvec2Index.x)
-		{
-			++vec2Index.x;
-		}
+
+		vec2Index += glm::vec2(DivVector.x / 10, DivVector.y / 10);
 	}
 	else if (FromTurret == false)
 	{
