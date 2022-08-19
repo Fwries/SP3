@@ -160,6 +160,9 @@ bool CPlayer2D::Init(void)
 	X = Y = 0;
 	MaterialRange = false;
 
+	openCrafting = false;
+	openInventory = false;
+
 	return true;
 }
 
@@ -401,16 +404,32 @@ void CPlayer2D::Update(const double dElapsedTime)
 	keydownAD = "";
 	keydownWS = "";
 
+	// Check GUI state
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_E))
+	{
+		openInventory = !openInventory;
+		openCrafting = false;
+	}
+
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+	{
+		openCrafting = !openCrafting;
+		openInventory = false;
+	}
+
 	// Generate bullet & limit its firing rate to 1 bullet every 0.2s
 	static double currTime = 0.0;
 	static const double LCLICK_WAIT_TIME = 0.2;
-	if (time > (currTime + LCLICK_WAIT_TIME))
+	if (!openCrafting && !openInventory)
 	{
-		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT))
+		if (time > (currTime + LCLICK_WAIT_TIME))
 		{
-			currTime = time;
-			cBulletGenerator->GenerateBullet(this->vec2Index, (int)dir);
-			cInventoryManager->GetItem("Bullets")->Remove(1);
+			if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT))
+			{
+				currTime = time;
+				cBulletGenerator->GenerateBullet(this->vec2Index, (int)dir);
+				cInventoryManager->GetItem("Bullets")->Remove(1);
+			}
 		}
 	}
 
