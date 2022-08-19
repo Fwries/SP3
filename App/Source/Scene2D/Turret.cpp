@@ -120,14 +120,14 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 
 	if (IsWall)
 	{
-		turretType = WALL;
+		turretType = WOOD_WALL;
 		TurretHP = 5;
 		TurretDamage = 0;
 		TurretCooldown = 0.0;
 	}
 	else
 	{
-		turretType = BASE;
+		turretType = TURRET;
 		TurretHP = 6;
 		TurretDamage = 4;
 		TurretCooldown = 1.5;
@@ -156,7 +156,7 @@ void CTurret::Update(const double dElapsedTime)
 		return;
 	}
 
-	if (turretType != WALL)
+	if (turretType != WOOD_WALL && turretType != STONE_WALL && turretType != IRON_WALL)
 	{
 		time += dElapsedTime;
 
@@ -561,6 +561,11 @@ void CTurret::FlipHorizontalDirection(void)
 @brief Update position.
 */
 void CTurret::UpdatePosition(void)
+{
+
+}
+
+void CTurret::UpgradeTurret(bool PathRight)
 {
 
 }
