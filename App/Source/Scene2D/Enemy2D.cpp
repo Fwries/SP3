@@ -161,8 +161,8 @@ bool CEnemy2D::Init(void)
 		return false;
 	}
 	//Determining enemy type randomly
-	int randType = rand() % 3;
-	//int randType = 2;
+	//int randType = rand() % 3;
+	int randType = 3;
 	switch (randType)
 	{
 	case 0:
@@ -182,6 +182,12 @@ bool CEnemy2D::Init(void)
 		HP = 20;
 		ATK = 1;
 		SPE = 1;
+		break;
+	case 3:
+		enemyType = SLIMEBOSS;
+		HP = 300;
+		ATK = 4;
+		SPE = 0.6;
 		break;
 	default:
 		enemyType = SKELE1;
@@ -234,6 +240,19 @@ bool CEnemy2D::Init(void)
 		if (iTextureID == 0)
 		{
 			cout << "Image/Vampire.png" << endl;
+			return false;
+		}
+
+		MoveTime = 0.03;
+		AttackTime = 0.9f;
+	}
+	else if (enemyType == SLIMEBOSS)
+	{
+		// Load the enemy2D texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SlimeBig.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/SlimeBig.png" << endl;
 			return false;
 		}
 
@@ -318,6 +337,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			//Monster1
 			case SKELE1:
+			case SLIMEBOSS:
 			{
 				//Pathfinding method
 				auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
@@ -492,6 +512,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
 				}
+				break;
 			}
 
 		}
@@ -517,6 +538,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		switch (enemyType)
 		{
 			case SKELE1:
+			case SLIMEBOSS:
 			{
 				if (iFSMCounter >= 40)
 				{
