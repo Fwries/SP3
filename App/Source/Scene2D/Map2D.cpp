@@ -1088,7 +1088,9 @@ bool CMap2D::isBlocked(const unsigned int uiRow, const unsigned int uiCol, const
 	else
 	{
 		if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value >= 100) &&
-			(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200))
+			(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200) &&
+			(arrMapInfo[uiCurLevel][uiRow][uiCol].value != 136) &&
+			(arrMapInfo[uiCurLevel][uiRow][uiCol].value != 150))
 			return true;
 		else
 			return false;

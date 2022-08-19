@@ -232,6 +232,6 @@ protected:
 	void FlipHorizontalDirection(void);
 
 	// Update position
-	void UpdatePosition(void);
+	void UpdatePosition(glm::vec2 destination);
 };
 

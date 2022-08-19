@@ -190,7 +190,7 @@ bool CEnemy2D::Init(void)
 		SPE = 1;
 		break;
 	}
-	cout << enemyType << endl;
+	//cout << enemyType << endl;
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
@@ -294,7 +294,10 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 					if (HP <= 0)
 					{
-						cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + (cScene2D->getTurretVec()[j]->GetNearestEnemy()));
+						if (cScene2D->getEnemyVec().size() >= 0)
+						{
+							cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + (cScene2D->getTurretVec()[j]->GetNearestEnemy()));
+						}
 					}
 				}
 			}
@@ -320,7 +323,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 				auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
-				int firstDest = 0;
 				for (const auto& coord : path)
 				{
 					if (bFirstPosition == true)
@@ -344,10 +346,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 							break;
 						}
 					}
-					firstDest++;
 				}
 				/*cout << toX << "    " << toY << endl;*/
-				UpdatePosition();
+				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 				if (cPhysics2D.CalculateDistance(vec2Index, glm::vec2(30, 34)) < 1.0f)
 				{
@@ -362,7 +363,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 				auto path = cMap2D->PathFind(vec2Index, cPlayer2D->vec2Index, heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
-				int firstDest = 0;
 				for (const auto& coord : path)
 				{
 					if (bFirstPosition == true)
@@ -386,9 +386,8 @@ void CEnemy2D::Update(const double dElapsedTime)
 							break;
 						}
 					}
-					firstDest++;
 				}
-				UpdatePosition();
+				UpdatePosition(cPlayer2D->vec2Index);
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 				//Insert damaging part here
 				if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 1.0f)
@@ -447,7 +446,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 							}
 						}
 					}
-					UpdatePosition();
+					UpdatePosition(posToGo);
 					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 					//Insert damaging part here
 					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.5f)
@@ -460,33 +459,33 @@ void CEnemy2D::Update(const double dElapsedTime)
 				{
 					auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
 					//Calculate new destination
-					bool bFirstPosition = true;
-					for (const auto& coord : path)
+									bool bFirstPosition = true;
+				for (const auto& coord : path)
+				{
+					if (bFirstPosition == true)
 					{
-						if (bFirstPosition == true)
+						// Set a destination
+						i32vec2Destination = coord;
+						// Calculate the direction between enemy2D and this destination
+						i32vec2Direction = i32vec2Destination - vec2Index;
+						/*std::cout << coord.x << ", " << coord.y << "\n";*/
+						bFirstPosition = false;
+					}
+					else
+					{
+						if ((coord - i32vec2Destination) == i32vec2Direction)
 						{
-							// Set a destination
+							// Set a destination:
 							i32vec2Destination = coord;
-							// Calculate the direction between enemy2D and this destination
-							i32vec2Direction = i32vec2Destination - vec2Index;
-							/*std::cout << coord.x << ", " << coord.y << "\n";*/
-							bFirstPosition = false;
 						}
 						else
 						{
-							if ((coord - i32vec2Destination) == i32vec2Direction)
-							{
-								// Set a destination:
-								i32vec2Destination = coord;
-							}
-							else
-							{
-								break;
-							}
+							break;
 						}
 					}
 				}
-				UpdatePosition();
+				}
+				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 				if (cPhysics2D.CalculateDistance(vec2Index, glm::vec2(30, 34)) < 1.0f)
 				{
@@ -1114,7 +1113,7 @@ void CEnemy2D::FlipHorizontalDirection(void)
 /**
 @brief Update position.
 */
-void CEnemy2D::UpdatePosition(void)
+void CEnemy2D::UpdatePosition(glm::vec2 destination)
 {
 	// Store the old position
 	i32vec2OldIndex = vec2Index;
@@ -1138,15 +1137,16 @@ void CEnemy2D::UpdatePosition(void)
 		Constraint(LEFT);
 
 		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(LEFT) == false)
-		{
-			if (AdjustPosition(LEFT) == false)
-			{
-				FlipHorizontalDirection();
-				//vec2Index = i32vec2OldIndex;
-				i32vec2NumMicroSteps.x = 0;
-			}
-		}
+		//if (CheckPosition(LEFT) == false)
+		//{
+		//	if (AdjustPosition(LEFT) == false)
+		//	{
+		//		//FlipHorizontalDirection();
+		//		//vec2Index = i32vec2OldIndex;
+		//		vec2Index++;
+		//		i32vec2NumMicroSteps.x = 0;
+		//	}
+		//}
 
 		faceLeft = true;
 		// Interact with the Player
@@ -1171,15 +1171,16 @@ void CEnemy2D::UpdatePosition(void)
 		Constraint(RIGHT);
 
 		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(RIGHT) == false)
-		{
-			if (AdjustPosition(RIGHT) == false)
-			{
-				FlipHorizontalDirection();
-				/*vec2Index = i32vec2OldIndex;*/
-				i32vec2NumMicroSteps.x = 0;
-			}
-		}
+		//if (CheckPosition(RIGHT) == false)
+		//{
+		//	if (AdjustPosition(RIGHT) == false)
+		//	{
+		//		FlipHorizontalDirection();
+		//		vec2Index.x--;
+		//		//vec2Index = i32vec2OldIndex;
+		//		i32vec2NumMicroSteps.x = 0;
+		//	}
+		//}
 
 		faceLeft = false;
 		// Interact with the Player
@@ -1206,15 +1207,16 @@ void CEnemy2D::UpdatePosition(void)
 		Constraint(UP);
 
 		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(UP) == false)
-		{
-			if (AdjustPosition(UP) == false)
-			{
-				FlipHorizontalDirection();
-				/*vec2Index = i32vec2OldIndex;*/
-				i32vec2NumMicroSteps.y = 0;
-			}
-		}
+		//if (CheckPosition(UP) == false)
+		//{
+		//	if (AdjustPosition(UP) == false)
+		//	{
+		//		//FlipHorizontalDirection();
+		//		vec2Index.y--;
+		//		//vec2Index = i32vec2OldIndex;
+		//		i32vec2NumMicroSteps.y = 0;
+		//	}
+		//}
 		InteractWithPlayer();
 	}
 	// if the player is below the enemy2D, then move downward
@@ -1236,15 +1238,16 @@ void CEnemy2D::UpdatePosition(void)
 		Constraint(DOWN);
 
 		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(DOWN) == false)
-		{
-			if (AdjustPosition(DOWN) == false)
-			{
-				FlipHorizontalDirection();
-				vec2Index = i32vec2OldIndex;
-				i32vec2NumMicroSteps.y = 0;
-			}
-		}
+		//if (CheckPosition(DOWN) == false)
+		//{
+		//	//if (AdjustPosition(DOWN) == false)
+		//	//{
+		//		//FlipHorizontalDirection();
+		//		vec2Index++;
+		//		//vec2Index = i32vec2OldIndex;
+		//		i32vec2NumMicroSteps.y = 0;
+		//	//}
+		//}
 		InteractWithPlayer();
 	}
 }
