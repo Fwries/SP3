@@ -172,7 +172,11 @@ void CTurret::Update(const double dElapsedTime)
 			if (glm::length(vec2Index - nearestLive) <= range)
 			{
 				currTime = time;
-				cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+				switch (turretType)
+				{
+				case TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+				}
 			}
 		}
 
@@ -569,9 +573,18 @@ void CTurret::UpdatePosition(void)
 
 }
 
-void CTurret::UpgradeTurret(bool PathRight)
+void CTurret::UpgradeTurret(bool IsLeft)
 {
+}
 
+int CTurret::GetTurret(bool IsLeft)
+{
+	return 0;
+}
+
+int CTurret::GetCurrTurret()
+{
+	return turretType;
 }
 
 void CTurret::findNearestEnemy()

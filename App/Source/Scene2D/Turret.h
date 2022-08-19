@@ -297,5 +297,9 @@ protected:
 	void UpdatePosition(void);
 
 	void UpgradeTurret(bool);
+	 
+	int GetTurret(bool);
+
+	int GetCurrTurret();
 };
 
