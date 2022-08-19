@@ -124,6 +124,7 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		TurretHP = 5;
 		TurretDamage = 0;
 		TurretCooldown = 0.0;
+		range = 0.0;
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 	}
 	else
@@ -132,6 +133,7 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		TurretHP = 6;
 		TurretDamage = 4;
 		TurretCooldown = 1.5;
+		range = 10.0;
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 	}
 
@@ -167,7 +169,7 @@ void CTurret::Update(const double dElapsedTime)
 		// Generate bullet & limit its firing rate to 1 bullet every 0.2s
 		if (time > (currTime + TurretCooldown))
 		{
-			if (glm::length(vec2Index - nearestLive) <= 10)
+			if (glm::length(vec2Index - nearestLive) <= range)
 			{
 				currTime = time;
 				cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);

@@ -37,6 +37,7 @@ private:
 	float RotateAngle;
 	int Damage;
 	bool FromTurret;
+	float BulletSpeed;
 
 	glm::vec2 Targetvec2Index;
 	glm::vec2 DivVector;

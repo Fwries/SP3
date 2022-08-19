@@ -78,8 +78,9 @@ CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, 
 	Damage = NEWDamage;
 	ElementType = NewELEMENT;
 	runtimeColour = Colour;
-
+	
 	DivVector = Targetvec2Index - vec2Index;
+	BulletSpeed = glm::length(Targetvec2Index - vec2Index);
 }
 
 CBullet::~CBullet()
@@ -100,7 +101,7 @@ void CBullet::Update()
 			bIsActive = false;
 		}
 
-		vec2Index += glm::vec2(DivVector.x / 10, DivVector.y / 10);
+		vec2Index += glm::vec2(DivVector.x / BulletSpeed, DivVector.y / BulletSpeed);
 	}
 	else if (FromTurret == false)
 	{

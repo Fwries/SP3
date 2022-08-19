@@ -273,6 +273,7 @@ protected:
 	int TurretDamage;
 	int TurretElement;
 	double TurretCooldown;
+	double range;
 	glm::vec4 Colour;
 
 	double time;
