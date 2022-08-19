@@ -84,6 +84,7 @@ protected:
 	float m_fProgressBar;
 	bool openInventory;
 	bool openCrafting;
+	bool openUpgrade;
 	int recipeNo;
 	unsigned int iTextureID;
 
