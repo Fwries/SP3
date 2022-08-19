@@ -496,7 +496,7 @@ bool CScene2D::GetPlayerWon()
 	return PlayerWon;
 }
 
-vector<CTurret*> CScene2D::getTurretVec(void)
+vector<CTurret*>& CScene2D::getTurretVec(void)
 {
 	return turretVector;
 }

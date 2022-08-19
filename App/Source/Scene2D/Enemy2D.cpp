@@ -98,6 +98,8 @@ bool CEnemy2D::Init(void)
 	elapsed = 0;
 	spawnRate = 1;
 
+	targetableTurret = false;
+
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
@@ -399,7 +401,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case VAMPIRE:
 			{
 				//Check if there is a targetable turret in the map
-				bool targetableTurret = false;
+				targetableTurret = false;
 				for (int i = 0; i < /*y*/ 63; i++)
 				{
 					for (int j = 0; j < /*x*/ 63; j++)
@@ -411,13 +413,13 @@ void CEnemy2D::Update(const double dElapsedTime)
 						}
 					}
 				}
-				cout << targetableTurret << endl;
+				//cout << targetableTurret << endl;
 
 				//Pathfinding method
 				if (targetableTurret == true)
 				{
 					glm::vec2 posToGo = findNearestTurret();
-					cout << findNearestTurret().x << "   " << findNearestTurret().y << endl;
+					//cout << findNearestTurret().x << "   " << findNearestTurret().y << endl;
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 					//Calculate new destination
 					bool bFirstPosition = true;
@@ -448,7 +450,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 					UpdatePosition();
 					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 					//Insert damaging part here
-					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.0f)
+					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.5f)
 					{
 						sCurrentFSM = ATTACK;
 						iFSMCounter = 0;
@@ -535,10 +537,26 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			case VAMPIRE:
 			{
-				if (iFSMCounter >= 40)
+				if (iFSMCounter >= 40 && targetableTurret == false)
 				{
 					cPlayer2D->changeBaseHP(ATK);
 					iFSMCounter = 0;
+				}
+				else if (iFSMCounter >= 40 && targetableTurret == true)
+				{
+					for (unsigned i = 0; i < cScene2D->getTurretVec().size(); ++i)
+					{
+						if (cScene2D->getTurretVec()[i]->getTurretPos() == findNearestTurret())
+						{
+							cScene2D->getTurretVec()[i]->SetGetTurretHP((cScene2D->getTurretVec()[i]->GetTurretHP() - ATK));
+							iFSMCounter = 0;
+							cout << cScene2D->getTurretVec()[i]->GetTurretHP() << endl;
+							if (cScene2D->getTurretVec()[i]->GetTurretHP() <= 0)
+							{
+								cScene2D->getTurretVec().erase(cScene2D->getTurretVec().begin() + i);
+							}
+						}
+					}
 				}
 				break;
 			}
@@ -1129,7 +1147,7 @@ void CEnemy2D::UpdatePosition(void)
 			if (AdjustPosition(LEFT) == false)
 			{
 				FlipHorizontalDirection();
-				vec2Index = i32vec2OldIndex;
+				//vec2Index = i32vec2OldIndex;
 				i32vec2NumMicroSteps.x = 0;
 			}
 		}
@@ -1159,7 +1177,7 @@ void CEnemy2D::UpdatePosition(void)
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(RIGHT) == false)
 		{
-			/*if (AdjustPosition(RIGHT) == false)*/
+			if (AdjustPosition(RIGHT) == false)
 			{
 				FlipHorizontalDirection();
 				/*vec2Index = i32vec2OldIndex;*/

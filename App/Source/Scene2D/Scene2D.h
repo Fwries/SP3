@@ -71,7 +71,7 @@ public:
 
 	bool GetPlayerWon();
 
-	vector<CTurret*> getTurretVec(void);
+	vector<CTurret*>& getTurretVec(void);
 	vector<CEntity2D*>& getEnemyVec(void);
 
 protected:
