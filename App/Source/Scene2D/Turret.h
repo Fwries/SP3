@@ -198,6 +198,9 @@ protected:
 	int TurretHP;
 	int TurretDamage;
 	int TurretElement;
+	double TurretCooldown;
+
+	double currTime;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
