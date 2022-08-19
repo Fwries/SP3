@@ -210,7 +210,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 	vec2OldIndex = vec2Index;
 	vec2OldMicroSteps = vec2NumMicroSteps;
-
 	// To determine the player's direction
 	char* keydownAD = "";
 	char* keydownWS = "";
@@ -249,7 +248,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		keydownAD = "D";
 		// Calculate the new position to the right
-		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS_MULTIPLIED)
 		{
 			vec2NumMicroSteps.x++;
 
@@ -278,7 +277,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		keydownWS = "W";
 		// Calculate the new position up
-		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS_MULTIPLIED)
 		{
 			vec2NumMicroSteps.y++;
 			if (vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
@@ -466,7 +465,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cInventoryManager->GetItem("Lives")->GetCount() <= 0)
 	{
-		vec2Index = glm::vec2((float)cSettings->NUM_TILES_XAXIS / 2.f, (float)cSettings->NUM_TILES_YAXIS / 2.f);
+		vec2Index = glm::vec2((float)cSettings->NUM_TILES_XAXIS_MULTIPLIED / 2.f, (float)cSettings->NUM_TILES_YAXIS_MULTIPLIED / 2.f);
 		cInventoryManager->GetItem("Plank")->Remove(cInventoryManager->GetItem("Plank")->GetCount());
 		cInventoryManager->GetItem("Stone")->Remove(cInventoryManager->GetItem("Stone")->GetCount());
 		cInventoryManager->GetItem("Iron")->Remove(cInventoryManager->GetItem("Iron")->GetCount());
@@ -579,17 +578,17 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 	}
 	else if (eDirection == RIGHT)
 	{
-		if (vec2Index.x >= (int)cSettings->NUM_TILES_XAXIS - 1)
+		if (vec2Index.x >= (int)cSettings->NUM_TILES_XAXIS_MULTIPLIED - 1)
 		{
-			vec2Index.x = ((int)cSettings->NUM_TILES_XAXIS) - 1;
+			vec2Index.x = ((int)cSettings->NUM_TILES_XAXIS_MULTIPLIED) - 1;
 			vec2NumMicroSteps.x = 0;
 		}
 	}
 	else if (eDirection == UP)
 	{
-		if (vec2Index.y >= (int)cSettings->NUM_TILES_YAXIS - 1)
+		if (vec2Index.y >= (int)cSettings->NUM_TILES_YAXIS_MULTIPLIED - 1)
 		{
-			vec2Index.y = ((int)cSettings->NUM_TILES_YAXIS) - 1;
+			vec2Index.y = ((int)cSettings->NUM_TILES_YAXIS_MULTIPLIED) - 1;
 			vec2NumMicroSteps.y = 0;
 		}
 	}
@@ -638,7 +637,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 	else if (eDirection == RIGHT)
 	{
 		// If the new position is at the top row, then return true
-		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
+		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS_MULTIPLIED - 1)
 		{
 			vec2NumMicroSteps.x = 0;
 			return true;
@@ -668,7 +667,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 	else if (eDirection == UP)
 	{
 		// If the new position is at the top row, then return true
-		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
+		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS_MULTIPLIED - 1)
 		{
 			vec2NumMicroSteps.y = 0;
 			return true;
@@ -757,7 +756,7 @@ void CPlayer2D::UpdateJumpFall(const double dElapsedTime)
 		int iIndex_YAxis_OLD = vec2Index.y;
 
 		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS); //Displacement divide by distance for 1 microstep
-		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS_MULTIPLIED)
 		{
 			vec2NumMicroSteps.y += iDisplacement_MicroSteps;
 			if (vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
