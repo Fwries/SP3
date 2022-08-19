@@ -387,7 +387,7 @@ bool CScene2D::Update(const double dElapsedTime)
 			switch (cGUI_Scene2D->GetEquipped())
 			{
 			case 1:
-				if (cInventoryManager->GetItem("Turret")->GetCount() > 0)
+				if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0)
 				{
 					CTurret* cTurret = new CTurret();
 					// Pass shader to cEnemy2D
