@@ -43,7 +43,7 @@ CMap2D::~CMap2D(void)
 	// Dynamically deallocate the 3D array used to store the map information
 	for (unsigned int uiLevel = 0; uiLevel < uiNumLevels; uiLevel++)
 	{
-		for (unsigned int iRow = 0; iRow < cSettings->NUM_TILES_YAXIS; iRow++)
+		for (unsigned int iRow = 0; iRow < cSettings->NUM_TILES_YAXIS_MULTIPLIED; iRow++)
 		{
 			delete[] arrMapInfo[uiLevel][iRow];
 		}
@@ -81,9 +81,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	// Reset all keys since we are starting a new game
 	cKeyboardController->Reset();
 
-	amtX = 0;
-	amtY = 0;
-
 	// Create the arrMapInfo and initialise to 0
 	// Start by initialising the number of levels
 	arrMapInfo = new Grid** [uiNumLevels];
@@ -103,8 +100,8 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	// Store the map sizes in cSettings
 	uiCurLevel = 0;
 	this->uiNumLevels = uiNumLevels;
-	cSettings->NUM_TILES_XAXIS = uiNumCols;
-	cSettings->NUM_TILES_YAXIS = uiNumRows;
+	cSettings->NUM_TILES_XAXIS = uiNumCols / cSettings->NUM_TILES_MULTIPLIERX;
+	cSettings->NUM_TILES_YAXIS = uiNumRows / cSettings->NUM_TILES_MULTIPLIERY;
 	cSettings->UpdateSpecifications();
 
 	glGenVertexArrays(1, &VAO);
@@ -526,8 +523,8 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 						{ -1, -1 }, { 1, 1 }, { -1, 1 }, { 1, -1 } };
 
 	// Resize these 2 lists
-	m_cameFromList.resize(cSettings->NUM_TILES_YAXIS * cSettings->NUM_TILES_XAXIS);
-	m_closedList.resize(cSettings->NUM_TILES_YAXIS * cSettings->NUM_TILES_XAXIS, false);
+	m_cameFromList.resize(cSettings->NUM_TILES_XAXIS_MULTIPLIED * cSettings->NUM_TILES_YAXIS_MULTIPLIED);
+	m_closedList.resize(cSettings->NUM_TILES_XAXIS_MULTIPLIED* cSettings->NUM_TILES_YAXIS_MULTIPLIED, false);
 
 	//// Clear AStar memory
 	//ClearAStar();
@@ -546,24 +543,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 */
 void CMap2D::Update(const double dElapsedTime)
 {
-	//CS: Update the animated sprite
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_Y))
-	{
-		amtX += 0.01;
-	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_H))
-	{
-		amtX -= 0.01;
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_U))
-	{
-		amtY -= 0.01;
-	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_J))
-	{
-		amtY += 0.01;
-	}
-	
+
 }
 
 /**
@@ -592,13 +572,33 @@ void CMap2D::Render(void)
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	//cout << cPlayer2D->vec2Index.x << "   " << cPlayer2D->vec2Index.y << endl;
 	// Render
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+
+	glm::vec2 startPos = glm::vec2(cPlayer2D->vec2Index.x - ((float)cSettings->NUM_TILES_XAXIS / 2.f), cPlayer2D->vec2Index.y - ((float)cSettings->NUM_TILES_YAXIS / 2.f));
+	glm::vec2 endPos = glm::vec2(cPlayer2D->vec2Index.x + ((float)cSettings->NUM_TILES_XAXIS / 2.f), cPlayer2D->vec2Index.y + ((float)cSettings->NUM_TILES_YAXIS / 2.f));
+
+	/*if (startPos.x < 0.f)
+		startPos.x = 0.f;
+	else if (startPos.x > (float)cSettings->NUM_TILES_XAXIS)
+		startPos.x = (float)cSettings->NUM_TILES_XAXIS;
+
+	if (startPos.y < 0.f)
+		startPos.y = 0.f;
+	else if (startPos.y > (float)cSettings->NUM_TILES_XAXIS)
+		startPos.y = (float)cSettings->NUM_TILES_YAXIS;
+
+	if (endPos.x > (float)cSettings->NUM_TILES_XAXIS)
+		endPos.x = (float)cSettings->NUM_TILES_XAXIS;
+
+	if (endPos.y > (float)cSettings->NUM_TILES_YAXIS)
+		endPos.y = (float)cSettings->NUM_TILES_YAXIS;*/
+
+	for (unsigned int uiRow = startPos.y; uiRow < endPos.y; uiRow++)
 	{
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
+		for (unsigned int uiCol = startPos.x; uiCol < endPos.x; uiCol++)
 		{
 			transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
-															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
+			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol - startPos.x, false, 0.f),
+															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow - startPos.y, true, 0.f),
 															0.0f));
 			/*transform = glm::translate(transform, -glm::vec3(cPlayer2D->vec2Index.x * 0.0625f - (cSettings->NUM_TILES_XAXIS / 2 * 0.0625f),
 				cPlayer2D->vec2Index.y * 0.08333f - (cSettings->NUM_TILES_YAXIS / 2 * 0.08333f), 0.0f));*/
@@ -634,12 +634,12 @@ void CMap2D::SetNumTiles(const CSettings::AXIS sAxis, const unsigned int uiValue
 
 	if (sAxis == CSettings::x)
 	{
-		cSettings->NUM_TILES_XAXIS = uiValue;
+		cSettings->NUM_TILES_XAXIS = uiValue / cSettings->NUM_TILES_MULTIPLIERX;
 		cSettings->UpdateSpecifications();
 	}
 	else if (sAxis == CSettings::y)
 	{
-		cSettings->NUM_TILES_YAXIS = uiValue;
+		cSettings->NUM_TILES_YAXIS = uiValue / cSettings->NUM_TILES_MULTIPLIERY;
 		cSettings->UpdateSpecifications();
 	}
 	else if (sAxis == CSettings::z)
@@ -691,7 +691,7 @@ void CMap2D::SetNumSteps(const CSettings::AXIS sAxis, const unsigned int uiValue
 void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert)
 {
 	if (bInvert)
-		arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value = iValue;
+		arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS_MULTIPLIED - uiRow - 1][uiCol].value = iValue;
 	else
 		arrMapInfo[uiCurLevel][uiRow][uiCol].value = iValue;
 }
@@ -705,7 +705,7 @@ void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, cons
 int CMap2D::GetMapInfo(const unsigned int uiRow, const int unsigned uiCol, const bool bInvert) const
 {
 	if (bInvert)
-		return arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS- uiRow - 1][uiCol].value;
+		return arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS_MULTIPLIED - uiRow - 1][uiCol].value;
 	else
 		return arrMapInfo[uiCurLevel][uiRow][uiCol].value;
 }
@@ -718,21 +718,21 @@ bool CMap2D::LoadMap(string filename, const unsigned int uiCurLevel)
 	doc = rapidcsv::Document(FileSystem::getPath(filename).c_str());
 
 	// Check if the sizes of CSV data matches the declared arrMapInfo sizes
-	if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
-		(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
+	if ((cSettings->NUM_TILES_XAXIS_MULTIPLIED != (unsigned int)doc.GetColumnCount()) ||
+		(cSettings->NUM_TILES_YAXIS_MULTIPLIED != (unsigned int)doc.GetRowCount()))
 	{
 		cout << "Sizes of CSV map does not match declared arrMapInfo sizes." << endl;
 		return false;
 	}
 
 	// Read the rows and columns of CSV data into arrMapInfo
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS_MULTIPLIED; uiRow++)
 	{
 		// Read a row from the CSV file
 		std::vector<std::string> row = doc.GetRow<std::string>(uiRow);
 		
 		// Load a particular CSV value into the arrMapInfo
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
+		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS_MULTIPLIED; ++uiCol)
 		{
 			arrMapInfo[uiCurLevel][uiRow][uiCol].value = (int)stoi(row[uiCol]);
 		}
@@ -748,9 +748,9 @@ bool CMap2D::LoadMap(string filename, const unsigned int uiCurLevel)
 bool CMap2D::SaveMap(string filename, const unsigned int uiCurLevel)
 {
 	// Update the rapidcsv::Document from arrMapInfo
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS_MULTIPLIED; uiRow++)
 	{
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
+		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS_MULTIPLIED; uiCol++)
 		{
 			doc.SetCell(uiCol, uiRow, arrMapInfo[uiCurLevel][uiRow][uiCol].value);
 		}
@@ -772,14 +772,14 @@ bool CMap2D::SaveMap(string filename, const unsigned int uiCurLevel)
 */
 bool CMap2D::FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert)
 {
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS_MULTIPLIED; uiRow++)
 	{
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
+		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS_MULTIPLIED; uiCol++)
 		{
 			if (arrMapInfo[uiCurLevel][uiRow][uiCol].value == iValue)
 			{
 				if (bInvert)
-					uirRow = cSettings->NUM_TILES_YAXIS - uiRow - 1;
+					uirRow = cSettings->NUM_TILES_YAXIS_MULTIPLIED - uiRow - 1;
 				else
 					uirRow = uiRow;
 				uirCol = uiCol;
@@ -976,14 +976,14 @@ void CMap2D::PrintSelf(void) const
 	for (unsigned uiLevel = 0; uiLevel < uiNumLevels; uiLevel++)
 	{
 		cout << "Level: " << uiLevel << endl;
-		for (unsigned uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+		for (unsigned uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS_MULTIPLIED; uiRow++)
 		{
-			for (unsigned uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
+			for (unsigned uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS_MULTIPLIED; uiCol++)
 			{
 				cout.fill('0');
 				cout.width(3);
 				cout << arrMapInfo[uiLevel][uiRow][uiCol].value;
-				if (uiCol != cSettings->NUM_TILES_XAXIS - 1)
+				if (uiCol != cSettings->NUM_TILES_XAXIS_MULTIPLIED - 1)
 					cout << ", ";
 				else
 					cout << endl;
@@ -1005,8 +1005,8 @@ bool CMap2D::isValid(const glm::vec2& pos) const
 {
 	//return (pos.x >= 0) && (pos.x < m_dimensions.x) &&
 	//	(pos.y >= 0) && (pos.y < m_dimensions.y);
-	return (pos.x >= 0) && (pos.x < cSettings->NUM_TILES_XAXIS) &&
-		(pos.y >= 0) && (pos.y < cSettings->NUM_TILES_YAXIS);
+	return (pos.x >= 0) && (pos.x < cSettings->NUM_TILES_XAXIS_MULTIPLIED) &&
+		(pos.y >= 0) && (pos.y < cSettings->NUM_TILES_YAXIS_MULTIPLIED);
 }
 
 /**
@@ -1016,8 +1016,8 @@ bool CMap2D::isBlocked(const unsigned int uiRow, const unsigned int uiCol, const
 {
 	if (bInvert == true)
 	{
-		if ((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 100) &&
-			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 200))
+		if ((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS_MULTIPLIED - uiRow - 1][uiCol].value >= 100) &&
+			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS_MULTIPLIED - uiRow - 1][uiCol].value < 200))
 			return true;
 		else
 			return false;
@@ -1038,7 +1038,7 @@ bool CMap2D::isBlocked(const unsigned int uiRow, const unsigned int uiCol, const
 int CMap2D::ConvertTo1D(const glm::vec2& pos) const
 {
 	//return (pos.y * m_dimensions.x) + pos.x;
-	return (pos.y * cSettings->NUM_TILES_XAXIS) + pos.x;
+	return (pos.y * cSettings->NUM_TILES_XAXIS_MULTIPLIED) + pos.x;
 }
 
 /**

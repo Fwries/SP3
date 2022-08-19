@@ -205,9 +205,6 @@ protected:
 	//CS: Animated Sprite
 	//CSpriteAnimation* animatedCoin;
 
-	float amtX;
-	float amtY;
-
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 };
