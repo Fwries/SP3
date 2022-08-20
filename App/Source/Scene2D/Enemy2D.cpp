@@ -686,7 +686,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 	case DEAD:
 	{
-		if (enemyType == SKULL)
+		if (enemyType == SKULL || enemyType == SLIMEBABY)
 		{
 			bIsActive = false;
 		}
