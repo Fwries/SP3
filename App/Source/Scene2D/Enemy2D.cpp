@@ -187,7 +187,7 @@ bool CEnemy2D::Init(void)
 		enemyType = SLIMEBOSS;
 		HP = 300;
 		ATK = 4;
-		SPE = 0.6;
+		SPE = 0.4;
 		break;
 	default:
 		enemyType = SKELE1;
