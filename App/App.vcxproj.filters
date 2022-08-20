@@ -178,5 +178,8 @@
     <ClInclude Include="Source\Scene2D\Vector3.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene2D\MyMath.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
