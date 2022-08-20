@@ -515,10 +515,19 @@ void CScene2D::spawnExtraEnemy(int i)
 		// Pass shader to cEnemy2D
 		cEnemy2D->SetShader("Shader2D_Colour");
 		// Initialise the instance
-		if (cEnemy2D->babySlimeInit() == true)
+		if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x, slimeBossPos.y + 1)) == true)
 		{
 			cEnemy2D->SetPlayer2D(cPlayer2D);
 			enemyVector.push_back(cEnemy2D);
 		}
 	}
+}
+
+void CScene2D::setSlimeBPos(glm::vec2 pos)
+{
+	slimeBossPos = pos;
+}
+glm::vec2 CScene2D::getSlimePos()
+{
+	return slimeBossPos;
 }

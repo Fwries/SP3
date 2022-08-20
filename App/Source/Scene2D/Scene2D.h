@@ -76,6 +76,8 @@ public:
 	vector<CEntity2D*>& getEnemyVec(void);
 
 	void spawnExtraEnemy(int i);
+	void setSlimeBPos(glm::vec2 pos);
+	glm::vec2 getSlimePos();
 
 protected:
 	// The handler containing the instance of the 2D Map
@@ -119,6 +121,8 @@ protected:
 	double spawnRate;
 
 	bool extraEnemyToSpawn;
+
+	glm::vec2 slimeBossPos;
 
 	// Constructor
 	CScene2D(void);

@@ -50,7 +50,7 @@ public:
 
 	// Init
 	bool Init(void);
-	bool babySlimeInit(void);
+	bool babySlimeInit(glm::vec2 bossPos);
 
 	// Update
 	void Update(const double dElapsedTime);
@@ -133,6 +133,7 @@ protected:
 	glm::vec2 nearestLive;
 	CTurret* nearestTurret;
 	int nearestTurretInt;
+
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;

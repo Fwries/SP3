@@ -294,7 +294,7 @@ bool CEnemy2D::Init(void)
 	return true;
 }
 
-bool CEnemy2D::babySlimeInit(void)
+bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 {
 
 	// Rand seeding
@@ -322,7 +322,7 @@ bool CEnemy2D::babySlimeInit(void)
 
 	//Set the position of the enemy randomly on the edge of the map
 	int edge = rand() % 4;
-	int X = rand() % 62, Y = rand() % 62;
+	int X =bossPos.x, Y = bossPos.y;
 	if (cMap2D->GetMapInfo(X, Y) != 0)
 	{
 		return false;
@@ -711,6 +711,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		}
 		else if (enemyType == SLIMEBOSS)
 		{
+			cScene2D->setSlimeBPos(vec2Index);
 			cScene2D->spawnExtraEnemy(4);
 			bIsActive = false;
 		}
