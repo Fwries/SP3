@@ -75,6 +75,8 @@ public:
 	vector<CTurret*>& getTurretVec(void);
 	vector<CEntity2D*>& getEnemyVec(void);
 
+	void spawnExtraEnemy(int i);
+
 protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
@@ -115,6 +117,8 @@ protected:
 
 	double elapsed;
 	double spawnRate;
+
+	bool extraEnemyToSpawn;
 
 	// Constructor
 	CScene2D(void);

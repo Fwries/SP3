@@ -185,7 +185,7 @@ bool CEnemy2D::Init(void)
 		break;
 	case 3:
 		enemyType = SLIMEBOSS;
-		HP = 300;
+		HP = 3;
 		ATK = 4;
 		SPE = 0.4;
 		break;
@@ -294,6 +294,101 @@ bool CEnemy2D::Init(void)
 	return true;
 }
 
+bool CEnemy2D::babySlimeInit(void)
+{
+
+	// Rand seeding
+	srand(time(NULL));
+
+
+	MoveCooldown = 0;
+	AttackCooldown = 0;
+
+	TRGE = 1;
+	ARGE = 1;
+
+	X = 0;
+	Y = 0;
+	elapsed = 0;
+	spawnRate = 1;
+
+	targetableTurret = false;
+
+	// Get the handler to the CSettings instance
+	cSettings = CSettings::GetInstance();
+
+	// Get the handler to the CMap2D instance
+	cMap2D = CMap2D::GetInstance();
+
+	//Set the position of the enemy randomly on the edge of the map
+	int edge = rand() % 4;
+	int X = rand() % 62, Y = rand() % 62;
+	if (cMap2D->GetMapInfo(X, Y) != 0)
+	{
+		return false;
+	}
+	//Determining enemy type randomly
+	enemyType = SLIMEBABY;
+	HP = 12;
+	ATK = 1;
+	SPE = 1;
+
+	//cout << enemyType << endl;
+	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
+	// By default, microsteps should be zero
+	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	//CS: Create the Quad Mesh using the mesh builder
+	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+
+
+	// Load the enemy2D texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SlimeSmall.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Image/SlimeSmall.png" << endl;
+		return false;
+	}
+
+	MoveTime = 0.025;
+	AttackTime = 0.0f;
+
+	animatedEnemy = CMeshBuilder::GenerateSpriteAnimation(5, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedEnemy->AddAnimation("right", 0, 3);
+	animatedEnemy->AddAnimation("left", 4, 7);
+	animatedEnemy->AddAnimation("Hright", 8, 11);
+	animatedEnemy->AddAnimation("Hleft", 12, 15);
+	animatedEnemy->AddAnimation("Dright", 18, 19);
+	animatedEnemy->AddAnimation("Dleft", 16, 17);
+
+	//CS: Play the "idle" animation as default
+	animatedEnemy->PlayAnimation("left", -1, 1.0f);
+
+	//CS: Init the color to white
+	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+	// Set the Physics to fall status by default
+	cPhysics2D.Init();
+	//cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+
+	// If this class is initialised properly, then set the bIsActive to true
+	bIsActive = true;
+	faceLeft = true;
+
+	// Store the keyboard controller singleton instance here
+	cKeyboardController = CKeyboardController::GetInstance();
+
+	// Load the sounds into CSoundController
+	cSoundController = CSoundController::GetInstance();
+
+	cScene2D = CScene2D::GetInstance();
+
+	return true;
+}
+
 /**
  @brief Update this instance
  */
@@ -338,6 +433,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			//Monster1
 			case SKELE1:
 			case SLIMEBOSS:
+			case SLIMEBABY:
 			{
 				//Pathfinding method
 				auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
@@ -539,6 +635,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			case SKELE1:
 			case SLIMEBOSS:
+			case SLIMEBABY:
 			{
 				if (iFSMCounter >= 40)
 				{
@@ -611,6 +708,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 					bIsActive = false;
 				}
 			}
+		}
+		else if (enemyType == SLIMEBOSS)
+		{
+			cScene2D->spawnExtraEnemy(4);
+			bIsActive = false;
 		}
 		iFSMCounter++;
 		break;

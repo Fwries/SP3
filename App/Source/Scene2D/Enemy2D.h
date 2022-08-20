@@ -50,6 +50,7 @@ public:
 
 	// Init
 	bool Init(void);
+	bool babySlimeInit(void);
 
 	// Update
 	void Update(const double dElapsedTime);

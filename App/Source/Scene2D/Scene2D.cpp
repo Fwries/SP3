@@ -228,6 +228,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		}
 	}
 
+
 	// Call all the cEnemy2D's update method before Map2D 
 	// as we want to capture the updates before map2D update	
 	//for (int i = 0; i < enemyVector.size(); i++)
@@ -503,4 +504,21 @@ vector<CTurret*>& CScene2D::getTurretVec(void)
 vector<CEntity2D*>& CScene2D::getEnemyVec(void)
 {
 	return enemyVector;
+}
+
+
+void CScene2D::spawnExtraEnemy(int i)
+{
+	for (unsigned j = 0; j < i; ++j)
+	{
+		CEnemy2D* cEnemy2D = new CEnemy2D();
+		// Pass shader to cEnemy2D
+		cEnemy2D->SetShader("Shader2D_Colour");
+		// Initialise the instance
+		if (cEnemy2D->babySlimeInit() == true)
+		{
+			cEnemy2D->SetPlayer2D(cPlayer2D);
+			enemyVector.push_back(cEnemy2D);
+		}
+	}
 }
