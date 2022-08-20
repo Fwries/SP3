@@ -34,6 +34,7 @@
     <ClCompile Include="Source\Scene2D\Player2D.cpp" />
     <ClCompile Include="Source\Scene2D\Scene2D.cpp" />
     <ClCompile Include="Source\Scene2D\Turret.cpp" />
+    <ClCompile Include="Source\Scene2D\Vector3.cpp" />
     <ClCompile Include="Source\SoundController\SoundController.cpp" />
     <ClCompile Include="Source\SoundController\SoundInfo.cpp" />
   </ItemGroup>
@@ -61,6 +62,7 @@
     <ClInclude Include="Source\Scene2D\Player2D.h" />
     <ClInclude Include="Source\Scene2D\Scene2D.h" />
     <ClInclude Include="Source\Scene2D\Turret.h" />
+    <ClInclude Include="Source\Scene2D\Vector3.h" />
     <ClInclude Include="Source\SoundController\SoundController.h" />
     <ClInclude Include="Source\SoundController\SoundInfo.h" />
   </ItemGroup>
