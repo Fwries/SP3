@@ -323,10 +323,10 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 	//Set the position of the enemy randomly on the edge of the map
 	int edge = rand() % 4;
 	int X =bossPos.x, Y = bossPos.y;
-	if (cMap2D->GetMapInfo(X, Y) != 0)
-	{
-		return false;
-	}
+	//if (cMap2D->GetMapInfo(X, Y) != 0)
+	//{
+	//	return false;
+	//}
 	//Determining enemy type randomly
 	enemyType = SLIMEBABY;
 	HP = 12;

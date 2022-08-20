@@ -515,10 +515,37 @@ void CScene2D::spawnExtraEnemy(int i)
 		// Pass shader to cEnemy2D
 		cEnemy2D->SetShader("Shader2D_Colour");
 		// Initialise the instance
-		if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x, slimeBossPos.y + 1)) == true)
+		if (j == 0)
 		{
-			cEnemy2D->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(cEnemy2D);
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x, slimeBossPos.y + 1)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else if (j == 1)
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x + 1, slimeBossPos.y)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else if (j == 2)
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x, slimeBossPos.y - 1)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x - 1, slimeBossPos.y)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
 		}
 	}
 }
