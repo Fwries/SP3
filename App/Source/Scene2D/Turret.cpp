@@ -115,8 +115,11 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 
 	cBulletGenerator = new CBulletGenerator();
 
-	time = 0.0;
-	currTime = 0.0;
+	// Rand seeding
+	srand(time(NULL));
+
+	Time = 0.0;
+	CurrTime = 0.0;
 
 	if (IsWall)
 	{
@@ -126,6 +129,8 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		TurretCooldown = 0.0;
 		range = 0.0;
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		upgradeLeft = STONE_WALL;
+		upgradeRight = NONE;
 	}
 	else
 	{
@@ -135,6 +140,8 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		TurretCooldown = 1.5;
 		range = 10.0;
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		upgradeLeft = STONE_TURRET;
+		upgradeRight = ELEMENTAL_TURRET;
 	}
 
 	// If this class is initialised properly, then set the bIsActive to true
@@ -162,16 +169,16 @@ void CTurret::Update(const double dElapsedTime)
 
 	if (turretType != WOOD_WALL && turretType != STONE_WALL && turretType != IRON_WALL)
 	{
-		time += dElapsedTime;
+		Time += dElapsedTime;
 
 		findNearestEnemy();
 
 		// Generate bullet & limit its firing rate to 1 bullet every 0.2s
-		if (time > (currTime + TurretCooldown))
+		if (Time > (CurrTime + TurretCooldown))
 		{
 			if (glm::length(vec2Index - nearestLive) <= range)
 			{
-				currTime = time;
+				CurrTime = Time;
 				switch (turretType)
 				{
 				case TURRET:
@@ -557,6 +564,11 @@ bool CTurret::AdjustPosition(DIRECTION eDirection)
 	return false;
 }
 
+bool CTurret::InteractWithPlayer(void)
+{
+	return false;
+}
+
 /**
  @brief Flip horizontal direction. For patrol use only
  */
@@ -575,11 +587,232 @@ void CTurret::UpdatePosition(void)
 
 void CTurret::UpgradeTurret(bool IsLeft)
 {
+	if (IsLeft)
+	{
+		turretType = upgradeLeft;
+	}
+	else
+	{
+		turretType = upgradeRight;
+	}
+
+	TurretType upgradeRare;
+
+	switch (turretType) // Setting up the stats for the different types
+	{
+	case STONE_WALL:
+		upgradeLeft = IRON_WALL;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case STONE_TURRET:
+		upgradeLeft = REINFORCED_STONE_TURRET;
+		upgradeRight = MULTI_PEBBLE_TURRET;
+		upgradeRare = RANDOM_DMG_TURRET;
+		break;
+	case ELEMENTAL_TURRET:
+		upgradeLeft = FLAME_TURRET;
+		upgradeRight = FROST_TURRET;
+		upgradeRare = MYSTERIOUS_TURRET;
+		break;
+
+	// Tier 2
+	case REINFORCED_STONE_TURRET:
+		upgradeLeft = SHARP_STONE_TURRET;
+		upgradeRight = IRON_TURRET;
+		upgradeRare = ORE_GENERATOR;
+		break;
+	case MULTI_PEBBLE_TURRET:
+		upgradeLeft = STONE_BURST_TOWER;
+		upgradeRight = MULTISHOT_TURRET;
+		upgradeRare = TURRET2;
+		break;
+	case RANDOM_DMG_TURRET:
+		upgradeLeft = RANDOMDMGTURRETV2;
+		upgradeRight = GLITCHED_TURRET;
+		upgradeRare = GETRANDOMTURRET;
+		break;
+
+	case FLAME_TURRET:
+		upgradeLeft = FLAME_SPEAR_TURRET;
+		upgradeRight = FLAMETHROWER_TURRET;
+		upgradeRare = FIREWALL_TURRET;
+		break;
+	case FROST_TURRET:
+		upgradeLeft = ICE_SPEAR_TURRET;
+		upgradeRight = SNOWBALL_TURRET;
+		upgradeRare = ICE_FLOOR_TURRET;
+		break;
+	case MYSTERIOUS_TURRET:
+		upgradeLeft = WIND_TURRET;
+		upgradeRight = THUNDER_TURRET;
+		upgradeRare = ISTERIOUS_TURRET;
+		break;
+
+	// Tier 3
+	case SHARP_STONE_TURRET:
+		upgradeLeft = SHARPER_STONE_TURRET;
+		upgradeRight = SNIPER_TURRET;
+		upgradeRare = BLUNT_METAL_TURRET;
+		break;
+	case IRON_TURRET:
+		upgradeLeft = REINFORCED_IRON_TURRET;
+		upgradeRight = SHINY_IRON_TURRET;
+		upgradeRare = TANK;
+		break;
+	case ORE_GENERATOR:
+		upgradeLeft = GOLDEN_TURRET;
+		upgradeRight = ELEMENTAL_TURRET2;
+		upgradeRare = MIDAS_TOUCH;
+		break;
+
+	case STONE_BURST_TOWER:
+		upgradeLeft = IRON_BURST_TURRET;
+		upgradeRight = HOT_IRON_TURRET;
+		upgradeRare = REINFORCED_IRON_TURET;
+		break;
+	case MULTISHOT_TURRET:
+		upgradeLeft = MULTIMULTISHOT_TURET;
+		upgradeRight = STARSHOT_TURRET;
+		upgradeRare = WRONGDIRECTION_TURRET;
+		break;
+	case TURRET2:
+		upgradeLeft = TURRET3;
+		upgradeRight = SHOTGUN_TURRET;
+		upgradeRare = TURRETINFINITY;
+		break;
+
+	case RANDOMDMGTURRETV2:
+		upgradeLeft = RANDOM_DMG_TURRETV3;
+		upgradeRight = FLIP_A_COIN_TURRET;
+		upgradeRare = RANDOM_DIRECTION_TURRET;
+		break;
+	case GLITCHED_TURRET:
+		upgradeLeft = UPGRADED_GLITCHED_TURRET;
+		upgradeRight = GETRANDOMTURRET2;
+		upgradeRare = ROBOT_PLAYER;
+		break;
+	case GETRANDOMTURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case FLAME_SPEAR_TURRET:
+		upgradeLeft = ETERNAL_FLAME_SPEAR_TURRET;
+		upgradeRight = BLUE_FLAME_TURRET;
+		upgradeRare = DUO_FLAME_SPEAR_TURRET;
+		break;
+	case FLAMETHROWER_TURRET: // All Below have not done the turret type yet
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case FIREWALL_TURRET:
+		upgradeLeft = WIND_TURRET;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case ICE_SPEAR_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case SNOWBALL_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ICE_FLOOR_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case WIND_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case THUNDER_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ISTERIOUS_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	// Tier 4
+	case SHARPER_STONE_TURRET:
+	case SNIPER_TURRET:
+	case BLUNT_METAL_TURRET:
+
+	case REINFORCED_IRON_TURRET:
+	case SHINY_IRON_TURRET:
+	case TANK:
+
+	case GOLDEN_TURRET:
+	case ELEMENTAL_TURRET2:
+	case MIDAS_TOUCH:
+
+	case IRON_BURST_TURRET:
+	case HOT_IRON_TURRET:
+	case REINFORCED_IRON_TURET:
+
+	case MULTIMULTISHOT_TURET:
+	case STARSHOT_TURRET:
+	case WRONGDIRECTION_TURRET:
+
+	case TURRET3:
+	case SHOTGUN_TURRET:
+	case TURRETINFINITY:
+
+	case RANDOM_DMG_TURRETV3:
+	case FLIP_A_COIN_TURRET:
+	case RANDOM_DIRECTION_TURRET:
+
+	case UPGRADED_GLITCHED_TURRET:
+	case GETRANDOMTURRET2:
+	case ROBOT_PLAYER:
+
+	case ETERNAL_FLAME_SPEAR_TURRET:
+	case BLUE_FLAME_TURRET:
+	case DUO_FLAME_SPEAR_TURRET:
+
+	case IRON_WALL:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	}
+
+	if (rand() % 2 == 2) // 1 out of 3
+	{
+		if (rand() % 1 == 1) // 1 out of 2
+		{
+			upgradeLeft = upgradeRare;
+		}
+		else
+		{
+			upgradeRight = upgradeRare;
+		}
+	}
 }
 
 int CTurret::GetTurret(bool IsLeft)
 {
-	return 0;
+	if (IsLeft)
+	{
+		return upgradeLeft;
+	}
+	else
+	{
+		return upgradeRight;
+	}
 }
 
 int CTurret::GetCurrTurret()

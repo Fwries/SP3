@@ -122,6 +122,8 @@ protected:
 
 	enum TurretType
 	{
+		NONE = -1,
+
 		WOOD_WALL = 0,
 		STONE_WALL = 1000,
 		IRON_WALL = 2000,
@@ -178,25 +180,25 @@ protected:
 		HOT_IRON_TURRET = 4042,
 		REINFORCED_IRON_TURET = 4043,
 
-		MULTIMULTISHOT_TURET = 4031,
-		STARSHOT_TURRET = 4032,
-		WRONGDIRECTION_TURRET = 4033,
+		MULTIMULTISHOT_TURET = 4051,
+		STARSHOT_TURRET = 4052,
+		WRONGDIRECTION_TURRET = 4053,
 
-		TURRET3 = 4041,
-		SHOTGUN_TURRET = 4042,
-		TURRETINFINITY = 4043,
+		TURRET3 = 4061,
+		SHOTGUN_TURRET = 4062,
+		TURRETINFINITY = 4063,
 
-		RANDOM_DMG_TURRETV3 = 4051,
-		FLIP_A_COIN_TURRET = 4052,
-		RANDOM_DIRECTION_TURRET = 4053,
+		RANDOM_DMG_TURRETV3 = 4071,
+		FLIP_A_COIN_TURRET = 4072,
+		RANDOM_DIRECTION_TURRET = 4073,
 
-		UPGRADED_GLITCHED_TURRET = 4061,
-		GETRANDOMTURRET2 = 4062,
-		ROBOT_PLAYER = 4063,
+		UPGRADED_GLITCHED_TURRET = 4081,
+		GETRANDOMTURRET2 = 4082,
+		ROBOT_PLAYER = 4083,
 
-		ETERNAL_FLAME_SPEAR_TURRET = 4071,
-		BLUE_FLAME_TURRET = 4072,
-		DUO_FLAME_SPEAR_TURRET = 4073,
+		ETERNAL_FLAME_SPEAR_TURRET = 4091,
+		BLUE_FLAME_TURRET = 4092,
+		DUO_FLAME_SPEAR_TURRET = 4093,
 
 
 	};
@@ -258,6 +260,8 @@ protected:
 	FSM sCurrentFSM;
 
 	TurretType turretType;
+	TurretType upgradeLeft;
+	TurretType upgradeRight;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
@@ -276,8 +280,8 @@ protected:
 	double range;
 	glm::vec4 Colour;
 
-	double time;
-	double currTime;
+	double Time;
+	double CurrTime;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
