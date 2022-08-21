@@ -163,8 +163,8 @@ bool CEnemy2D::Init(void)
 		return false;
 	}
 	//Determining enemy type randomly
-	//int randType = rand() % 4;
-	int randType = 3;
+	int randType = rand() % 4;
+	//int randType = 3;
 	switch (randType)
 	{
 	case 0:
@@ -425,6 +425,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 							break;
 						}
 					}
+					cSoundController->PlaySoundByID(10);
 					if (HP <= 0)
 					{
 						if (cScene2D->getEnemyVec().size() >= 0)

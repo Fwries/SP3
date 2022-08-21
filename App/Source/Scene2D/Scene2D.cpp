@@ -207,6 +207,7 @@ bool CScene2D::Init(void)
 
 	//sounds for damage
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretHit.ogg"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyHit.ogg"), 10, true);
 
 	return true;
 }
@@ -367,7 +368,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, true) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, false) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
 						cTurret->SetEnemyVector(enemyVector);
