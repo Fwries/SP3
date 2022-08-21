@@ -163,7 +163,7 @@ bool CEnemy2D::Init(void)
 		return false;
 	}
 	//Determining enemy type randomly
-	int randType = rand() % 3;
+	int randType = rand() % 4;
 	//int randType = 3;
 	switch (randType)
 	{
@@ -187,7 +187,7 @@ bool CEnemy2D::Init(void)
 		break;
 	case 3:
 		enemyType = SLIMEBOSS;
-		HP = 40;
+		HP = 30;
 		ATK = 4;
 		SPE = 0.9;
 		break;
@@ -987,13 +987,21 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
  */
 bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 {
+
+	// If the new position is at the top row, then return true
+	if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
+	{
+		i32vec2NumMicroSteps.x = 0;
+		return true;
+	}
+
 	if (eDirection == LEFT)
 	{
 		// If the new position is fully within a row, then check this row only
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1002,8 +1010,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1022,7 +1030,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1031,8 +1039,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1052,7 +1060,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1061,8 +1069,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1070,11 +1078,18 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 	}
 	else if (eDirection == DOWN)
 	{
+		// If the new position is at the top row, then return true
+		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
+		{
+			i32vec2NumMicroSteps.y = 0;
+			return true;
+		}
+
 		// If the new position is fully within a column, then check this column only
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1083,8 +1098,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
