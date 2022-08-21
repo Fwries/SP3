@@ -233,7 +233,6 @@ bool CScene2D::Update(const double dElapsedTime)
 		spawnRate -= 2;
 	}
 
-	cout << remainder(elapsed, 12) << endl;
 
 
 	// Call all the cEnemy2D's update method before Map2D 
