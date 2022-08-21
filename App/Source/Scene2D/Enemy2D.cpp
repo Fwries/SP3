@@ -163,8 +163,8 @@ bool CEnemy2D::Init(void)
 		return false;
 	}
 	//Determining enemy type randomly
-	int randType = rand() % 4;
-	//int randType = 3;
+	//int randType = rand() % 4;
+	int randType = 3;
 	switch (randType)
 	{
 	case 0:
@@ -187,7 +187,7 @@ bool CEnemy2D::Init(void)
 		break;
 	case 3:
 		enemyType = SLIMEBOSS;
-		HP = 30;
+		HP = 1;
 		ATK = 4;
 		SPE = 0.9;
 		break;
@@ -721,6 +721,10 @@ void CEnemy2D::Update(const double dElapsedTime)
 						if (cScene2D->getTurretVec()[i]->getTurretPos() == findNearestTurret())
 						{
 							cScene2D->getTurretVec()[i]->SetGetTurretHP((cScene2D->getTurretVec()[i]->GetTurretHP() - ATK));
+							if (cScene2D->getTurretVec()[i]->GetTurretHP() <= 0)
+							{
+								sCurrentFSM = MOVING;
+							}
 							iFSMCounter = 0;
 							/*cout << cScene2D->getTurretVec()[i]->GetTurretHP() << "     " << cScene2D->getTurretVec().size() << endl;*/
 						}
