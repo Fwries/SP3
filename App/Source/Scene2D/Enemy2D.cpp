@@ -34,7 +34,9 @@ CEnemy2D::CEnemy2D(void)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
 	, sCurrentFSM(FSM::MOVING)
+	, status(FREEZE)
 	, iFSMCounter(0)
+	, statusCounter(0)
 	, quadMesh(NULL)
 	, cSoundController(NULL)
 {
@@ -394,6 +396,8 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
+	cout << sCurrentFSM << endl;
+
 	//Turret damage handler
 	for (unsigned j = 0; j < cScene2D->getTurretVec().size(); ++j)
 	{
@@ -415,6 +419,41 @@ void CEnemy2D::Update(const double dElapsedTime)
 					}
 				}
 			}
+		}
+	}
+
+	switch (status)
+	{
+		case BURN:
+		{
+			if (statusCounter >= 50)
+			{
+				HP = HP - 1;
+				statusCounter = 0;
+			}
+			statusCounter++;
+			break;
+		}
+		case FREEZE:
+		{
+			if (statusCounter >= 40 && sCurrentFSM == MOVING || sCurrentFSM == ATTACK)
+			{
+				sCurrentFSM = FROZEN;
+				statusCounter = 0;
+			}
+			if (sCurrentFSM != FROZEN)
+			{
+				statusCounter++;
+			}
+			break;
+		}
+		default:
+		{
+			if (statusCounter <= 100)
+			{
+				statusCounter++;
+			}
+			break;
 		}
 	}
 
@@ -715,6 +754,17 @@ void CEnemy2D::Update(const double dElapsedTime)
 			cScene2D->spawnExtraEnemy(4);
 			bIsActive = false;
 		}
+		iFSMCounter++;
+		break;
+	}
+	case FROZEN:
+	{
+		if (iFSMCounter >= 70)
+		{
+			sCurrentFSM = MOVING;
+			iFSMCounter = 0;
+		}
+
 		iFSMCounter++;
 		break;
 	}

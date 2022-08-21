@@ -108,6 +108,7 @@ protected:
 		BLOCKED = 1,
 		ATTACK = 2,
 		DEAD = 3,
+		FROZEN = 4,
 		NUM_FSM
 	};
 
@@ -178,10 +179,13 @@ protected:
 	// Current FSM
 	FSM sCurrentFSM;
 
+	Status status;
+
 	EnemyType enemyType;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
+	int statusCounter;
 
 	float MoveCooldown;
 	float MoveTime;
