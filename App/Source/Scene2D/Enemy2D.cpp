@@ -34,7 +34,7 @@ CEnemy2D::CEnemy2D(void)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
 	, sCurrentFSM(FSM::MOVING)
-	, status(FREEZE)
+	, status(NORMAL)
 	, iFSMCounter(0)
 	, statusCounter(0)
 	, quadMesh(NULL)
@@ -187,7 +187,7 @@ bool CEnemy2D::Init(void)
 		break;
 	case 3:
 		enemyType = SLIMEBOSS;
-		HP = 3;
+		HP = 40;
 		ATK = 4;
 		SPE = 0.4;
 		break;
@@ -396,7 +396,6 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
-	cout << sCurrentFSM << endl;
 
 	//Turret damage handler
 	for (unsigned j = 0; j < cScene2D->getTurretVec().size(); ++j)
@@ -409,7 +408,23 @@ void CEnemy2D::Update(const double dElapsedTime)
 				{
 					HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
 					cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->SetbIsActive(false);
-
+					switch (cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetElement())
+					{
+						case BURN:
+						{
+							status = BURN;
+							break;
+						}
+						case FREEZE:
+						{
+							status = FREEZE;
+							break;
+						}
+						default:
+						{
+							break;
+						}
+					}
 					if (HP <= 0)
 					{
 						if (cScene2D->getEnemyVec().size() >= 0)
