@@ -205,6 +205,9 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_deathscream_alien2.wav"), 7, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_deathscream_robot2.wav"), 8, true);
 
+	//sounds for damage
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretHit.ogg"), 9, true);
+
 	return true;
 }
 

@@ -694,6 +694,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				if (iFSMCounter >= 40)
 				{
 					cPlayer2D->changeBaseHP(ATK);
+					cSoundController->PlaySoundByID(9);
 					iFSMCounter = 0;
 				}
 				break;
