@@ -118,7 +118,8 @@ protected:
 	bool PlayerWon;
 
 	double elapsed;
-	double spawnRate;
+	double timeElapsed;
+	int spawnRate;
 
 	bool extraEnemyToSpawn;
 

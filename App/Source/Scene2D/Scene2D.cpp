@@ -100,7 +100,8 @@ bool CScene2D::Init(void)
 	cInventoryManager = cInventoryManager->GetInstance();
 
 	elapsed = 0;
-	spawnRate = 0.03;
+	timeElapsed = 0.025;
+	spawnRate = 8;
 
 	// Create and initialise the Map 2D
 	cMap2D = CMap2D::GetInstance();
@@ -212,10 +213,10 @@ bool CScene2D::Update(const double dElapsedTime)
 	cPlayer2D->Update(dElapsedTime);
 	cSoundController->PlaySoundByID(1);
 
-	elapsed += spawnRate;
+	elapsed += timeElapsed;
 	int intElapsed = round(elapsed);
 	//cout << intElapsed << endl;
-	if (remainder(elapsed, 8) >= 0 && remainder(elapsed, 8) <= 0.03)
+	if (remainder(elapsed, spawnRate) >= 0 && remainder(elapsed, spawnRate) <= 0.03)
 	{
 		CEnemy2D* cEnemy2D = new CEnemy2D();
 		// Pass shader to cEnemy2D
@@ -227,6 +228,12 @@ bool CScene2D::Update(const double dElapsedTime)
 			enemyVector.push_back(cEnemy2D);
 		}
 	}
+	if (remainder(elapsed, 12) >= 0 && remainder(elapsed, 12) <= 0.3 && elapsed >= 6)
+	{
+		spawnRate -= 2;
+	}
+
+	cout << remainder(elapsed, 12) << endl;
 
 
 	// Call all the cEnemy2D's update method before Map2D 
