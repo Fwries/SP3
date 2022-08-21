@@ -713,6 +713,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				if (iFSMCounter >= 40 && targetableTurret == false)
 				{
 					cPlayer2D->changeBaseHP(ATK);
+					cSoundController->PlaySoundByID(9);
 					iFSMCounter = 0;
 				}
 				else if (iFSMCounter >= 40 && targetableTurret == true)
@@ -722,6 +723,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 						if (cScene2D->getTurretVec()[i]->getTurretPos() == findNearestTurret())
 						{
 							cScene2D->getTurretVec()[i]->SetGetTurretHP((cScene2D->getTurretVec()[i]->GetTurretHP() - ATK));
+							cSoundController->PlaySoundByID(9);
 							if (cScene2D->getTurretVec()[i]->GetTurretHP() <= 0)
 							{
 								sCurrentFSM = MOVING;
