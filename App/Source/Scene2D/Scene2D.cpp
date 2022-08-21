@@ -228,7 +228,7 @@ bool CScene2D::Update(const double dElapsedTime)
 			enemyVector.push_back(cEnemy2D);
 		}
 	}
-	if (remainder(elapsed, 12) >= 0 && remainder(elapsed, 12) <= 0.3 && elapsed >= 6)
+	if (remainder(elapsed, 60) >= 0 && remainder(elapsed, 60) <= 0.3 && elapsed >= 6)
 	{
 		spawnRate -= 2;
 	}
