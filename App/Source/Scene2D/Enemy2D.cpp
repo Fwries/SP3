@@ -163,8 +163,8 @@ bool CEnemy2D::Init(void)
 		return false;
 	}
 	//Determining enemy type randomly
-	//int randType = rand() % 3;
-	int randType = 3;
+	int randType = rand() % 3;
+	//int randType = 3;
 	switch (randType)
 	{
 	case 0:
@@ -189,7 +189,7 @@ bool CEnemy2D::Init(void)
 		enemyType = SLIMEBOSS;
 		HP = 40;
 		ATK = 4;
-		SPE = 0.4;
+		SPE = 0.9;
 		break;
 	default:
 		enemyType = SKELE1;
@@ -1299,6 +1299,10 @@ void CEnemy2D::FlipHorizontalDirection(void)
 {
 	i32vec2Direction.x *= -1;
 }
+void CEnemy2D::FlipVerticalDirection(void)
+{
+	i32vec2Direction.y *= -1;
+}
 
 /**
 @brief Update position.
@@ -1316,27 +1320,22 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		if (vec2Index.x >= 0)
 		{
 			i32vec2NumMicroSteps.x -= SPE;
-			if (i32vec2NumMicroSteps.x < 0)
+			if (i32vec2NumMicroSteps.x <= -((int)cSettings->NUM_STEPS_PER_TILE_XAXIS))
 			{
-				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+				i32vec2NumMicroSteps.x = 0;
 				vec2Index.x--;
 			}
 		}
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
-
-		// Find a feasible position for the enemy2D's current position
-		//if (CheckPosition(LEFT) == false)
-		//{
-		//	if (AdjustPosition(LEFT) == false)
-		//	{
-		//		//FlipHorizontalDirection();
-		//		//vec2Index = i32vec2OldIndex;
-		//		vec2Index++;
-		//		i32vec2NumMicroSteps.x = 0;
-		//	}
-		//}
+		//Find a feasible position for the enemy2D's current position
+		if (CheckPosition(LEFT) == false)
+		{
+			//FlipHorizontalDirection();
+			//vec2Index = i32vec2OldIndex;
+			i32vec2NumMicroSteps.x = 0;
+		}
 
 		faceLeft = true;
 		// Interact with the Player
@@ -1359,18 +1358,13 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
-
 		// Find a feasible position for the enemy2D's current position
-		//if (CheckPosition(RIGHT) == false)
-		//{
-		//	if (AdjustPosition(RIGHT) == false)
-		//	{
-		//		FlipHorizontalDirection();
-		//		vec2Index.x--;
-		//		//vec2Index = i32vec2OldIndex;
-		//		i32vec2NumMicroSteps.x = 0;
-		//	}
-		//}
+		if (CheckPosition(RIGHT) == false)
+		{
+			//FlipHorizontalDirection();
+			//vec2Index = i32vec2OldIndex;
+			i32vec2NumMicroSteps.x = 0;
+		}
 
 		faceLeft = false;
 		// Interact with the Player
@@ -1395,18 +1389,13 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(UP);
-
 		// Find a feasible position for the enemy2D's current position
-		//if (CheckPosition(UP) == false)
-		//{
-		//	if (AdjustPosition(UP) == false)
-		//	{
-		//		//FlipHorizontalDirection();
-		//		vec2Index.y--;
-		//		//vec2Index = i32vec2OldIndex;
-		//		i32vec2NumMicroSteps.y = 0;
-		//	}
-		//}
+		if (CheckPosition(UP) == false)
+		{
+			//FlipVerticalDirection();
+			//vec2Index = i32vec2OldIndex;
+			i32vec2NumMicroSteps.y = 0;
+		}
 		InteractWithPlayer();
 	}
 	// if the player is below the enemy2D, then move downward
@@ -1417,27 +1406,22 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		if (vec2Index.y >= 0)
 		{
 			i32vec2NumMicroSteps.y -= SPE;
-			if (i32vec2NumMicroSteps.y < 0)
+			if (i32vec2NumMicroSteps.y <= -((int)cSettings->NUM_STEPS_PER_TILE_YAXIS))
 			{
-				i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+				i32vec2NumMicroSteps.y = 0;
 				vec2Index.y--;
 			}
 		}
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(DOWN);
-
 		// Find a feasible position for the enemy2D's current position
-		//if (CheckPosition(DOWN) == false)
-		//{
-		//	//if (AdjustPosition(DOWN) == false)
-		//	//{
-		//		//FlipHorizontalDirection();
-		//		vec2Index++;
-		//		//vec2Index = i32vec2OldIndex;
-		//		i32vec2NumMicroSteps.y = 0;
-		//	//}
-		//}
+		if (CheckPosition(DOWN) == false)
+		{
+			//FlipVerticalDirection();
+			//vec2Index = i32vec2OldIndex;
+			i32vec2NumMicroSteps.y = 0;
+		}
 		InteractWithPlayer();
 	}
 }

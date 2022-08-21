@@ -238,6 +238,7 @@ protected:
 
 	// Flip horizontal direction. For patrol use only
 	void FlipHorizontalDirection(void);
+	void FlipVerticalDirection(void);
 
 	// Update position
 	void UpdatePosition(glm::vec2 destination);
