@@ -220,6 +220,11 @@ int CBullet::GetDamage()
 	return Damage;
 }
 
+int CBullet::GetElement()
+{
+	return ElementType;
+}
+
 void CBullet::SetbIsActive(bool yes)
 {
 	bIsActive = yes;

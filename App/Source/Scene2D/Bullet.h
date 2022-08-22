@@ -64,6 +64,8 @@ public:
 
 	int GetDamage();
 
+	int GetElement();
+
 	void SetbIsActive(bool);
 
 	glm::vec2 GetBulletPos();
