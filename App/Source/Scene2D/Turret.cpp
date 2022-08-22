@@ -139,7 +139,7 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		TurretDamage = 4;
 		TurretCooldown = 1.5;
 		range = 10.0;
-		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
 		upgradeLeft = STONE_TURRET;
 		upgradeRight = ELEMENTAL_TURRET;
 	}
@@ -609,11 +609,23 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = REINFORCED_STONE_TURRET;
 		upgradeRight = MULTI_PEBBLE_TURRET;
 		upgradeRare = RANDOM_DMG_TURRET;
+		TurretDamage = 5;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case ELEMENTAL_TURRET:
 		upgradeLeft = FLAME_TURRET;
 		upgradeRight = FROST_TURRET;
 		upgradeRare = MYSTERIOUS_TURRET;
+		TurretDamage = 4;
+		TurretHP = 6;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.627f, 0.125f, 0.941f, 1.f);
 		break;
 
 	// Tier 2
@@ -621,32 +633,68 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = SHARP_STONE_TURRET;
 		upgradeRight = IRON_TURRET;
 		upgradeRare = ORE_GENERATOR;
+		TurretDamage = 6;
+		TurretHP = 12;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case MULTI_PEBBLE_TURRET:
 		upgradeLeft = STONE_BURST_TOWER;
 		upgradeRight = MULTISHOT_TURRET;
 		upgradeRare = TURRET2;
+		TurretDamage = 2;
+		TurretHP = 4;
+		TurretElement = NORMAL;
+		TurretCooldown = 0.75;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case RANDOM_DMG_TURRET:
 		upgradeLeft = RANDOMDMGTURRETV2;
 		upgradeRight = GLITCHED_TURRET;
 		upgradeRare = GETRANDOMTURRET;
+		TurretDamage = 0;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 
 	case FLAME_TURRET:
 		upgradeLeft = FLAME_SPEAR_TURRET;
 		upgradeRight = FLAMETHROWER_TURRET;
 		upgradeRare = FIREWALL_TURRET;
+		TurretDamage = 8;
+		TurretHP = 8;
+		TurretElement = BURN;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 0.0f, 0.0f, 1.f);
 		break;
 	case FROST_TURRET:
 		upgradeLeft = ICE_SPEAR_TURRET;
 		upgradeRight = SNOWBALL_TURRET;
 		upgradeRare = ICE_FLOOR_TURRET;
+		TurretDamage = 5;
+		TurretHP = 8;
+		TurretElement = FROZEN;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case MYSTERIOUS_TURRET:
 		upgradeLeft = WIND_TURRET;
 		upgradeRight = THUNDER_TURRET;
 		upgradeRare = ISTERIOUS_TURRET;
+		TurretDamage = 6;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4((rand() % 10) / 10, (rand() % 10) / 10, (rand() % 10) / 10, 1.f);
 		break;
 
 	// Tier 3

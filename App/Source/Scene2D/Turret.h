@@ -203,6 +203,13 @@ protected:
 
 	};
 
+	enum ELEMENT
+	{
+		NORMAL = 0,
+		BURN = 1,
+		FROZEN = 2,
+	};
+
 	glm::vec2 i32vec2OldIndex;
 
 	//CS: The quadMesh for drawing the tiles

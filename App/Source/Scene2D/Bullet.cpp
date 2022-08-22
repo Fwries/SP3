@@ -29,18 +29,22 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	glBindVertexArray(VAO);
 
 	// Load the player texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
+		std::cout << "Unable to load Image/Scene2D/Bullet.png" << std::endl;
 	}
-
-	runtimeColour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 
 	FromTurret = false;
 	bIsActive = true;
 	RotateAngle = 0.0f;
 	Damage = 4;
+	ElementType = 0;
+	//float a = rand() % 1;
+	//float b = rand() % 1;
+	//float c = rand() % 1;
+	//runtimeColour = glm::vec4((a, b, c, 1.f));
+	runtimeColour = glm::vec4(1, 1, 0, 1);
 }
 
 CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT, glm::vec4 Colour)
@@ -66,10 +70,10 @@ CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, 
 	glBindVertexArray(VAO);
 
 	// Load the player texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
+		std::cout << "Unable to load Image/Scene2D/Bullet.png" << std::endl;
 	}
 
 	FromTurret = true;
