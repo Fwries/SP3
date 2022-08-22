@@ -222,9 +222,8 @@ bool CScene2D::Update(const double dElapsedTime)
 	cSoundController->PlaySoundByID(1);
 
 	elapsed += timeElapsed;
-	int intElapsed = round(elapsed);
 	//cout << intElapsed << endl;
-	if (remainder(elapsed, spawnRate) >= 0 && remainder(elapsed, spawnRate) <= 0.03)
+	if (remainder(elapsed, spawnRate) >= 0 && remainder(elapsed, spawnRate) <= 0.025)
 	{
 		CEnemy2D* cEnemy2D = new CEnemy2D();
 		// Pass shader to cEnemy2D
@@ -235,11 +234,16 @@ bool CScene2D::Update(const double dElapsedTime)
 			cEnemy2D->SetPlayer2D(cPlayer2D);
 			enemyVector.push_back(cEnemy2D);
 		}
+		cout << enemyVector.size() << "     " << spawnRate << "     " << endl;
 	}
-	if (remainder(elapsed, 60) >= 0 && remainder(elapsed, 60) <= 0.3 && elapsed >= 6)
+	if (remainder(elapsed, 10) == 0.01 && elapsed >= 6)
 	{
-		spawnRate -= 2;
+		if (spawnRate > 2)
+		{
+			spawnRate = spawnRate - 2;
+		}
 	}
+	//cout << remainder(elapsed, spawnRate) << endl;
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
