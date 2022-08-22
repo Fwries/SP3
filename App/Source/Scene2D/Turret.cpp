@@ -695,7 +695,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretElement = NORMAL;
 		TurretCooldown = 1.5;
 		range = 10.0;
-		Colour = glm::vec4((rand() % 10) / 10, (rand() % 10) / 10, (rand() % 10) / 10, 1.f);
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 		break;
 
 	// Tier 3
@@ -797,40 +797,148 @@ void CTurret::UpgradeTurret(bool IsLeft)
 
 	// Tier 4
 	case SHARPER_STONE_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case SNIPER_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case BLUNT_METAL_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case REINFORCED_IRON_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case SHINY_IRON_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case TANK:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case GOLDEN_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case ELEMENTAL_TURRET2:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case MIDAS_TOUCH:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case IRON_BURST_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case HOT_IRON_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case REINFORCED_IRON_TURET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case MULTIMULTISHOT_TURET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case STARSHOT_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case WRONGDIRECTION_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case TURRET3:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case SHOTGUN_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case TURRETINFINITY:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case RANDOM_DMG_TURRETV3:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case FLIP_A_COIN_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case RANDOM_DIRECTION_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case UPGRADED_GLITCHED_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case GETRANDOMTURRET2:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case ROBOT_PLAYER:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case ETERNAL_FLAME_SPEAR_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case BLUE_FLAME_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 	case DUO_FLAME_SPEAR_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case IRON_WALL:
 		upgradeLeft = NONE;

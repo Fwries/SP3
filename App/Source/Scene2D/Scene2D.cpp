@@ -349,7 +349,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	{
 		if (cMouseController->IsButtonReleased(GLFW_MOUSE_BUTTON_LEFT))
 		{
-			cout << cMouseController->GetMousePositionX() << " " << cMouseController->GetMousePositionY() << endl;
+			//cout << cMouseController->GetMousePositionX() << " " << cMouseController->GetMousePositionY() << endl;
 		}
 
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
