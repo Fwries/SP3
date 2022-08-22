@@ -181,7 +181,7 @@ void CTurret::Update(const double dElapsedTime)
 		// Generate bullet & limit its firing rate to 1 bullet every 0.2s
 		if (Time > (CurrTime + TurretCooldown))
 		{
-			if (glm::length(vec2Index - nearestLive) <= range)
+			if (glm::length(vec2Index - nearestLive) <= range && nearestEnemy != nullptr)
 			{
 				CurrTime = Time;
 				switch (turretType)
@@ -1019,9 +1019,10 @@ int CTurret::GetCurrTurret()
 void CTurret::findNearestEnemy()
 {
 	glm::vec2 NEWLive;
+	nearestEnemy = nullptr;
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
-		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - enemyVector[i]->vec2Index.y - 1);
+		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, enemyVector[i]->vec2Index.y);
 		if (glm::length(currIndex - vec2Index) < glm::length(NEWLive - vec2Index))
 		{
 			nearestLive = currIndex;
