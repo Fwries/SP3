@@ -9,8 +9,6 @@
 class CEnemy2D;
 class CTurret;
 
-//aaaaa
-
 // Include SingletonTemplate
 #include "DesignPatterns\SingletonTemplate.h"
 
@@ -44,6 +42,9 @@ class CTurret;
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
+
+// Include Mouse controller
+#include "Inputs\MouseController.h"
 
 // GUI_Scene2D
 #include "GUI_Scene2D.h"
@@ -97,6 +98,7 @@ protected:
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
+	CMouseController* cMouseController;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;

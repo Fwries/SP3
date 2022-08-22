@@ -20,6 +20,7 @@ CScene2D::CScene2D(void)
 	: cMap2D(NULL)
 	, cPlayer2D(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, cGUI_Scene2D(NULL)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
@@ -182,6 +183,9 @@ bool CScene2D::Init(void)
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 
+	// Store the keyboard controller singleton instance here
+	cMouseController = CMouseController::GetInstance();
+
 	// Store the cGUI_Scene2D singleton instance here
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 	cGUI_Scene2D->Init();
@@ -233,47 +237,8 @@ bool CScene2D::Update(const double dElapsedTime)
 		spawnRate -= 2;
 	}
 
-
-
-	// Call all the cEnemy2D's update method before Map2D 
-	// as we want to capture the updates before map2D update	
-	//for (int i = 0; i < enemyVector.size(); i++)
-	//{
-	//	
-	//	if (enemyVector[i]->GetIsActive())
-	//	{
-	//		//cout << "aaaa" << endl;
-	//		Closest = i;
-	//	}
-	//}
-	//
-	//for (int i = 0; i < enemyVector.size(); i++)
-	//{
-	//	if (glm::length(enemyVector[i]->vec2Index - cPlayer2D->vec2Index) < glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index)
-	//		&& enemyVector[i]->GetIsActive())
-	//	{
-	//		//cout << "Change" << endl;
-	//		Closest = i;
-	//	}
-	//}
-
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
-		/*if (i != Closest)
-		{
-			enemyVector[i]->SetHitBox(false);
-		}
-		else
-		{
-			if (glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index) <= 2)
-			{
-				enemyVector[Closest]->SetHitBox(true);
-			}
-			else if (glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index) > 2)
-			{
-				enemyVector[Closest]->SetHitBox(false);
-			}
-		}*/
 		enemyVector[i]->Update(dElapsedTime);
 	}
 	
@@ -322,12 +287,6 @@ bool CScene2D::Update(const double dElapsedTime)
 		}
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel()+1);
 		cPlayer2D->Reset();
-
-		/*if (cTeamMate2D != nullptr)
-		{
-			delete cTeamMate2D;
-			CTeamMate2D* cTeamMate2D = new CTeamMate2D();
-		}*/
 
 		// Create and initialise the CEnemy2D
 		enemyVector.clear();
@@ -388,6 +347,11 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	if (cGUI_Scene2D->GetEquipped() != 0)
 	{
+		if (cMouseController->IsButtonReleased(GLFW_MOUSE_BUTTON_LEFT))
+		{
+			cout << cMouseController->GetMousePositionX() << " " << cMouseController->GetMousePositionY() << endl;
+		}
+
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
 		{
 			//cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
