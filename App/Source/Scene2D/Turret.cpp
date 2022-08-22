@@ -97,13 +97,6 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 	//CS: Create the Quad Mesh using the mesh builder
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret.png", true);
-	if (iTextureID == 0)
-	{
-		cout << "Image/Tiles/tile038.png" << endl;
-		return false;
-	}
-
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -123,6 +116,11 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 
 	if (IsWall)
 	{
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WoodWall.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/WoodWall.png" << endl;
+		}
 		turretType = WOOD_WALL;
 		TurretHP = 5;
 		TurretDamage = 0;
@@ -134,6 +132,12 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 	}
 	else
 	{
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/Turret.png" << endl;
+			return false;
+		}
 		turretType = TURRET;
 		TurretHP = 6;
 		TurretDamage = 4;
@@ -607,6 +611,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeRare = NONE;
 		break;
 	case STONE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/StoneTurret.png" << endl;
+		}
 		upgradeLeft = REINFORCED_STONE_TURRET;
 		upgradeRight = MULTI_PEBBLE_TURRET;
 		upgradeRare = RANDOM_DMG_TURRET;
@@ -618,6 +627,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case ELEMENTAL_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ElementalTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/ElementalTurret.png" << endl;
+		}
 		upgradeLeft = FLAME_TURRET;
 		upgradeRight = FROST_TURRET;
 		upgradeRare = MYSTERIOUS_TURRET;
@@ -631,6 +645,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 
 	// Tier 2
 	case REINFORCED_STONE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedStoneTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/ReinforcedStoneTurret.png" << endl;
+		}
 		upgradeLeft = SHARP_STONE_TURRET;
 		upgradeRight = IRON_TURRET;
 		upgradeRare = ORE_GENERATOR;
@@ -642,6 +661,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case MULTI_PEBBLE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultiPebbleTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MultiPebbleTurret.png" << endl;
+		}
 		upgradeLeft = STONE_BURST_TOWER;
 		upgradeRight = MULTISHOT_TURRET;
 		upgradeRare = TURRET2;
@@ -653,6 +677,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case RANDOM_DMG_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDMGTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/RandomDMGTurret.png" << endl;
+		}
 		upgradeLeft = RANDOMDMGTURRETV2;
 		upgradeRight = GLITCHED_TURRET;
 		upgradeRare = GETRANDOMTURRET;
@@ -687,6 +716,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case MYSTERIOUS_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MysteriousTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MysteriousTurret.png" << endl;
+		}
 		upgradeLeft = WIND_TURRET;
 		upgradeRight = THUNDER_TURRET;
 		upgradeRare = ISTERIOUS_TURRET;
@@ -700,6 +734,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 
 	// Tier 3
 	case SHARP_STONE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SharpStoneTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/SharpStoneTurret.png" << endl;
+		}
 		upgradeLeft = SHARPER_STONE_TURRET;
 		upgradeRight = SNIPER_TURRET;
 		upgradeRare = BLUNT_METAL_TURRET;
