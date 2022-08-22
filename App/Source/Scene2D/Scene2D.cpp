@@ -236,7 +236,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		}
 		cout << enemyVector.size() << "     " << spawnRate << "     " << endl;
 	}
-	if (remainder(elapsed, 10) == 0.01 && elapsed >= 6)
+	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6)
 	{
 		if (spawnRate > 2)
 		{
