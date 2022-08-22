@@ -137,6 +137,7 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		turretType = TURRET;
 		TurretHP = 6;
 		TurretDamage = 4;
+		TurretElement = NORMAL;
 		TurretCooldown = 1.5;
 		range = 10.0;
 		Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
@@ -870,13 +871,14 @@ int CTurret::GetCurrTurret()
 
 void CTurret::findNearestEnemy()
 {
-	nearestLive = glm::vec2(1000, 1000);
+	glm::vec2 NEWLive;
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - enemyVector[i]->vec2Index.y - 1);
-		if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+		if (glm::length(currIndex - vec2Index) < glm::length(NEWLive - vec2Index))
 		{
 			nearestLive = currIndex;
+			NEWLive = nearestLive;
 			nearestEnemyInt = i;
 			nearestEnemy = enemyVector[i];
 		}

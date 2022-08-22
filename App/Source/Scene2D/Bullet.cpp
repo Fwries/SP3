@@ -40,10 +40,6 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	RotateAngle = 0.0f;
 	Damage = 4;
 	ElementType = 0;
-	//float a = rand() % 1;
-	//float b = rand() % 1;
-	//float c = rand() % 1;
-	//runtimeColour = glm::vec4((a, b, c, 1.f));
 	runtimeColour = glm::vec4(1, 1, 0, 1);
 }
 
