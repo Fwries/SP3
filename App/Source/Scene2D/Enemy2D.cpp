@@ -428,9 +428,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 					cSoundController->PlaySoundByID(10);
 					if (HP <= 0)
 					{
+						sCurrentFSM = DEAD;
+
 						if (cScene2D->getEnemyVec().size() >= 0)
 						{
-							cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + (cScene2D->getTurretVec()[j]->GetNearestEnemy()));
+							cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().end() - (cScene2D->getEnemyVec().size() - (cScene2D->getTurretVec()[j]->GetNearestEnemy())));
 						}
 					}
 				}
@@ -777,6 +779,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			cScene2D->spawnExtraEnemy(4);
 			bIsActive = false;
 		}
+
 		iFSMCounter++;
 		break;
 	}
