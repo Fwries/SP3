@@ -1245,11 +1245,6 @@ void CPlayer2D::UpdateHealthLives(void)
 	cInventoryItem = cInventoryManager->GetItem("Lives");
 	cInventoryItem->Remove(1);
 	// Check if there is no lives left...
-	if (cInventoryItem->GetCount() <= 0)
-	{
-		// Player loses the game
-		CGameManager::GetInstance()->bPlayerLost = true;
-	}
 }
 
 CBulletGenerator* CPlayer2D::GetBulletGenerator()

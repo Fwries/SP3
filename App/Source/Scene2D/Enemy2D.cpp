@@ -174,7 +174,7 @@ bool CEnemy2D::Init(void)
 
 	//Determining enemy type randomly
 	randType = rand() % spawnDeterminer;
-	//randType = 4;
+	//randType = 1;
 
 	//int randType = 3;
 	switch (randType)
@@ -459,7 +459,6 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
-	cout << cScene2D->getEnemyVec().size() << endl;
 	//Melee attack cooldown
 	if (meleeCounter < 100)
 	{
@@ -939,7 +938,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 			{
 				cPlayer2D->UpdateHealthLives();
 				cSoundController->PlaySoundByID(7);
-				bIsActive = false;
+				sCurrentFSM = DEAD;
+				if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
+				{
+					cPlayer2D->findNearestEnemy();
+					cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + cPlayer2D->getNearestEnemy());
+				}
 
 			}
 			else if ((enemyType == SKELE1 || enemyType == VAMPIRE) && sCurrentFSM != DEAD)
@@ -1379,22 +1383,22 @@ bool CEnemy2D::InteractWithPlayer(void)
 
 	if (GetHitBox() == true)
 	{
-		if (cMouseController->IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT) && meleeCounter >= 40)
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && meleeCounter >= 40)
 		{
+			cSoundController->PlaySoundByID(5);
 			if (enemyType == SKULL)
 			{
-				cSoundController->PlaySoundByID(7);
 				HP = HP - 4;
 			}
 			else if (enemyType == SKELE1 || enemyType == VAMPIRE || enemyType == GOBLIN)
 			{
-				cSoundController->PlaySoundByID(8);
 				HP = HP - 4;
 			}
 
 			if (HP <= 0)
 			{
 				sCurrentFSM = DEAD;
+				cSoundController->PlaySoundByID(7);
 				if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
 				{
 					cPlayer2D->findNearestEnemy();
