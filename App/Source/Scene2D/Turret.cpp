@@ -141,7 +141,7 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		turretType = TURRET;
 		TurretHP = 6;
 		TurretDamage = 4;
-		TurretElement = FROZEN;
+		TurretElement = NORMAL;
 		TurretCooldown = 1.5;
 		range = 10.0;
 		Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
@@ -186,8 +186,112 @@ void CTurret::Update(const double dElapsedTime)
 				CurrTime = Time;
 				switch (turretType)
 				{
+				// Normal Turret
 				case TURRET:
+				case STONE_TURRET:
+				case ELEMENTAL_TURRET:
+				case REINFORCED_STONE_TURRET:
+				case MULTI_PEBBLE_TURRET:
+				case SHARP_STONE_TURRET:
+				case IRON_TURRET:
+				case MYSTERIOUS_TURRET:
+				case ISTERIOUS_TURRET:
+				case SHARPER_STONE_TURRET:
+				case SNIPER_TURRET:
+				case BLUNT_METAL_TURRET:
+				case REINFORCED_IRON_TURRET:
+				case REINFORCED_IRON_TURRET2:
+				case TURRETINFINITY:
+				case SHINY_IRON_TURRET:
+				case GOLDEN_TURRET:
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					break;
+				
+				// Elemental Turret
+				case FLAME_TURRET:
+				case FROST_TURRET:
+				case FLAME_SPEAR_TURRET:
+				case FLAMETHROWER_TURRET:
+				case FIREWALL_TURRET:
+				case ICE_SPEAR_TURRET:
+				case SNOWBALL_TURRET:
+				case ICE_FLOOR_TURRET:
+				case HOT_IRON_TURRET:
+				case ETERNAL_FLAME_SPEAR_TURRET:
+				case BLUE_FLAME_TURRET:
+				case DUO_FLAME_SPEAR_TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					break;
+
+				// Random DMG Turret
+				case RANDOM_DMG_TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, rand() % 10 + 4, TurretElement, Colour);
+					break;
+				case RANDOM_DMG_TURRETV2:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, rand() % 12 + 6, TurretElement, Colour);
+					break;
+				case RANDOM_DMG_TURRETV3:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, rand() % 15 + 9, TurretElement, Colour);
+					break;
+
+				// GetRandomTurret
+				case GETRANDOMTURRET:
+				case GETRANDOMTURRET2:
+
+				// TuretTuretTuret
+				case TURRET3:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+				case TURRET2:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					break;
+
+				// Burst
+				case STONE_BURST_TOWER:
+				case IRON_BURST_TURRET:
+
+				// Misc
+				case ORE_GENERATOR:
+				case MULTISHOT_TURRET:
+				case GLITCHED_TURRET:
+					TurretCooldown = static_cast<float>((rand() % 250)) / 100.f;
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+				case WIND_TURRET:
+				case THUNDER_TURRET:
+				case TANK:
+				case MIDAS_TOUCH:
+				case MULTIMULTISHOT_TURRET:
+				case STARSHOT_TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, 0);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 1);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 2);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 5);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 7);
+					break;
+				case WRONGDIRECTION_TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, -(nearestEnemy->vec2Index), TurretDamage, TurretElement, Colour);
+					break;
+				case SHOTGUN_TURRET:
+				case FLIP_A_COIN_TURRET:
+					int Damage;
+					if (rand() % 1 == 1)
+					{
+						Damage = 20;
+					}
+					else
+					{
+						Damage = 0;
+					}
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, Damage, TurretElement, Colour);
+					break;
+				case RANDOM_DIRECTION_TURRET:
+					int Direction = rand() % 7;
+					cBulletGenerator->GenerateBullet(this->vec2Index, Direction);
+					break;
+				case UPGRADED_GLITCHED_TURRET:
+					TurretCooldown = static_cast<float>((rand() % 150)) / 100.f;
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+				case ROBOT_PLAYER:
 				}
 			}
 		}
@@ -687,7 +791,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/RandomDMGTurret.png" << endl;
 		}
-		upgradeLeft = RANDOMDMGTURRETV2;
+		upgradeLeft = RANDOM_DMG_TURRETV2;
 		upgradeRight = GLITCHED_TURRET;
 		upgradeRare = GETRANDOMTURRET;
 		TurretDamage = 0;
@@ -805,7 +909,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeRare = TURRETINFINITY;
 		break;
 
-	case RANDOMDMGTURRETV2:
+	case RANDOM_DMG_TURRETV2:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDMGTurretVer2.png", true);
 		if (iTextureID == 0)
 		{
