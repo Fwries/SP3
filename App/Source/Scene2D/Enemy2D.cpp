@@ -493,7 +493,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 						if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
 						{
-							cout << cScene2D->getTurretVec()[j]->GetNearestEnemy() << endl;
+							//cout << cScene2D->getTurretVec()[j]->GetNearestEnemy() << endl;
 							cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + cScene2D->getTurretVec()[j]->GetNearestEnemy());
 						}
 					}
