@@ -182,7 +182,7 @@ bool CEnemy2D::Init(void)
 		break;
 	case 1:
 		enemyType = SKULL;
-		HP = 12;
+		HP = 4;
 		ATK = 4;
 		SPE = 1.5;
 		break;
@@ -806,7 +806,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			if (faceLeft == true)
 			{
 				animatedEnemy->PlayAnimation("Dleft", -1, 1.0f);
-				if (iFSMCounter >= 50)
+				if (iFSMCounter >= 43)
 				{
 					bIsActive = false;
 				}
@@ -814,7 +814,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			else
 			{
 				animatedEnemy->PlayAnimation("Dright", -1, 1.0f);
-				if (iFSMCounter >= 50)
+				if (iFSMCounter >= 43)
 				{
 					bIsActive = false;
 				}
@@ -1357,13 +1357,12 @@ bool CEnemy2D::InteractWithPlayer(void)
 			if (enemyType == SKULL)
 			{
 				cSoundController->PlaySoundByID(7);
-				sCurrentFSM = DEAD;
-				bIsActive = false;
+				HP = HP - 4;
 			}
-			else if (enemyType == SKELE1 || enemyType == VAMPIRE)
+			else if (enemyType == SKELE1 || enemyType == VAMPIRE || enemyType == GOBLIN)
 			{
 				cSoundController->PlaySoundByID(8);
-				sCurrentFSM = DEAD;
+				HP = HP - 4;
 			}	
 		}
 	}
