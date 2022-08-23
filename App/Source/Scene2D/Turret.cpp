@@ -277,6 +277,7 @@ void CTurret::Update(const double dElapsedTime)
 					break;
 				case SHOTGUN_TURRET:
 				case FLIP_A_COIN_TURRET:
+				{
 					int Damage;
 					if (rand() % 1 == 1)
 					{
@@ -288,15 +289,21 @@ void CTurret::Update(const double dElapsedTime)
 					}
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, Damage, TurretElement, Colour);
 					break;
+				}
 				case RANDOM_DIRECTION_TURRET:
+				{
 					int Direction = rand() % 7;
 					cBulletGenerator->GenerateBullet(this->vec2Index, Direction);
 					break;
+				}
 				case UPGRADED_GLITCHED_TURRET:
+				{
 					TurretCooldown = static_cast<float>((rand() % 150)) / 100.f;
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
 					break;
+				}
 				case ROBOT_PLAYER:
+					break;
 				}
 			}
 		}

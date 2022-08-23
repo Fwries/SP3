@@ -24,7 +24,7 @@ void CBulletGenerator::GenerateBullet(glm::vec2 vec2Index, glm::vec2 Targetvec2I
 	bulletsVector.push_back(new CBullet(vec2Index, Targetvec2Index, NEWDamage, NewELEMENT, Colour));
 }
 
-std::vector<CBullet*> CBulletGenerator::GetBulletsVector() const
+std::vector<CBullet*>& CBulletGenerator::GetBulletsVector()
 {
 	return bulletsVector;
 }

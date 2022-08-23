@@ -17,5 +17,5 @@ public:
 
 	void GenerateBullet(glm::vec2 vec2Index, glm::vec2 Targetvec2Index, int NEWDamage, int NewELEMENT, glm::vec4 Colour);
 
-	std::vector<CBullet*> GetBulletsVector() const;
+	std::vector<CBullet*>& GetBulletsVector();
 };

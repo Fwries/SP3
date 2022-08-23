@@ -461,15 +461,14 @@ void CEnemy2D::Update(const double dElapsedTime)
 	//Turret damage handler
 	for (unsigned j = 0; j < cScene2D->getTurretVec().size(); ++j)
 	{
-		for (unsigned i = 0; i < cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().size(); ++i)
+		for (int i = cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().size() - 1; i >= 0; --i)
 		{
 			if (cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetIsActive() == true)
 			{
 				if (glm::length(vec2Index - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetBulletPos()) <= 2)
 				{
 					HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
-					cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->SetbIsActive(false);
-					cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().erase((cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().begin()) + i);
+					cout << cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().size() << endl;
 					switch (cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetElement())
 					{
 						case BURN:
@@ -494,8 +493,13 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 						if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
 						{
-							cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().end() - (cScene2D->getEnemyVec().size() - (cScene2D->getTurretVec()[j]->GetNearestEnemy())));
+							cout << cScene2D->getTurretVec()[j]->GetNearestEnemy() << endl;
+							cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + cScene2D->getTurretVec()[j]->GetNearestEnemy());
 						}
+					}
+					if (cScene2D->getTurretVec().size() > 0 && cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetIsActive() == true)
+					{
+						cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().erase((cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()).begin() + i);
 					}
 				}
 			}
@@ -735,13 +739,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 
 		}
 
-		//Checking HP: (Should be outside of enemy type check cos everyone needs this)
-		if (HP <= 0)
-		{
-			sCurrentFSM = DEAD;
-			iFSMCounter = 0;
-		}
-
 		iFSMCounter++;
 		break;
 	}
@@ -804,12 +801,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 				break;
 			}
-		}
-		//Checking HP:
-		if (HP <= 0)
-		{
-			sCurrentFSM = DEAD;
-			iFSMCounter = 0;
 		}
 		iFSMCounter++;
 		break;
