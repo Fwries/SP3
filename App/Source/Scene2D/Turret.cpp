@@ -267,7 +267,7 @@ void CTurret::Update(const double dElapsedTime)
 						Path = 3;
 					}
 					int Tier = rand() % 4 + 1;
-					int BranchNo;
+					int BranchNo = 0;
 					switch (Tier)
 					{
 					case 1:
@@ -780,7 +780,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		turretType = upgradeRight;
 	}
 
-	TurretType upgradeRare;
+	int upgradeRare = NONE;
 
 	switch (turretType) // Setting up the stats for the different types
 	{
@@ -1607,15 +1607,18 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 	}
 
-	if (rand() % 2 == 2) // 1 out of 3
+	if (upgradeLeft != NONE && upgradeRight != NONE && upgradeRare != NONE)
 	{
-		if (rand() % 1 == 1) // 1 out of 2
+		if (rand() % 2 == 2) // 1 out of 3
 		{
-			upgradeLeft = upgradeRare;
-		}
-		else
-		{
-			upgradeRight = upgradeRare;
+			if (rand() % 1 == 1) // 1 out of 2
+			{
+				upgradeLeft = upgradeRare;
+			}
+			else
+			{
+				upgradeRight = upgradeRare;
+			}
 		}
 	}
 }
