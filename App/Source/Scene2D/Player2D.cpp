@@ -111,21 +111,26 @@ bool CPlayer2D::Init(void)
 	glBindVertexArray(VAO);
 	
 	// Load the player texture 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Knight.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Player.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Knight.png" << endl;
+		cout << "Unable to load Image/Sprites/Player.png" << endl;
 		return false;
 	}
 	
 	//CS: Create the animated sprite and setup the animation 
-	animatedPlayer = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedPlayer->AddAnimation("right", 0, 3);
-	animatedPlayer->AddAnimation("left", 4, 7);
-	animatedPlayer->AddAnimation("Hright", 8, 11);
-	animatedPlayer->AddAnimation("Hleft", 12, 15);
+	animatedPlayer = CMeshBuilder::GenerateSpriteAnimation(8, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedPlayer->AddAnimation("rightS", 0, 3);
+	animatedPlayer->AddAnimation("leftS", 4, 7);
+	animatedPlayer->AddAnimation("HrightS", 8, 11);
+	animatedPlayer->AddAnimation("HleftS", 12, 15);
+	
+	animatedPlayer->AddAnimation("rightW", 16, 19);
+	animatedPlayer->AddAnimation("leftW", 20, 23);
+	animatedPlayer->AddAnimation("HrightW", 24, 27);
+	animatedPlayer->AddAnimation("HleftW", 28, 31);
 	//CS: Play the "idle" animation as default
-	animatedPlayer->PlayAnimation("right", -1, 1.0f);
+	animatedPlayer->PlayAnimation("rightW", -1, 1.0f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -162,6 +167,7 @@ bool CPlayer2D::Init(void)
 
 	openCrafting = false;
 	openInventory = false;
+	WeaponEquiped = true;
 
 	return true;
 }
@@ -297,7 +303,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.y = 0;
 		}
 
-		FaceDirection = UP;
+		//FaceDirection = UP;
 
 		//CS: Play the "idle" animation
 		//animatedPlayer->PlayAnimation("idle", -1, 1.0f);
@@ -331,7 +337,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2NumMicroSteps.y = 0;
 		}
 
-		FaceDirection = DOWN;
+		//FaceDirection = DOWN;
 
 		//CS: Play the "idle" animation
 		//animatedPlayer->PlayAnimation("idle", -1, 1.0f);
@@ -342,6 +348,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE))
 	{
 		cSoundController->PlaySoundByID(4);
+	}
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
+	{
+		WeaponEquiped = true;
+	}
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_2))
+	{
+		WeaponEquiped = false;
 	}
 
 	if ((keydownAD == "A") && (keydownWS == ""))
@@ -424,7 +438,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		if (time > (currTime + LCLICK_WAIT_TIME))
 		{
-			if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT))
+			if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && WeaponEquiped == false)
 			{
 				currTime = time;
 				cBulletGenerator->GenerateBullet(this->vec2Index, (int)dir);
@@ -440,24 +454,24 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (FaceDirection == LEFT)
 	{
-		if (GetHitBox())
+		if (WeaponEquiped)
 		{
-			//animatedPlayer->PlayAnimation("Hleft", -1, 1.0f);
+			animatedPlayer->PlayAnimation("leftS", -1, 1.0f);
 		}
 		else
 		{
-			animatedPlayer->PlayAnimation("left", -1, 1.0f);
+			animatedPlayer->PlayAnimation("leftW", -1, 1.0f);
 		}
 	}
 	if (FaceDirection == RIGHT)
 	{
-		if (GetHitBox())
+		if (WeaponEquiped)
 		{
-			//animatedPlayer->PlayAnimation("Hright", -1, 1.0f);
+			animatedPlayer->PlayAnimation("rightS", -1, 1.0f);
 		}
 		else
 		{
-			animatedPlayer->PlayAnimation("right", -1, 1.0f);
+			animatedPlayer->PlayAnimation("rightW", -1, 1.0f);
 		}
 	}
 

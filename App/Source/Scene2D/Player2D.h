@@ -135,6 +135,8 @@ protected:
 	bool openCrafting;
 	bool openInventory;
 
+	bool WeaponEquiped;
+
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
 
