@@ -837,16 +837,31 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case FLAME_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlameSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FlameSpearTurret.png" << endl;
+		}
 		upgradeLeft = ETERNAL_FLAME_SPEAR_TURRET;
 		upgradeRight = BLUE_FLAME_TURRET;
 		upgradeRare = DUO_FLAME_SPEAR_TURRET;
 		break;
 	case FLAMETHROWER_TURRET: // All Below have not done the turret type yet
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlamethrowerTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FlamethrowerTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
 		break;
 	case FIREWALL_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FirewallTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FirewallTurret.png" << endl;
+		}
 		upgradeLeft = WIND_TURRET;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
