@@ -29,19 +29,21 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 	glBindVertexArray(VAO);
 
 	// Load the player texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
+		std::cout << "Unable to load Image/Scene2D/Bullet.png" << std::endl;
 	}
 
 	FromTurret = false;
 	bIsActive = true;
 	RotateAngle = 0.0f;
 	Damage = 4;
+	ElementType = 0;
+	runtimeColour = glm::vec4(1, 1, 0, 1);
 }
 
-CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT)
+CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT, glm::vec4 Colour)
 {
 	this->vec2Index = vec2Index;
 	Targetvec2Index = targetvec2Index;
@@ -64,18 +66,21 @@ CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, 
 	glBindVertexArray(VAO);
 
 	// Load the player texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Unable to load Image/Scene2D/Bullet.tga" << std::endl;
+		std::cout << "Unable to load Image/Scene2D/Bullet.png" << std::endl;
 	}
 
-	//Targetvec2Index.y = -Targetvec2Index.y;
 	FromTurret = true;
 	bIsActive = true;
 	RotateAngle = 0.0f;
 	Damage = NEWDamage;
 	ElementType = NewELEMENT;
+	runtimeColour = Colour;
+	
+	DivVector = Targetvec2Index - vec2Index;
+	BulletSpeed = glm::length(Targetvec2Index - vec2Index);
 }
 
 CBullet::~CBullet()
@@ -95,22 +100,8 @@ void CBullet::Update()
 		{
 			bIsActive = false;
 		}
-		if (vec2Index.y > Targetvec2Index.y)
-		{
-			--vec2Index.y;
-		}
-		if (vec2Index.y < Targetvec2Index.y)
-		{
-			++vec2Index.y;
-		}
-		if (vec2Index.x > Targetvec2Index.x)
-		{
-			--vec2Index.x;
-		}
-		if (vec2Index.x < Targetvec2Index.x)
-		{
-			++vec2Index.x;
-		}
+
+		vec2Index += glm::vec2(DivVector.x / BulletSpeed, DivVector.y / BulletSpeed);
 	}
 	else if (FromTurret == false)
 	{
@@ -196,6 +187,7 @@ void CBullet::Render()
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x, vec2UVCoordinate.y, 0.0f));
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
 
 	// Bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
@@ -222,6 +214,11 @@ bool CBullet::GetIsActive()
 int CBullet::GetDamage()
 {
 	return Damage;
+}
+
+int CBullet::GetElement()
+{
+	return ElementType;
 }
 
 void CBullet::SetbIsActive(bool yes)

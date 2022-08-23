@@ -139,7 +139,7 @@ bool CPlayer2D::Init(void)
 	// Add a Lives icon as one of the inventory items
 	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-	cInventoryItem = cInventoryManager->Add("Bullets", "Image/Scene2D/Bullet.tga", 100, 100);
+	cInventoryItem = cInventoryManager->Add("Bullets", "Image/Scene2D/Bullet.png", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Base HP", "Image/Scene2D/Base.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);

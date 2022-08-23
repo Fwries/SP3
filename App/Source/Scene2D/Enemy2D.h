@@ -7,6 +7,7 @@
 #pragma once
 
 class CScene2D;
+class CTurret;
 
 // Include shader
 #include "RenderControl\shader.h"
@@ -31,6 +32,8 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
+#include "Turret.h"
+
 #include "Scene2D.h"
 
 // Include Keyboard controller
@@ -47,6 +50,7 @@ public:
 
 	// Init
 	bool Init(void);
+	bool babySlimeInit(glm::vec2 bossPos);
 
 	// Update
 	void Update(const double dElapsedTime);
@@ -81,6 +85,10 @@ public:
 	// Set the handle to cPlayer to this class instance
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
 
+	//Getting nearest turret
+	glm::vec2& findNearestTurret();
+	glm::vec2& findNearestBasePart();
+
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 	bool hitBox;
@@ -101,6 +109,7 @@ protected:
 		BLOCKED = 1,
 		ATTACK = 2,
 		DEAD = 3,
+		FROZEN = 4,
 		NUM_FSM
 	};
 
@@ -109,6 +118,9 @@ protected:
 		SKULL = 0,
 		SKELE1 = 1,
 		VAMPIRE = 2,
+		GOBLIN = 3,
+		SLIMEBOSS = 4,
+		SLIMEBABY = 400,
 		NUMENEMYTYPES
 	};
 
@@ -121,6 +133,15 @@ protected:
 	};
 
 	glm::vec2 i32vec2OldIndex;
+	glm::vec2 nearestLive;
+	CTurret* nearestTurret;
+	int nearestTurretInt;
+
+	glm::vec2 nearestBasePart;
+
+	int spawnDeterminer;
+	int randType;
+
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
@@ -165,10 +186,13 @@ protected:
 	// Current FSM
 	FSM sCurrentFSM;
 
+	Status status;
+
 	EnemyType enemyType;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
+	int statusCounter;
 
 	float MoveCooldown;
 	float MoveTime;
@@ -177,6 +201,8 @@ protected:
 	float AttackTime;
 
 	bool faceLeft;
+
+	bool targetableTurret;
 
 	//variables for game
 	int HP;
@@ -219,8 +245,9 @@ protected:
 
 	// Flip horizontal direction. For patrol use only
 	void FlipHorizontalDirection(void);
+	void FlipVerticalDirection(void);
 
 	// Update position
-	void UpdatePosition(void);
+	void UpdatePosition(glm::vec2 destination);
 };
 

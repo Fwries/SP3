@@ -98,7 +98,7 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Bronze", "Image/Materials/Bronze.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
-	cInventoryItem = cInventoryManager->Add("Turret", "Image/Tiles/tile038.png", 999, 100);
+	cInventoryItem = cInventoryManager->Add("Turret", "Image/Turret/Turret.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
@@ -158,11 +158,19 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		{
 			openInventory = !openInventory;
 			openCrafting = false;
+			openUpgrade = false;
 		}
 
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
 		{
 			openCrafting = !openCrafting;
+			openInventory = false;
+			openUpgrade = false;
+		}
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_J))
+		{
+			openUpgrade = !openUpgrade;
+			openCrafting = false;
 			openInventory = false;
 		}
 		// Check items in inv
@@ -556,7 +564,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
 								ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
-								ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
 								{
 									if (ImGui::Button("  ", ImVec2(90.0f*relativeScale_x, 30.0f*relativeScale_y)))
 									{
@@ -565,9 +572,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										case 0:
 											if (cInventoryManager->GetItem("Plank")->GetCount() >= 3 && cInventoryManager->GetItem("Plank")->GetCount() >= 3)
 											{
+												ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
 												cInventoryManager->GetItem("Plank")->Remove(3);
 												cInventoryManager->GetItem("Stone")->Remove(3);
 												cInventoryManager->GetItem("Turret")->Add(1);
+												ImGui::PopStyleColor();
 											}
 											break;
 										case 1:
@@ -581,7 +590,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										}
 									}
 								}
-								ImGui::PopStyleColor(3); 
+								ImGui::PopStyleColor(2); 
 							}
 							ImGui::EndChild();
 						}

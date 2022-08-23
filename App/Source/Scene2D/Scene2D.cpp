@@ -20,6 +20,7 @@ CScene2D::CScene2D(void)
 	: cMap2D(NULL)
 	, cPlayer2D(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, cGUI_Scene2D(NULL)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
@@ -100,7 +101,8 @@ bool CScene2D::Init(void)
 	cInventoryManager = cInventoryManager->GetInstance();
 
 	elapsed = 0;
-	spawnRate = 0.03;
+	timeElapsed = 0.025;
+	spawnRate = 8;
 
 	// Create and initialise the Map 2D
 	cMap2D = CMap2D::GetInstance();
@@ -181,6 +183,9 @@ bool CScene2D::Init(void)
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 
+	// Store the keyboard controller singleton instance here
+	cMouseController = CMouseController::GetInstance();
+
 	// Store the cGUI_Scene2D singleton instance here
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 	cGUI_Scene2D->Init();
@@ -200,6 +205,10 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_deathscream_alien2.wav"), 7, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_deathscream_robot2.wav"), 8, true);
 
+	//sounds for damage
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretHit.ogg"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyHit.ogg"), 10, true);
+
 	return true;
 }
 
@@ -212,10 +221,9 @@ bool CScene2D::Update(const double dElapsedTime)
 	cPlayer2D->Update(dElapsedTime);
 	cSoundController->PlaySoundByID(1);
 
-	elapsed += spawnRate;
-	int intElapsed = round(elapsed);
+	elapsed += timeElapsed;
 	//cout << intElapsed << endl;
-	if (remainder(elapsed, 8) >= 0 && remainder(elapsed, 8) <= 0.03)
+	if (remainder(elapsed, spawnRate) >= 0 && remainder(elapsed, spawnRate) <= 0.025)
 	{
 		CEnemy2D* cEnemy2D = new CEnemy2D();
 		// Pass shader to cEnemy2D
@@ -226,47 +234,19 @@ bool CScene2D::Update(const double dElapsedTime)
 			cEnemy2D->SetPlayer2D(cPlayer2D);
 			enemyVector.push_back(cEnemy2D);
 		}
+		cout << enemyVector.size() << "     " << spawnRate << "     " << endl;
 	}
-
-	// Call all the cEnemy2D's update method before Map2D 
-	// as we want to capture the updates before map2D update	
-	//for (int i = 0; i < enemyVector.size(); i++)
-	//{
-	//	
-	//	if (enemyVector[i]->GetIsActive())
-	//	{
-	//		//cout << "aaaa" << endl;
-	//		Closest = i;
-	//	}
-	//}
-	//
-	//for (int i = 0; i < enemyVector.size(); i++)
-	//{
-	//	if (glm::length(enemyVector[i]->vec2Index - cPlayer2D->vec2Index) < glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index)
-	//		&& enemyVector[i]->GetIsActive())
-	//	{
-	//		//cout << "Change" << endl;
-	//		Closest = i;
-	//	}
-	//}
+	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6)
+	{
+		if (spawnRate > 2)
+		{
+			spawnRate = spawnRate - 2;
+		}
+	}
+	//cout << remainder(elapsed, spawnRate) << endl;
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
-		/*if (i != Closest)
-		{
-			enemyVector[i]->SetHitBox(false);
-		}
-		else
-		{
-			if (glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index) <= 2)
-			{
-				enemyVector[Closest]->SetHitBox(true);
-			}
-			else if (glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index) > 2)
-			{
-				enemyVector[Closest]->SetHitBox(false);
-			}
-		}*/
 		enemyVector[i]->Update(dElapsedTime);
 	}
 	
@@ -315,12 +295,6 @@ bool CScene2D::Update(const double dElapsedTime)
 		}
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel()+1);
 		cPlayer2D->Reset();
-
-		/*if (cTeamMate2D != nullptr)
-		{
-			delete cTeamMate2D;
-			CTeamMate2D* cTeamMate2D = new CTeamMate2D();
-		}*/
 
 		// Create and initialise the CEnemy2D
 		enemyVector.clear();
@@ -381,13 +355,18 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	if (cGUI_Scene2D->GetEquipped() != 0)
 	{
+		if (cMouseController->IsButtonReleased(GLFW_MOUSE_BUTTON_LEFT))
+		{
+			//cout << cMouseController->GetMousePositionX() << " " << cMouseController->GetMousePositionY() << endl;
+		}
+
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
 		{
 			//cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
 			switch (cGUI_Scene2D->GetEquipped())
 			{
 			case 1:
-				if (cInventoryManager->GetItem("Turret")->GetCount() > 0)
+				if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0)
 				{
 					CTurret* cTurret = new CTurret();
 					// Pass shader to cEnemy2D
@@ -398,8 +377,8 @@ bool CScene2D::Update(const double dElapsedTime)
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
 					}
-					cInventoryManager->GetItem("Turret")->Remove(1);
 				}
 				break;
 			default:
@@ -518,11 +497,64 @@ bool CScene2D::GetPlayerWon()
 	return PlayerWon;
 }
 
-vector<CTurret*> CScene2D::getTurretVec(void)
+vector<CTurret*>& CScene2D::getTurretVec(void)
 {
 	return turretVector;
 }
 vector<CEntity2D*>& CScene2D::getEnemyVec(void)
 {
 	return enemyVector;
+}
+
+
+void CScene2D::spawnExtraEnemy(int i)
+{
+	for (unsigned j = 0; j < i; ++j)
+	{
+		CEnemy2D* cEnemy2D = new CEnemy2D();
+		// Pass shader to cEnemy2D
+		cEnemy2D->SetShader("Shader2D_Colour");
+		// Initialise the instance
+		if (j == 0)
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x, slimeBossPos.y + 1)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else if (j == 1)
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x + 1, slimeBossPos.y)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else if (j == 2)
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x, slimeBossPos.y - 1)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x - 1, slimeBossPos.y)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+	}
+}
+
+void CScene2D::setSlimeBPos(glm::vec2 pos)
+{
+	slimeBossPos = pos;
+}
+glm::vec2 CScene2D::getSlimePos()
+{
+	return slimeBossPos;
 }

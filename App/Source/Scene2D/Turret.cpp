@@ -80,6 +80,8 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	cScene2D = CScene2D::GetInstance();
+
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -87,20 +89,13 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
-	//i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
 	//CS: Create the Quad Mesh using the mesh builder
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/tile038.png", true);
-	if (iTextureID == 0)
-	{
-		cout << "Image/Tiles/tile038.png" << endl;
-		return false;
-	}
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -113,17 +108,45 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 
 	cBulletGenerator = new CBulletGenerator();
 
+	// Rand seeding
+	srand(time(NULL));
+
+	Time = 0.0;
+	CurrTime = 0.0;
+
 	if (IsWall)
 	{
-		turretType = WALL;
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WoodWall.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/WoodWall.png" << endl;
+		}
+		turretType = WOOD_WALL;
 		TurretHP = 5;
 		TurretDamage = 0;
+		TurretCooldown = 0.0;
+		range = 0.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		upgradeLeft = STONE_WALL;
+		upgradeRight = NONE;
 	}
 	else
 	{
-		turretType = BASE;
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/Turret.png" << endl;
+			return false;
+		}
+		turretType = TURRET;
 		TurretHP = 6;
 		TurretDamage = 4;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
+		upgradeLeft = STONE_TURRET;
+		upgradeRight = ELEMENTAL_TURRET;
 	}
 
 	// If this class is initialised properly, then set the bIsActive to true
@@ -140,29 +163,32 @@ void CTurret::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
+
+	//Monster damage handler
 	if (TurretHP <= 0)
 	{
-		cMap2D->SetMapInfo(vec2Index.x, vec2Index.y, 0);
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
 		bIsActive = false;
 		return;
 	}
 
-	if (turretType != WALL)
+	if (turretType != WOOD_WALL && turretType != STONE_WALL && turretType != IRON_WALL)
 	{
-		static double time = 0.0;
-		time += dElapsedTime;
+		Time += dElapsedTime;
 
 		findNearestEnemy();
 
 		// Generate bullet & limit its firing rate to 1 bullet every 0.2s
-		static double currTime = 0.0;
-		static const double TURRET_WAIT_TIME = 1.5;
-		if (glm::length(vec2Index - nearestLive) <= 10)
+		if (Time > (CurrTime + TurretCooldown))
 		{
-			if (time > (currTime + TURRET_WAIT_TIME))
+			if (glm::length(vec2Index - nearestLive) <= range && nearestEnemy != nullptr)
 			{
-				currTime = time;
-				cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement);
+				CurrTime = Time;
+				switch (turretType)
+				{
+				case TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+				}
 			}
 		}
 
@@ -543,6 +569,11 @@ bool CTurret::AdjustPosition(DIRECTION eDirection)
 	return false;
 }
 
+bool CTurret::InteractWithPlayer(void)
+{
+	return false;
+}
+
 /**
  @brief Flip horizontal direction. For patrol use only
  */
@@ -559,17 +590,650 @@ void CTurret::UpdatePosition(void)
 
 }
 
+void CTurret::UpgradeTurret(bool IsLeft)
+{
+	if (IsLeft)
+	{
+		turretType = upgradeLeft;
+	}
+	else
+	{
+		turretType = upgradeRight;
+	}
+
+	TurretType upgradeRare;
+
+	switch (turretType) // Setting up the stats for the different types
+	{
+	case STONE_WALL:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneWall.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/StoneWall.png" << endl;
+		}
+		upgradeLeft = IRON_WALL;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case STONE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/StoneTurret.png" << endl;
+		}
+		upgradeLeft = REINFORCED_STONE_TURRET;
+		upgradeRight = MULTI_PEBBLE_TURRET;
+		upgradeRare = RANDOM_DMG_TURRET;
+		TurretDamage = 5;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
+		break;
+	case ELEMENTAL_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ElementalTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/ElementalTurret.png" << endl;
+		}
+		upgradeLeft = FLAME_TURRET;
+		upgradeRight = FROST_TURRET;
+		upgradeRare = MYSTERIOUS_TURRET;
+		TurretDamage = 4;
+		TurretHP = 6;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.627f, 0.125f, 0.941f, 1.f);
+		break;
+
+	// Tier 2
+	case REINFORCED_STONE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedStoneTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/ReinforcedStoneTurret.png" << endl;
+		}
+		upgradeLeft = SHARP_STONE_TURRET;
+		upgradeRight = IRON_TURRET;
+		upgradeRare = ORE_GENERATOR;
+		TurretDamage = 6;
+		TurretHP = 12;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
+		break;
+	case MULTI_PEBBLE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultiPebbleTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MultiPebbleTurret.png" << endl;
+		}
+		upgradeLeft = STONE_BURST_TOWER;
+		upgradeRight = MULTISHOT_TURRET;
+		upgradeRare = TURRET2;
+		TurretDamage = 2;
+		TurretHP = 4;
+		TurretElement = NORMAL;
+		TurretCooldown = 0.75;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
+		break;
+	case RANDOM_DMG_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDMGTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/RandomDMGTurret.png" << endl;
+		}
+		upgradeLeft = RANDOMDMGTURRETV2;
+		upgradeRight = GLITCHED_TURRET;
+		upgradeRare = GETRANDOMTURRET;
+		TurretDamage = 0;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		break;
+
+	case FLAME_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlameTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FlameTurret.png" << endl;
+		}
+		upgradeLeft = FLAME_SPEAR_TURRET;
+		upgradeRight = FLAMETHROWER_TURRET;
+		upgradeRare = FIREWALL_TURRET;
+		TurretDamage = 8;
+		TurretHP = 8;
+		TurretElement = BURN;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 0.0f, 0.0f, 1.f);
+		break;
+	case FROST_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FrostTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FrostTurret.png" << endl;
+		}
+		upgradeLeft = ICE_SPEAR_TURRET;
+		upgradeRight = SNOWBALL_TURRET;
+		upgradeRare = ICE_FLOOR_TURRET;
+		TurretDamage = 5;
+		TurretHP = 8;
+		TurretElement = FROZEN;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
+		break;
+	case MYSTERIOUS_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MysteriousTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MysteriousTurret.png" << endl;
+		}
+		upgradeLeft = WIND_TURRET;
+		upgradeRight = THUNDER_TURRET;
+		upgradeRare = ISTERIOUS_TURRET;
+		TurretDamage = 6;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+		break;
+
+	// Tier 3
+	case SHARP_STONE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SharpStoneTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/SharpStoneTurret.png" << endl;
+		}
+		upgradeLeft = SHARPER_STONE_TURRET;
+		upgradeRight = SNIPER_TURRET;
+		upgradeRare = BLUNT_METAL_TURRET;
+		break;
+	case IRON_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/IronTurret.png" << endl;
+		}
+		upgradeLeft = REINFORCED_IRON_TURRET;
+		upgradeRight = SHINY_IRON_TURRET;
+		upgradeRare = TANK;
+		break;
+	case ORE_GENERATOR:
+		upgradeLeft = GOLDEN_TURRET;
+		upgradeRight = ELEMENTAL_TURRET2;
+		upgradeRare = MIDAS_TOUCH;
+		break;
+
+	case STONE_BURST_TOWER:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneBurstTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/StoneBurstTurret.png" << endl;
+		}
+		upgradeLeft = IRON_BURST_TURRET;
+		upgradeRight = HOT_IRON_TURRET;
+		upgradeRare = REINFORCED_IRON_TURRET;
+		break;
+	case MULTISHOT_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultishotTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MultishotTurret.png" << endl;
+		}
+		upgradeLeft = MULTIMULTISHOT_TURRET;
+		upgradeRight = STARSHOT_TURRET;
+		upgradeRare = WRONGDIRECTION_TURRET;
+		break;
+	case TURRET2:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret2.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/Turret2.png" << endl;
+		}
+		upgradeLeft = TURRET3;
+		upgradeRight = SHOTGUN_TURRET;
+		upgradeRare = TURRETINFINITY;
+		break;
+
+	case RANDOMDMGTURRETV2:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDMGTurretVer2.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/RandomDMGTurretVer2.png" << endl;
+		}
+		upgradeLeft = RANDOM_DMG_TURRETV3;
+		upgradeRight = FLIP_A_COIN_TURRET;
+		upgradeRare = RANDOM_DIRECTION_TURRET;
+		break;
+	case GLITCHED_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GlitchedTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/GlitchedTurret.png" << endl;
+		}
+		upgradeLeft = UPGRADED_GLITCHED_TURRET;
+		upgradeRight = GETRANDOMTURRET2;
+		upgradeRare = ROBOT_PLAYER;
+		break;
+	case GETRANDOMTURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GetRandomTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/GetRandomTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case FLAME_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlameSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FlameSpearTurret.png" << endl;
+		}
+		upgradeLeft = ETERNAL_FLAME_SPEAR_TURRET;
+		upgradeRight = BLUE_FLAME_TURRET;
+		upgradeRare = DUO_FLAME_SPEAR_TURRET;
+		break;
+	case FLAMETHROWER_TURRET: // All Below have not done the turret type yet
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlamethrowerTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FlamethrowerTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case FIREWALL_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FirewallTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FirewallTurret.png" << endl;
+		}
+		upgradeLeft = WIND_TURRET;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case ICE_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IceSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/IceSpearTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case SNOWBALL_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SnowballTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/SnowballTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ICE_FLOOR_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case WIND_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case THUNDER_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ISTERIOUS_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IsteriousTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/IsteriousTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	// Tier 4
+	case SHARPER_STONE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SharperStoneTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/SharperStoneTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case SNIPER_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SniperTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/SniperTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case BLUNT_METAL_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BluntMetalTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/BluntMetalTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case REINFORCED_IRON_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedIronTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/ReinforcedIronTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case SHINY_IRON_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case TANK:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case GOLDEN_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GoldenTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/GoldenTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ELEMENTAL_TURRET2:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ElementalTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/ElementalTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case MIDAS_TOUCH:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MidasTouch.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MidasTouch.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case IRON_BURST_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronBurstTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/IronBurstTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case HOT_IRON_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/HotIronTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/HotIronTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case REINFORCED_IRON_TURRET2:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedIronTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/ReinforcedIronTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case MULTIMULTISHOT_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultimultishotTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MultimultishotTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case STARSHOT_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StarshotTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/StarshotTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case WRONGDIRECTION_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WrongDirectionTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/WrongDirectionTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case TURRET3:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret3.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/Turret3.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case SHOTGUN_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case TURRETINFINITY:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/TurretInfinity.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/TurretInfinity.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case RANDOM_DMG_TURRETV3:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDMGTurretVer3.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/RandomDMGTurretVer3.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case FLIP_A_COIN_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlipACoinTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FlipACoinTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case RANDOM_DIRECTION_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDirectionTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/RandomDirectionTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case UPGRADED_GLITCHED_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/UpgradedGlitchedTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/UpgradedGlitchedTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case GETRANDOMTURRET2:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GetRandomTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/GetRandomTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ROBOT_PLAYER:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case ETERNAL_FLAME_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalFlameSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/EternalFlameSpearTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case BLUE_FLAME_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BlueFlameSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/BlueFlameSpearTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case DUO_FLAME_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/DuoFlameSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/DuoFlameSpearTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+
+	case IRON_WALL:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronWall.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/IronWall.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	}
+
+	if (rand() % 2 == 2) // 1 out of 3
+	{
+		if (rand() % 1 == 1) // 1 out of 2
+		{
+			upgradeLeft = upgradeRare;
+		}
+		else
+		{
+			upgradeRight = upgradeRare;
+		}
+	}
+}
+
+int CTurret::GetTurret(bool IsLeft)
+{
+	if (IsLeft)
+	{
+		return upgradeLeft;
+	}
+	else
+	{
+		return upgradeRight;
+	}
+}
+
+int CTurret::GetCurrTurret()
+{
+	return turretType;
+}
+
 void CTurret::findNearestEnemy()
 {
-	nearestLive = glm::vec2(1000, 1000);
+	glm::vec2 NEWLive;
+	nearestEnemy = nullptr;
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
-		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - enemyVector[i]->vec2Index.y - 1);
-		if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, enemyVector[i]->vec2Index.y);
+		if (glm::length(currIndex - vec2Index) < glm::length(NEWLive - vec2Index))
 		{
 			nearestLive = currIndex;
+			NEWLive = nearestLive;
 			nearestEnemyInt = i;
 			nearestEnemy = enemyVector[i];
 		}
 	}
+}
+
+glm::vec2 CTurret::getTurretPos()
+{
+	return vec2Index;
 }

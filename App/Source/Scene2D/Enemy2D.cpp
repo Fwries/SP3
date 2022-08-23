@@ -34,7 +34,9 @@ CEnemy2D::CEnemy2D(void)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
 	, sCurrentFSM(FSM::MOVING)
+	, status(NORMAL)
 	, iFSMCounter(0)
+	, statusCounter(0)
 	, quadMesh(NULL)
 	, cSoundController(NULL)
 {
@@ -98,6 +100,10 @@ bool CEnemy2D::Init(void)
 	elapsed = 0;
 	spawnRate = 1;
 
+	spawnDeterminer = 4;
+
+	targetableTurret = false;
+
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
@@ -158,8 +164,14 @@ bool CEnemy2D::Init(void)
 	{
 		return false;
 	}
+
+
+
+
 	//Determining enemy type randomly
-	int randType = rand() % 3;
+	randType = rand() % spawnDeterminer;
+
+	//int randType = 3;
 	switch (randType)
 	{
 	case 0:
@@ -180,6 +192,18 @@ bool CEnemy2D::Init(void)
 		ATK = 1;
 		SPE = 1;
 		break;
+	case 3:
+		enemyType = GOBLIN;
+		HP = 24;
+		ATK = 2;
+		SPE = 2;
+		break;
+	case 4:
+		enemyType = SLIMEBOSS;
+		HP = 1;
+		ATK = 4;
+		SPE = 0.9;
+		break;
 	default:
 		enemyType = SKELE1;
 		HP = 20;
@@ -187,7 +211,7 @@ bool CEnemy2D::Init(void)
 		SPE = 1;
 		break;
 	}
-	cout << enemyType << endl;
+	//cout << enemyType << endl;
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
@@ -201,7 +225,7 @@ bool CEnemy2D::Init(void)
 	if (enemyType == SKULL)
 	{
 		// Load the enemy2D texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Skull.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Skull.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Image/Skull.png" << endl;
@@ -214,7 +238,7 @@ bool CEnemy2D::Init(void)
 	else if (enemyType == SKELE1)
 	{
 		// Load the enemy2D texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Skeleton1.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Skeleton1.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Image/Skeleton1.png" << endl;
@@ -227,10 +251,36 @@ bool CEnemy2D::Init(void)
 	else if (enemyType == VAMPIRE)
 	{
 		// Load the enemy2D texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Vampire.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Vampire.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Image/Vampire.png" << endl;
+			return false;
+		}
+
+		MoveTime = 0.03;
+		AttackTime = 0.9f;
+	}
+	else if (enemyType == SLIMEBOSS)
+	{
+		// Load the enemy2D texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/SlimeBig.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/SlimeBig.png" << endl;
+			return false;
+		}
+
+		MoveTime = 0.03;
+		AttackTime = 0.9f;
+	}
+	else if (enemyType == GOBLIN)
+	{
+		// Load the enemy2D texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Goblin.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Goblin.png" << endl;
 			return false;
 		}
 
@@ -272,11 +322,107 @@ bool CEnemy2D::Init(void)
 	return true;
 }
 
+bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
+{
+
+	// Rand seeding
+	srand(time(NULL));
+
+
+	MoveCooldown = 0;
+	AttackCooldown = 0;
+
+	TRGE = 1;
+	ARGE = 1;
+
+	X = 0;
+	Y = 0;
+	elapsed = 0;
+	spawnRate = 1;
+
+	targetableTurret = false;
+
+	// Get the handler to the CSettings instance
+	cSettings = CSettings::GetInstance();
+
+	// Get the handler to the CMap2D instance
+	cMap2D = CMap2D::GetInstance();
+
+	//Set the position of the enemy randomly on the edge of the map
+	int edge = rand() % 4;
+	int X =bossPos.x, Y = bossPos.y;
+	//if (cMap2D->GetMapInfo(X, Y) != 0)
+	//{
+	//	return false;
+	//}
+	//Determining enemy type randomly
+	enemyType = SLIMEBABY;
+	HP = 12;
+	ATK = 1;
+	SPE = 1;
+
+	//cout << enemyType << endl;
+	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
+	// By default, microsteps should be zero
+	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	//CS: Create the Quad Mesh using the mesh builder
+	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+
+
+	// Load the enemy2D texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/SlimeSmall.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Image/SlimeSmall.png" << endl;
+		return false;
+	}
+
+	MoveTime = 0.025;
+	AttackTime = 0.0f;
+
+	animatedEnemy = CMeshBuilder::GenerateSpriteAnimation(5, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedEnemy->AddAnimation("right", 0, 3);
+	animatedEnemy->AddAnimation("left", 4, 7);
+	animatedEnemy->AddAnimation("Hright", 8, 11);
+	animatedEnemy->AddAnimation("Hleft", 12, 15);
+	animatedEnemy->AddAnimation("Dright", 18, 19);
+	animatedEnemy->AddAnimation("Dleft", 16, 17);
+
+	//CS: Play the "idle" animation as default
+	animatedEnemy->PlayAnimation("left", -1, 1.0f);
+
+	//CS: Init the color to white
+	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+	// Set the Physics to fall status by default
+	cPhysics2D.Init();
+	//cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+
+	// If this class is initialised properly, then set the bIsActive to true
+	bIsActive = true;
+	faceLeft = true;
+
+	// Store the keyboard controller singleton instance here
+	cKeyboardController = CKeyboardController::GetInstance();
+
+	// Load the sounds into CSoundController
+	cSoundController = CSoundController::GetInstance();
+
+	cScene2D = CScene2D::GetInstance();
+
+	return true;
+}
+
 /**
  @brief Update this instance
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
+
 	//Turret damage handler
 	for (unsigned j = 0; j < cScene2D->getTurretVec().size(); ++j)
 	{
@@ -288,13 +434,70 @@ void CEnemy2D::Update(const double dElapsedTime)
 				{
 					HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
 					cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->SetbIsActive(false);
-
+					switch (cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetElement())
+					{
+						case BURN:
+						{
+							status = BURN;
+							break;
+						}
+						case FREEZE:
+						{
+							status = FREEZE;
+							break;
+						}
+						default:
+						{
+							break;
+						}
+					}
+					cSoundController->PlaySoundByID(10);
 					if (HP <= 0)
 					{
-						cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + (cScene2D->getTurretVec()[j]->GetNearestEnemy()));
+						sCurrentFSM = DEAD;
+
+						if (cScene2D->getEnemyVec().size() >= 0)
+						{
+							cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().end() - (cScene2D->getEnemyVec().size() - (cScene2D->getTurretVec()[j]->GetNearestEnemy())));
+						}
 					}
 				}
 			}
+		}
+	}
+
+	switch (status)
+	{
+		case BURN:
+		{
+			if (statusCounter >= 50)
+			{
+				HP = HP - 1;
+				statusCounter = 0;
+			}
+			statusCounter++;
+			break;
+		}
+		case FREEZE:
+		{
+			if (statusCounter >= 40 && sCurrentFSM == MOVING || sCurrentFSM == ATTACK)
+			{
+				sCurrentFSM = FROZEN;
+				statusCounter = 0;
+			}
+			if (sCurrentFSM != FROZEN)
+			{
+				statusCounter++;
+			}
+			break;
+		}
+		default:
+		{
+			if (statusCounter <= 100)
+			{
+				statusCounter++;
+			}
+			break;
 		}
 	}
 
@@ -312,12 +515,15 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			//Monster1
 			case SKELE1:
+			case SLIMEBOSS:
+			case SLIMEBABY:
+			case GOBLIN:
 			{
+				glm::vec2 posToGo = findNearestBasePart();
 				//Pathfinding method
-				auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
+				auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
-				int firstDest = 0;
 				for (const auto& coord : path)
 				{
 					if (bFirstPosition == true)
@@ -341,13 +547,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 							break;
 						}
 					}
-					firstDest++;
 				}
 				/*cout << toX << "    " << toY << endl;*/
-				UpdatePosition();
+				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				if ((((vec2Index.x >= 31 - 1) && (vec2Index.x <= 32 + 1)) &&
-					(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
+				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -360,7 +564,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 				auto path = cMap2D->PathFind(vec2Index, cPlayer2D->vec2Index, heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
-				int firstDest = 0;
 				for (const auto& coord : path)
 				{
 					if (bFirstPosition == true)
@@ -384,9 +587,8 @@ void CEnemy2D::Update(const double dElapsedTime)
 							break;
 						}
 					}
-					firstDest++;
 				}
-				UpdatePosition();
+				UpdatePosition(cPlayer2D->vec2Index);
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 				//Insert damaging part here
 				if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 1.0f)
@@ -398,11 +600,67 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			case VAMPIRE:
 			{
+				//Check if there is a targetable turret in the map
+				targetableTurret = false;
+				for (int i = 0; i < /*y*/ 63; i++)
+				{
+					for (int j = 0; j < /*x*/ 63; j++)
+					{
+						if (cMap2D->GetMapInfo(i, j) == 150)
+						{
+							targetableTurret = true;
+							break;
+						}
+					}
+				}
+				//cout << targetableTurret << endl;
+
 				//Pathfinding method
-				auto path = cMap2D->PathFind(vec2Index, glm::vec2(32, 32), heuristic::euclidean, 10);
-				//Calculate new destination
-				bool bFirstPosition = true;
-				int firstDest = 0;
+				if (targetableTurret == true)
+				{
+					glm::vec2 posToGo = findNearestTurret();
+					//cout << findNearestTurret().x << "   " << findNearestTurret().y << endl;
+					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
+					//Calculate new destination
+					bool bFirstPosition = true;
+					for (const auto& coord : path)
+					{
+						if (bFirstPosition == true)
+						{
+							// Set a destination
+							i32vec2Destination = coord;
+							// Calculate the direction between enemy2D and this destination
+							i32vec2Direction = i32vec2Destination - vec2Index;
+							/*std::cout << coord.x << ", " << coord.y << "\n";*/
+							bFirstPosition = false;
+						}
+						else
+						{
+							if ((coord - i32vec2Destination) == i32vec2Direction)
+							{
+								// Set a destination:
+								i32vec2Destination = coord;
+							}
+							else
+							{
+								break;
+							}
+						}
+					}
+					UpdatePosition(posToGo);
+					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+					//Insert damaging part here
+					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.5f)
+					{
+						sCurrentFSM = ATTACK;
+						iFSMCounter = 0;
+					}
+				}
+				else
+				{
+					auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
+					//Calculate new destination
+									bool bFirstPosition = true;
 				for (const auto& coord : path)
 				{
 					if (bFirstPosition == true)
@@ -426,13 +684,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 							break;
 						}
 					}
-					firstDest++;
 				}
-				UpdatePosition();
+				}
+				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				//Insert damaging part here
-				if ((((vec2Index.x >= 31 - 1) && (vec2Index.x <= 32 + 1)) &&
-					(vec2Index.y >= 31 - 1) && ((vec2Index.y <= 32 + 1))))
+				if (cPhysics2D.CalculateDistance(vec2Index, glm::vec2(30, 34)) < 1.0f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -441,7 +697,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 
 		}
-
 
 		//Checking HP: (Should be outside of enemy type check cos everyone needs this)
 		if (HP <= 0)
@@ -464,10 +719,14 @@ void CEnemy2D::Update(const double dElapsedTime)
 		switch (enemyType)
 		{
 			case SKELE1:
+			case SLIMEBOSS:
+			case SLIMEBABY:
+			case GOBLIN:
 			{
 				if (iFSMCounter >= 40)
 				{
 					cPlayer2D->changeBaseHP(ATK);
+					cSoundController->PlaySoundByID(9);
 					iFSMCounter = 0;
 				}
 				break;
@@ -479,6 +738,34 @@ void CEnemy2D::Update(const double dElapsedTime)
 					cPlayer2D->changeBaseHP(ATK);
 					iFSMCounter = 0;
 				}
+				break;
+			}
+			case VAMPIRE:
+			{
+				if (iFSMCounter >= 40 && targetableTurret == false)
+				{
+					cPlayer2D->changeBaseHP(ATK);
+					cSoundController->PlaySoundByID(9);
+					iFSMCounter = 0;
+				}
+				else if (iFSMCounter >= 40 && targetableTurret == true)
+				{
+					for (unsigned i = 0; i < cScene2D->getTurretVec().size(); ++i)
+					{
+						if (cScene2D->getTurretVec()[i]->getTurretPos() == findNearestTurret())
+						{
+							cScene2D->getTurretVec()[i]->SetGetTurretHP((cScene2D->getTurretVec()[i]->GetTurretHP() - ATK));
+							cSoundController->PlaySoundByID(9);
+							if (cScene2D->getTurretVec()[i]->GetTurretHP() <= 0)
+							{
+								sCurrentFSM = MOVING;
+							}
+							iFSMCounter = 0;
+							/*cout << cScene2D->getTurretVec()[i]->GetTurretHP() << "     " << cScene2D->getTurretVec().size() << endl;*/
+						}
+					}
+				}
+				break;
 			}
 		}
 		//Checking HP:
@@ -492,11 +779,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 	case DEAD:
 	{
-		if (enemyType == SKULL)
+		if (enemyType == SKULL || enemyType == SLIMEBABY)
 		{
 			bIsActive = false;
 		}
-		else if (enemyType == SKELE1 || enemyType == VAMPIRE)
+		else if (enemyType == SKELE1 || enemyType == VAMPIRE || enemyType == GOBLIN)
 		{
 			if (faceLeft == true)
 			{
@@ -515,6 +802,24 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 			}
 		}
+		else if (enemyType == SLIMEBOSS)
+		{
+			cScene2D->setSlimeBPos(vec2Index);
+			cScene2D->spawnExtraEnemy(4);
+			bIsActive = false;
+		}
+
+		iFSMCounter++;
+		break;
+	}
+	case FROZEN:
+	{
+		if (iFSMCounter >= 70)
+		{
+			sCurrentFSM = MOVING;
+			iFSMCounter = 0;
+		}
+
 		iFSMCounter++;
 		break;
 	}
@@ -722,13 +1027,21 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
  */
 bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 {
+
+	// If the new position is at the top row, then return true
+	if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
+	{
+		i32vec2NumMicroSteps.x = 0;
+		return true;
+	}
+
 	if (eDirection == LEFT)
 	{
 		// If the new position is fully within a row, then check this row only
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -737,8 +1050,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -757,7 +1070,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -766,8 +1079,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -787,7 +1100,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -796,8 +1109,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -805,11 +1118,18 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 	}
 	else if (eDirection == DOWN)
 	{
+		// If the new position is at the top row, then return true
+		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
+		{
+			i32vec2NumMicroSteps.y = 0;
+			return true;
+		}
+
 		// If the new position is fully within a column, then check this column only
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -818,8 +1138,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1034,11 +1354,15 @@ void CEnemy2D::FlipHorizontalDirection(void)
 {
 	i32vec2Direction.x *= -1;
 }
+void CEnemy2D::FlipVerticalDirection(void)
+{
+	i32vec2Direction.y *= -1;
+}
 
 /**
 @brief Update position.
 */
-void CEnemy2D::UpdatePosition(void)
+void CEnemy2D::UpdatePosition(glm::vec2 destination)
 {
 	// Store the old position
 	i32vec2OldIndex = vec2Index;
@@ -1051,25 +1375,21 @@ void CEnemy2D::UpdatePosition(void)
 		if (vec2Index.x >= 0)
 		{
 			i32vec2NumMicroSteps.x -= SPE;
-			if (i32vec2NumMicroSteps.x < 0)
+			if (i32vec2NumMicroSteps.x <= -((int)cSettings->NUM_STEPS_PER_TILE_XAXIS))
 			{
-				i32vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+				i32vec2NumMicroSteps.x = 0;
 				vec2Index.x--;
 			}
 		}
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
-
-		// Find a feasible position for the enemy2D's current position
+		//Find a feasible position for the enemy2D's current position
 		if (CheckPosition(LEFT) == false)
 		{
-			if (AdjustPosition(LEFT) == false)
-			{
-				FlipHorizontalDirection();
-				//vec2Index = i32vec2OldIndex;
-				i32vec2NumMicroSteps.x = 0;
-			}
+			//FlipHorizontalDirection();
+			//vec2Index = i32vec2OldIndex;
+			i32vec2NumMicroSteps.x = 0;
 		}
 
 		faceLeft = true;
@@ -1093,16 +1413,12 @@ void CEnemy2D::UpdatePosition(void)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
-
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(RIGHT) == false)
 		{
-			if (AdjustPosition(RIGHT) == false)
-			{
-				FlipHorizontalDirection();
-				/*vec2Index = i32vec2OldIndex;*/
-				i32vec2NumMicroSteps.x = 0;
-			}
+			//FlipHorizontalDirection();
+			//vec2Index = i32vec2OldIndex;
+			i32vec2NumMicroSteps.x = 0;
 		}
 
 		faceLeft = false;
@@ -1128,16 +1444,12 @@ void CEnemy2D::UpdatePosition(void)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(UP);
-
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(UP) == false)
 		{
-			if (AdjustPosition(UP) == false)
-			{
-				FlipHorizontalDirection();
-				/*vec2Index = i32vec2OldIndex;*/
-				i32vec2NumMicroSteps.y = 0;
-			}
+			//FlipVerticalDirection();
+			//vec2Index = i32vec2OldIndex;
+			i32vec2NumMicroSteps.y = 0;
 		}
 		InteractWithPlayer();
 	}
@@ -1149,26 +1461,59 @@ void CEnemy2D::UpdatePosition(void)
 		if (vec2Index.y >= 0)
 		{
 			i32vec2NumMicroSteps.y -= SPE;
-			if (i32vec2NumMicroSteps.y < 0)
+			if (i32vec2NumMicroSteps.y <= -((int)cSettings->NUM_STEPS_PER_TILE_YAXIS))
 			{
-				i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+				i32vec2NumMicroSteps.y = 0;
 				vec2Index.y--;
 			}
 		}
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(DOWN);
-
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(DOWN) == false)
 		{
-			if (AdjustPosition(DOWN) == false)
-			{
-				FlipHorizontalDirection();
-				vec2Index = i32vec2OldIndex;
-				i32vec2NumMicroSteps.y = 0;
-			}
+			//FlipVerticalDirection();
+			//vec2Index = i32vec2OldIndex;
+			i32vec2NumMicroSteps.y = 0;
 		}
 		InteractWithPlayer();
 	}
+}
+
+glm::vec2& CEnemy2D::findNearestTurret()
+{
+	nearestLive = glm::vec2(1000, 1000);
+	for (int i = 0; i < cScene2D->getTurretVec().size(); i++)
+	{
+		glm::vec2 currIndex = glm::vec2(cScene2D->getTurretVec()[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - cScene2D->getTurretVec()[i]->vec2Index.y - 1);
+		if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+		{
+			nearestLive = currIndex;
+			nearestTurretInt = i;
+			nearestTurret = cScene2D->getTurretVec()[i];
+		}
+	}
+	return nearestTurret->getTurretPos();
+}
+
+glm::vec2& CEnemy2D::findNearestBasePart()
+{
+	nearestLive = glm::vec2(1000, 1000);
+	for (int i = 0; i < 64; i++)
+	{
+		for (int j = 0; j < 64; j++)
+		{
+			if (cMap2D->GetMapInfo(j, i) >= 136 && cMap2D->GetMapInfo(j, i) <= 139)
+			{
+				glm::vec2 currIndex = glm::vec2(j, (int)cSettings->NUM_TILES_YAXIS - i - 1);
+				if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+				{
+					nearestLive = currIndex;
+					nearestBasePart = glm::vec2(j, i);
+				}
+			}
+		}
+	}
+	return nearestBasePart;
 }

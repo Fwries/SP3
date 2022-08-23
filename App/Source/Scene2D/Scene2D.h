@@ -7,8 +7,7 @@
 #pragma once
 
 class CEnemy2D;
-
-//aaaaa
+class CTurret;
 
 // Include SingletonTemplate
 #include "DesignPatterns\SingletonTemplate.h"
@@ -44,6 +43,9 @@ class CEnemy2D;
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
 
+// Include Mouse controller
+#include "Inputs\MouseController.h"
+
 // GUI_Scene2D
 #include "GUI_Scene2D.h"
 
@@ -71,8 +73,12 @@ public:
 
 	bool GetPlayerWon();
 
-	vector<CTurret*> getTurretVec(void);
+	vector<CTurret*>& getTurretVec(void);
 	vector<CEntity2D*>& getEnemyVec(void);
+
+	void spawnExtraEnemy(int i);
+	void setSlimeBPos(glm::vec2 pos);
+	glm::vec2 getSlimePos();
 
 protected:
 	// The handler containing the instance of the 2D Map
@@ -92,6 +98,7 @@ protected:
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
+	CMouseController* cMouseController;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
@@ -113,7 +120,12 @@ protected:
 	bool PlayerWon;
 
 	double elapsed;
-	double spawnRate;
+	double timeElapsed;
+	int spawnRate;
+
+	bool extraEnemyToSpawn;
+
+	glm::vec2 slimeBossPos;
 
 	// Constructor
 	CScene2D(void);

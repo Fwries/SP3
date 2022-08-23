@@ -19,6 +19,8 @@
 
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
+class CEnemy2D;
+class CScene2D;
 
 // Include Settings
 #include "GameControl\Settings.h"
@@ -26,8 +28,11 @@ class CMap2D;
 // Include Physics2D
 #include "Physics2D.h"
 
+#include "Enemy2D.h"
+
 // Include Player2D
 #include "Player2D.h"
+#include "Scene2D.h"
 
 // Include InventoryManager
 #include "InventoryManager.h"
@@ -93,9 +98,13 @@ public:
 
 	CBulletGenerator* GetBulletGenerator();
 
+	glm::vec2 getTurretPos();
+
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 	bool hitBox;
+
+	void UpgradeTurret(bool);
 
 protected:
 	enum DIRECTION
@@ -117,15 +126,100 @@ protected:
 
 	enum TurretType
 	{
-		WALL = 0,
-		BASE = 1,
-		FIRE = 11,
+		NONE = -1,
+
+		WOOD_WALL = 0,
+		STONE_WALL = 1000,
+		IRON_WALL = 2000,
+		
+		TURRET = 0001,
+		STONE_TURRET = 1011,
+		ELEMENTAL_TURRET = 1012,
+
+		REINFORCED_STONE_TURRET = 2011,
+		MULTI_PEBBLE_TURRET = 2012,
+		RANDOM_DMG_TURRET = 2013,
+
+		FLAME_TURRET = 2021,
+		FROST_TURRET = 2022,
+		MYSTERIOUS_TURRET = 2023,
+
+		SHARP_STONE_TURRET = 3011,
+		IRON_TURRET = 3012,
+		ORE_GENERATOR = 3013,
+
+		STONE_BURST_TOWER = 3021,
+		MULTISHOT_TURRET = 3022,
+		TURRET2 = 3023,
+
+		RANDOMDMGTURRETV2 = 3031,
+		GLITCHED_TURRET = 3032,
+		GETRANDOMTURRET = 3033,
+
+		FLAME_SPEAR_TURRET = 3041,
+		FLAMETHROWER_TURRET = 3042,
+		FIREWALL_TURRET = 3043,
+
+		ICE_SPEAR_TURRET = 3051,
+		SNOWBALL_TURRET = 3052,
+		ICE_FLOOR_TURRET = 3053,
+
+		WIND_TURRET = 3061,
+		THUNDER_TURRET = 3062,
+		ISTERIOUS_TURRET = 3063,
+
+		SHARPER_STONE_TURRET = 4011,
+		SNIPER_TURRET = 4012,
+		BLUNT_METAL_TURRET = 4013,
+
+		REINFORCED_IRON_TURRET = 4021,
+		SHINY_IRON_TURRET = 4022,
+		TANK = 4023,
+
+		GOLDEN_TURRET = 4031,
+		ELEMENTAL_TURRET2 = 4032,
+		MIDAS_TOUCH = 4033,
+
+		IRON_BURST_TURRET = 4041,
+		HOT_IRON_TURRET = 4042,
+		REINFORCED_IRON_TURRET2 = 4043,
+
+		MULTIMULTISHOT_TURRET = 4051,
+		STARSHOT_TURRET = 4052,
+		WRONGDIRECTION_TURRET = 4053,
+
+		TURRET3 = 4061,
+		SHOTGUN_TURRET = 4062,
+		TURRETINFINITY = 4063,
+
+		RANDOM_DMG_TURRETV3 = 4071,
+		FLIP_A_COIN_TURRET = 4072,
+		RANDOM_DIRECTION_TURRET = 4073,
+
+		UPGRADED_GLITCHED_TURRET = 4081,
+		GETRANDOMTURRET2 = 4082,
+		ROBOT_PLAYER = 4083,
+
+		ETERNAL_FLAME_SPEAR_TURRET = 4091,
+		BLUE_FLAME_TURRET = 4092,
+		DUO_FLAME_SPEAR_TURRET = 4093,
+
+
+	};
+
+	enum ELEMENT
+	{
+		NORMAL = 0,
+		BURN = 1,
+		FROZEN = 2,
 	};
 
 	glm::vec2 i32vec2OldIndex;
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
+
+	CScene2D* cScene2D;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
@@ -177,6 +271,8 @@ protected:
 	FSM sCurrentFSM;
 
 	TurretType turretType;
+	TurretType upgradeLeft;
+	TurretType upgradeRight;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
@@ -191,6 +287,12 @@ protected:
 	int TurretHP;
 	int TurretDamage;
 	int TurretElement;
+	double TurretCooldown;
+	double range;
+	glm::vec4 Colour;
+
+	double Time;
+	double CurrTime;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
