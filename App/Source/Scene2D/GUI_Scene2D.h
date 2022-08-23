@@ -68,6 +68,10 @@ public:
 
 	// Return itemEquipped
 	int GetEquipped(void);
+	
+	void OpenUpgrade(void);
+
+	int Checkupgrade(void);
 
 protected:
 	// Constructor
@@ -84,6 +88,11 @@ protected:
 	float m_fProgressBar;
 	bool openInventory;
 	bool openCrafting;
+<<<<<<< Updated upstream
+=======
+	bool openUpgrade;
+	bool Upgrade;
+>>>>>>> Stashed changes
 	int recipeNo;
 	unsigned int iTextureID;
 
@@ -100,4 +109,5 @@ protected:
 	CInventoryItem* cInventoryItem;
 
 	CKeyboardController* cKeyboardController;
+
 };

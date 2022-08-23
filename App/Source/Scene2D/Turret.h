@@ -89,6 +89,8 @@ public:
 
 	void findNearestEnemy();
 
+	void UpgradeTurret(bool);
+
 	CBulletGenerator* GetBulletGenerator();
 
 	// boolean flag to indicate if this enemy is active
@@ -206,5 +208,13 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
+<<<<<<< Updated upstream
+=======
+
+	 
+	int GetTurret(bool);
+
+	int GetCurrTurret();
+>>>>>>> Stashed changes
 };
 

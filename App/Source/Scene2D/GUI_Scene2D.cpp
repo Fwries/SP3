@@ -11,6 +11,8 @@
 // Include Image loader
 #include "System/ImageLoader.h"
 
+#include "Turret.h"
+
 #include <iostream>
 using namespace std;
 
@@ -60,6 +62,7 @@ bool CGUI_Scene2D::Init(void)
 	cFPSCounter = CFPSCounter::GetInstance();
 
 	cPlayer2D = CPlayer2D::GetInstance();
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -102,6 +105,11 @@ bool CGUI_Scene2D::Init(void)
 	recipeNo = 0;
 	openCrafting = false;
 	openInventory = false;
+<<<<<<< Updated upstream
+=======
+	openUpgrade = false;
+	Upgrade = 0;
+>>>>>>> Stashed changes
 
 	// Variables for buildings
 	itemEquipped = 0;
@@ -386,6 +394,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										ImGui::SetWindowFontScale(0.5 * relativeScale_y);
 										if (ImGui::Button((" "), ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
 										{
+											if (itemEquipped == 1)
+											{
+												itemEquipped = 0;
+											}
 											itemEquipped = 1;
 										}
 									}
@@ -648,6 +660,117 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			}
 			ImGui::End();
 		}
+<<<<<<< Updated upstream
+=======
+		else if (openUpgrade)
+		{
+			if (CSettings::GetInstance()->bDisableMousePointer == true)
+				glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			ImGuiWindowFlags inventoryBgWinFlags =
+				ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoBackground;
+			ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.10f, (float)cSettings->iWindowHeight * 0.20f));
+			ImGui::SetNextWindowSize(ImVec2(700.0f * relativeScale_x, 450.0f * relativeScale_y));
+			ImGui::Begin("Upgrade Background", NULL, inventoryBgWinFlags);
+			{
+				iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/UpgradeMenu.png", true);
+				ImGui::Image((void*)(intptr_t)iTextureID,
+					ImVec2(690.0f * relativeScale_x,
+						450.0f * relativeScale_y),
+					ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::SetNextWindowSize(ImVec2(700.0f * relativeScale_x, 600.0f * relativeScale_y));
+				ImGui::Begin("Upgrade", NULL, inventoryBgWinFlags);
+				{
+					ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.225f, (float)cSettings->iWindowHeight * 0.85f));
+					ImGui::BeginChild("Left Upgrade button", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+					{
+						iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Upgrade.png", true);
+						ImGui::Image((void*)(intptr_t)iTextureID,
+							ImVec2(100.0f * relativeScale_x,
+								30.0f * relativeScale_y),
+							ImVec2(0, 1), ImVec2(1, 0));
+						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.225f, (float)cSettings->iWindowHeight * 0.85f));
+						ImGui::BeginChild("Left upgrade function", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+						{
+							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
+							{
+								if (ImGui::Button(" ", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
+								{
+									Upgrade = 1;
+									openUpgrade = false;
+								}
+							}
+							ImGui::PopStyleColor(3);
+						}
+						ImGui::EndChild();
+					}
+					ImGui::EndChild();
+
+					ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.585f, (float)cSettings->iWindowHeight * 0.85f));
+					ImGui::BeginChild("Right Upgrade button", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+					{
+						iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Upgrade.png", true);
+						ImGui::Image((void*)(intptr_t)iTextureID,
+							ImVec2(100.0f * relativeScale_x,
+								30.0f * relativeScale_y),
+							ImVec2(0, 1), ImVec2(1, 0));
+						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.585f, (float)cSettings->iWindowHeight * 0.85f));
+						ImGui::BeginChild("Right upgrade function", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+						{
+							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
+							{
+								if (ImGui::Button(" ", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
+								{
+									Upgrade = 2;
+									openUpgrade = false;
+								}
+							}
+							ImGui::PopStyleColor(3);
+						}
+						ImGui::EndChild();
+					}
+					ImGui::EndChild();
+
+					ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.87f, (float)cSettings->iWindowHeight * 0.85f));
+					ImGui::BeginChild("Destory button", ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+					{
+						iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Destroy.png", true);
+						ImGui::Image((void*)(intptr_t)iTextureID,
+							ImVec2(35.0f * relativeScale_x,
+								35.0f * relativeScale_y),
+							ImVec2(0, 1), ImVec2(1, 0));
+						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.87f, (float)cSettings->iWindowHeight * 0.85f));
+						ImGui::BeginChild("Destroy button function", ImVec2(35.0f * relativeScale_x, 35.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+						{
+							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+							ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
+							{
+								if (ImGui::Button(" ", ImVec2(35.0f * relativeScale_x, 35.0f * relativeScale_y)))
+								{
+									
+								}
+							}
+							ImGui::PopStyleColor(3);
+						}
+						ImGui::EndChild();
+					}
+					ImGui::EndChild();
+				}
+				ImGui::End();
+			}
+			ImGui::End();
+		}
+>>>>>>> Stashed changes
 		else
 		{
 			//Disable Cursor
@@ -759,4 +882,14 @@ void CGUI_Scene2D::PostRender(void)
 int CGUI_Scene2D::GetEquipped(void)
 {
 	return itemEquipped;
+}
+
+void CGUI_Scene2D::OpenUpgrade(void)
+{
+	openUpgrade = !openUpgrade;
+}
+
+int CGUI_Scene2D::Checkupgrade(void)
+{
+	return Upgrade;
 }
