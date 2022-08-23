@@ -469,6 +469,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				{
 					HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
 					cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->SetbIsActive(false);
+					cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().erase((cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().begin()) + i);
 					switch (cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetElement())
 					{
 						case BURN:
@@ -479,7 +480,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 						case FREEZE:
 						{
 							status = FREEZE;
-							cout << "hit";
 							break;
 						}
 						default:
@@ -492,7 +492,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 					{
 						sCurrentFSM = DEAD;
 
-						if (cScene2D->getEnemyVec().size() >= 0)
+						if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
 						{
 							cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().end() - (cScene2D->getEnemyVec().size() - (cScene2D->getTurretVec()[j]->GetNearestEnemy())));
 						}
