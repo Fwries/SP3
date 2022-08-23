@@ -234,7 +234,6 @@ bool CScene2D::Update(const double dElapsedTime)
 			cEnemy2D->SetPlayer2D(cPlayer2D);
 			enemyVector.push_back(cEnemy2D);
 		}
-		cout << enemyVector.size() << "     " << spawnRate << "     " << endl;
 	}
 	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6)
 	{

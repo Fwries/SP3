@@ -298,15 +298,15 @@ bool CEnemy2D::Init(void)
 
 	//movement with status effect
 	//Burn
-	animatedEnemy->AddAnimation("frozenRight", 16, 19);
-	animatedEnemy->AddAnimation("frozenLeft", 20, 23);
-	animatedEnemy->AddAnimation("frozenHright", 24, 27);
-	animatedEnemy->AddAnimation("frozenHleft", 28, 31);
+	animatedEnemy->AddAnimation("burnRight", 16, 19);
+	animatedEnemy->AddAnimation("burnLeft", 20, 23);
+	animatedEnemy->AddAnimation("burnHright", 24, 27);
+	animatedEnemy->AddAnimation("burnHleft", 28, 31);
 	//Frozen
-	animatedEnemy->AddAnimation("burnRight", 32, 35);
-	animatedEnemy->AddAnimation("burnLeft", 36, 39);
-	animatedEnemy->AddAnimation("burnHright", 40, 43);
-	animatedEnemy->AddAnimation("burnHleft", 44, 47);
+	animatedEnemy->AddAnimation("frozenRight", 32, 35);
+	animatedEnemy->AddAnimation("frozenLeft", 36, 39);
+	animatedEnemy->AddAnimation("frozenHright", 40, 43);
+	animatedEnemy->AddAnimation("frozenHleft", 44, 47);
 	//Death
 	animatedEnemy->AddAnimation("Dright", 48, 51);
 	animatedEnemy->AddAnimation("Dleft", 52, 55);
@@ -460,6 +460,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 						case FREEZE:
 						{
 							status = FREEZE;
+							cout << "hit";
 							break;
 						}
 						default:
@@ -498,8 +499,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			if (statusCounter >= 40 && sCurrentFSM == MOVING || sCurrentFSM == ATTACK)
 			{
-				sCurrentFSM = FROZEN;
 				statusCounter = 0;
+				iFSMCounter = 0;
+				sCurrentFSM = FROZEN;
 			}
 			if (sCurrentFSM != FROZEN)
 			{
@@ -856,8 +858,10 @@ void CEnemy2D::Update(const double dElapsedTime)
 					break;
 				case BURN:
 					animatedEnemy->PlayAnimation("burnHleft", -1, 1.0f);
+					break;
 				case FROZEN:
 					animatedEnemy->PlayAnimation("frozenHleft", -1, 1.0f);
+					break;
 				}
 			}
 			else
@@ -869,8 +873,10 @@ void CEnemy2D::Update(const double dElapsedTime)
 					break;
 				case BURN:
 					animatedEnemy->PlayAnimation("burnLeft", -1, 1.0f);
+					break;
 				case FROZEN:
 					animatedEnemy->PlayAnimation("frozenLeft", -1, 1.0f);
+					break;
 				}
 			}
 		}
@@ -885,8 +891,10 @@ void CEnemy2D::Update(const double dElapsedTime)
 					break;
 				case BURN:
 					animatedEnemy->PlayAnimation("burnHright", -1, 1.0f);
-				case FROZEN:
+					break;
+				case FREEZE:
 					animatedEnemy->PlayAnimation("frozenHright", -1, 1.0f);
+					break;
 				}
 			}
 			else
@@ -898,8 +906,10 @@ void CEnemy2D::Update(const double dElapsedTime)
 					break;
 				case BURN:
 					animatedEnemy->PlayAnimation("burnRight", -1, 1.0f);
-				case FROZEN:
+					break;
+				case FREEZE:
 					animatedEnemy->PlayAnimation("frozenRight", -1, 1.0f);
+					break;
 				}
 			}
 		}
