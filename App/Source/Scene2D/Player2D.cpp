@@ -142,7 +142,7 @@ bool CPlayer2D::Init(void)
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Lives icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 100, 100);
+	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 20, 20);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Bullets", "Image/Scene2D/Bullet.png", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -1259,4 +1259,9 @@ void CPlayer2D::changeBaseHP(int amount)
 {
 	cInventoryItem = cInventoryManager->GetItem("Base HP");
 	cInventoryItem->Remove(amount);
+}
+
+int CPlayer2D::getPlayerDirection(void)
+{
+	return dir;
 }
