@@ -94,6 +94,8 @@ public:
 
 	void findNearestEnemy();
 
+	void UpgradeTurret(bool);
+
 	CBulletGenerator* GetBulletGenerator();
 
 	glm::vec2 getTurretPos();
@@ -306,8 +308,6 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
-
-	void UpgradeTurret(bool);
 	 
 	int GetTurret(bool);
 

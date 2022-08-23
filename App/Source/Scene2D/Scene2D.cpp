@@ -385,6 +385,21 @@ bool CScene2D::Update(const double dElapsedTime)
 			}
 		}
 	}
+	if (cKeyboardController->IsKeyPressed('H'))
+	{
+		if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 150)
+		{
+			for (int i = 0; i < turretVector.size(); i++)
+			{
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x - 1,cPlayer2D->vec2Index.y))
+				{
+					cout << "b" << endl;
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
+				}
+			}
+		}
+	}
 
 	return true;
 }
@@ -534,4 +549,9 @@ void CScene2D::setSlimeBPos(glm::vec2 pos)
 glm::vec2 CScene2D::getSlimePos()
 {
 	return slimeBossPos;
+}
+
+int CScene2D::GetTurretNo(void)
+{
+	return TurretNo;
 }

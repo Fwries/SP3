@@ -11,6 +11,8 @@
 // Include Image loader
 #include "System/ImageLoader.h"
 
+#include "Turret.h"
+
 #include <iostream>
 using namespace std;
 
@@ -60,6 +62,9 @@ bool CGUI_Scene2D::Init(void)
 	cFPSCounter = CFPSCounter::GetInstance();
 
 	cPlayer2D = CPlayer2D::GetInstance();
+
+	cScene2D = CScene2D::GetInstance();
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -103,6 +108,7 @@ bool CGUI_Scene2D::Init(void)
 	openCrafting = false;
 	openInventory = false;
 	openUpgrade = false;
+	Upgrade = 0;
 
 	// Variables for buildings
 	itemEquipped = 0;
@@ -395,6 +401,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										ImGui::SetWindowFontScale(0.5 * relativeScale_y);
 										if (ImGui::Button((" "), ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
 										{
+											if (itemEquipped == 1)
+											{
+												itemEquipped = 0;
+											}
 											itemEquipped = 1;
 										}
 									}
@@ -660,6 +670,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		}
 		else if (openUpgrade)
 		{
+			turretVector = cScene2D->getTurretVec();
 			if (CSettings::GetInstance()->bDisableMousePointer == true)
 				glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			ImGuiWindowFlags inventoryBgWinFlags =
@@ -699,7 +710,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								if (ImGui::Button(" ", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
 								{
-									
+									turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+									openUpgrade = false;
 								}
 							}
 							ImGui::PopStyleColor(3);
@@ -725,7 +737,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								if (ImGui::Button(" ", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
 								{
-
+									turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(false);
+									openUpgrade = false;
 								}
 							}
 							ImGui::PopStyleColor(3);
@@ -875,4 +888,19 @@ void CGUI_Scene2D::PostRender(void)
 int CGUI_Scene2D::GetEquipped(void)
 {
 	return itemEquipped;
+}
+
+void CGUI_Scene2D::OpenUpgrade(void)
+{
+	openUpgrade = !openUpgrade;
+}
+
+bool CGUI_Scene2D::UpgradeState(void)
+{
+	return openUpgrade;
+}
+
+int CGUI_Scene2D::Checkupgrade(void)
+{
+	return Upgrade;
 }
