@@ -118,8 +118,9 @@ protected:
 		SKULL = 0,
 		SKELE1 = 1,
 		VAMPIRE = 2,
-		SLIMEBOSS = 3,
-		SLIMEBABY = 4,
+		GOBLIN = 3,
+		SLIMEBOSS = 4,
+		SLIMEBABY = 400,
 		NUMENEMYTYPES
 	};
 

@@ -100,7 +100,7 @@ bool CEnemy2D::Init(void)
 	elapsed = 0;
 	spawnRate = 1;
 
-	spawnDeterminer = 3;
+	spawnDeterminer = 4;
 
 	targetableTurret = false;
 
@@ -193,6 +193,12 @@ bool CEnemy2D::Init(void)
 		SPE = 1;
 		break;
 	case 3:
+		enemyType = GOBLIN;
+		HP = 24;
+		ATK = 2;
+		SPE = 2;
+		break;
+	case 4:
 		enemyType = SLIMEBOSS;
 		HP = 1;
 		ATK = 4;
@@ -262,6 +268,19 @@ bool CEnemy2D::Init(void)
 		if (iTextureID == 0)
 		{
 			cout << "Image/SlimeBig.png" << endl;
+			return false;
+		}
+
+		MoveTime = 0.03;
+		AttackTime = 0.9f;
+	}
+	else if (enemyType == GOBLIN)
+	{
+		// Load the enemy2D texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Goblin.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Goblin.png" << endl;
 			return false;
 		}
 
@@ -498,6 +517,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKELE1:
 			case SLIMEBOSS:
 			case SLIMEBABY:
+			case GOBLIN:
 			{
 				glm::vec2 posToGo = findNearestBasePart();
 				//Pathfinding method
@@ -701,6 +721,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKELE1:
 			case SLIMEBOSS:
 			case SLIMEBABY:
+			case GOBLIN:
 			{
 				if (iFSMCounter >= 40)
 				{
@@ -762,7 +783,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			bIsActive = false;
 		}
-		else if (enemyType == SKELE1 || enemyType == VAMPIRE)
+		else if (enemyType == SKELE1 || enemyType == VAMPIRE || enemyType == GOBLIN)
 		{
 			if (faceLeft == true)
 			{
