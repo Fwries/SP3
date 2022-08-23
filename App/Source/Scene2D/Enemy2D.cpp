@@ -492,8 +492,9 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SLIMEBOSS:
 			case SLIMEBABY:
 			{
+				glm::vec2 posToGo = findNearestBasePart();
 				//Pathfinding method
-				auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
+				auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
 				for (const auto& coord : path)
@@ -523,7 +524,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				/*cout << toX << "    " << toY << endl;*/
 				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				if (cPhysics2D.CalculateDistance(vec2Index, glm::vec2(30, 34)) < 1.0f)
+				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.5f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -1466,4 +1467,25 @@ glm::vec2& CEnemy2D::findNearestTurret()
 		}
 	}
 	return nearestTurret->getTurretPos();
+}
+
+glm::vec2& CEnemy2D::findNearestBasePart()
+{
+	nearestLive = glm::vec2(1000, 1000);
+	for (int i = 0; i < 64; i++)
+	{
+		for (int j = 0; j < 64; j++)
+		{
+			if (cMap2D->GetMapInfo(j, i) >= 136 && cMap2D->GetMapInfo(j, i) <= 139)
+			{
+				glm::vec2 currIndex = glm::vec2(j, (int)cSettings->NUM_TILES_YAXIS - i - 1);
+				if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
+				{
+					nearestLive = currIndex;
+					nearestBasePart = glm::vec2(j, i);
+				}
+			}
+		}
+	}
+	return nearestBasePart;
 }

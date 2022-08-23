@@ -87,6 +87,7 @@ public:
 
 	//Getting nearest turret
 	glm::vec2& findNearestTurret();
+	glm::vec2& findNearestBasePart();
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
@@ -134,6 +135,8 @@ protected:
 	glm::vec2 nearestLive;
 	CTurret* nearestTurret;
 	int nearestTurretInt;
+
+	glm::vec2 nearestBasePart;
 
 
 	//CS: The quadMesh for drawing the tiles
