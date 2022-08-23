@@ -138,6 +138,9 @@ protected:
 
 	glm::vec2 nearestBasePart;
 
+	int spawnDeterminer;
+	int randType;
+
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;

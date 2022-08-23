@@ -100,6 +100,8 @@ bool CEnemy2D::Init(void)
 	elapsed = 0;
 	spawnRate = 1;
 
+	spawnDeterminer = 3;
+
 	targetableTurret = false;
 
 	// Get the handler to the CSettings instance
@@ -162,8 +164,13 @@ bool CEnemy2D::Init(void)
 	{
 		return false;
 	}
+
+
+
+
 	//Determining enemy type randomly
-	int randType = rand() % 4;
+	randType = rand() % spawnDeterminer;
+
 	//int randType = 3;
 	switch (randType)
 	{
@@ -212,7 +219,7 @@ bool CEnemy2D::Init(void)
 	if (enemyType == SKULL)
 	{
 		// Load the enemy2D texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Skull.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Skull.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Image/Skull.png" << endl;
@@ -225,7 +232,7 @@ bool CEnemy2D::Init(void)
 	else if (enemyType == SKELE1)
 	{
 		// Load the enemy2D texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Skeleton1.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Skeleton1.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Image/Skeleton1.png" << endl;
@@ -238,7 +245,7 @@ bool CEnemy2D::Init(void)
 	else if (enemyType == VAMPIRE)
 	{
 		// Load the enemy2D texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Vampire.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/Vampire.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Image/Vampire.png" << endl;
@@ -251,7 +258,7 @@ bool CEnemy2D::Init(void)
 	else if (enemyType == SLIMEBOSS)
 	{
 		// Load the enemy2D texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SlimeBig.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/SlimeBig.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Image/SlimeBig.png" << endl;
@@ -348,7 +355,7 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SlimeSmall.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sprites/SlimeSmall.png", true);
 	if (iTextureID == 0)
 	{
 		cout << "Image/SlimeSmall.png" << endl;
@@ -524,7 +531,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				/*cout << toX << "    " << toY << endl;*/
 				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.5f)
+				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
