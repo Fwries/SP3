@@ -71,13 +71,13 @@ public:
 	void PostRender(void);
 
 	// Return itemEquipped
-	int GetEquipped(void);
+	int GetEquipped();
 	
-	void OpenUpgrade(void);
+	void OpenUpgrade();
 
-	bool UpgradeState(void);
+	bool UpgradeState();
 
-	int Checkupgrade(void);
+	int Checkupgrade();
 
 protected:
 	// Constructor
@@ -98,6 +98,8 @@ protected:
 	int Upgrade;
 	int recipeNo;
 	unsigned int iTextureID;
+	unsigned int LeftUpgrade;
+	unsigned int RightUpgrade;
 
 	// Variables for Buildings
 	int itemEquipped;

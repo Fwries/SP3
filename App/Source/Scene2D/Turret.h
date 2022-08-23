@@ -96,6 +96,8 @@ public:
 
 	void UpgradeTurret(bool);
 
+	int GetCurrTurret();
+
 	CBulletGenerator* GetBulletGenerator();
 
 	glm::vec2 getTurretPos();
@@ -311,6 +313,5 @@ protected:
 	 
 	int GetTurret(bool);
 
-	int GetCurrTurret();
 };
 
