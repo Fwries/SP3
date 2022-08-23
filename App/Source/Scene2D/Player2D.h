@@ -165,5 +165,6 @@ protected:
 
 	void CheckMaterialAround(void);
 
+	bool GetWeapon();
 };
 

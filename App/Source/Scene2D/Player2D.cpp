@@ -1224,6 +1224,11 @@ void CPlayer2D::CheckMaterialAround(void)
 	}
 }
 
+bool CPlayer2D::GetWeapon()
+{
+	return WeaponEquiped;
+}
+
 bool CPlayer2D::GetMaterialRange(void)
 {
 	return MaterialRange;
