@@ -237,6 +237,9 @@ void CTurret::Update(const double dElapsedTime)
 				// GetRandomTurret
 				case GETRANDOMTURRET:
 				case GETRANDOMTURRET2:
+					upgradeLeft;
+					UpgradeTurret(true);
+					break;
 
 				// TuretTuretTuret
 				case TURRET3:
@@ -256,17 +259,18 @@ void CTurret::Update(const double dElapsedTime)
 				case GLITCHED_TURRET:
 					TurretCooldown = static_cast<float>((rand() % 250)) / 100.f;
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					break;
 				case WIND_TURRET:
 				case THUNDER_TURRET:
 				case TANK:
 				case MIDAS_TOUCH:
 				case MULTIMULTISHOT_TURRET:
 				case STARSHOT_TURRET:
-					cBulletGenerator->GenerateBullet(this->vec2Index, 0);
+					/*cBulletGenerator->GenerateBullet(this->vec2Index, 0);
 					cBulletGenerator->GenerateBullet(this->vec2Index, 1);
 					cBulletGenerator->GenerateBullet(this->vec2Index, 2);
 					cBulletGenerator->GenerateBullet(this->vec2Index, 5);
-					cBulletGenerator->GenerateBullet(this->vec2Index, 7);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 7);*/
 					break;
 				case WRONGDIRECTION_TURRET:
 					cBulletGenerator->GenerateBullet(this->vec2Index, -(nearestEnemy->vec2Index), TurretDamage, TurretElement, Colour);
@@ -291,6 +295,7 @@ void CTurret::Update(const double dElapsedTime)
 				case UPGRADED_GLITCHED_TURRET:
 					TurretCooldown = static_cast<float>((rand() % 150)) / 100.f;
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					break;
 				case ROBOT_PLAYER:
 				}
 			}
