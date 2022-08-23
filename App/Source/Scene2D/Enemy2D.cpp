@@ -107,6 +107,8 @@ bool CEnemy2D::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	cMouseController = CMouseController::GetInstance();
+
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	//// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -364,6 +366,8 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 
+	cMouseController = CMouseController::GetInstance();
+
 	//Set the position of the enemy randomly on the edge of the map
 	int edge = rand() % 4;
 	int X =bossPos.x, Y = bossPos.y;
@@ -401,12 +405,26 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 	AttackTime = 0.0f;
 
 	animatedEnemy = CMeshBuilder::GenerateSpriteAnimation(5, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	//Movement
 	animatedEnemy->AddAnimation("right", 0, 3);
 	animatedEnemy->AddAnimation("left", 4, 7);
 	animatedEnemy->AddAnimation("Hright", 8, 11);
 	animatedEnemy->AddAnimation("Hleft", 12, 15);
-	animatedEnemy->AddAnimation("Dright", 18, 19);
-	animatedEnemy->AddAnimation("Dleft", 16, 17);
+
+	//movement with status effect
+	//Burn
+	animatedEnemy->AddAnimation("burnRight", 16, 19);
+	animatedEnemy->AddAnimation("burnLeft", 20, 23);
+	animatedEnemy->AddAnimation("burnHright", 24, 27);
+	animatedEnemy->AddAnimation("burnHleft", 28, 31);
+	//Frozen
+	animatedEnemy->AddAnimation("frozenRight", 32, 35);
+	animatedEnemy->AddAnimation("frozenLeft", 36, 39);
+	animatedEnemy->AddAnimation("frozenHright", 40, 43);
+	animatedEnemy->AddAnimation("frozenHleft", 44, 47);
+	//Death
+	animatedEnemy->AddAnimation("Dright", 48, 51);
+	animatedEnemy->AddAnimation("Dleft", 52, 55);
 
 	//CS: Play the "idle" animation as default
 	animatedEnemy->PlayAnimation("left", -1, 1.0f);
@@ -1352,7 +1370,7 @@ bool CEnemy2D::InteractWithPlayer(void)
 
 	if (GetHitBox() == true)
 	{
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE))
+		if (cMouseController->IsButtonReleased(GLFW_MOUSE_BUTTON_LEFT))
 		{
 			if (enemyType == SKULL)
 			{

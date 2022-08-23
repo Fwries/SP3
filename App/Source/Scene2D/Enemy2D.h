@@ -38,6 +38,7 @@ class CMap2D;
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
+#include "Inputs\MouseController.h"
 
 class CEnemy2D : public CEntity2D
 {
@@ -176,6 +177,8 @@ protected:
 
 	//Animated Sprite
 	CSpriteAnimation* animatedEnemy;
+
+	CMouseController* cMouseController;
 
 	// Current color
 	glm::vec4 runtimeColour;

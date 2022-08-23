@@ -399,6 +399,42 @@ bool CScene2D::Update(const double dElapsedTime)
 				}
 			}
 		}
+		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 150)
+		{
+			for (int i = 0; i < turretVector.size(); i++)
+			{
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x + 1, cPlayer2D->vec2Index.y))
+				{
+					cout << "b" << endl;
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
+				}
+			}
+		}
+		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 150)
+		{
+			for (int i = 0; i < turretVector.size(); i++)
+			{
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.y - 1))
+				{
+					cout << "b" << endl;
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
+				}
+			}
+		}
+		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 150)
+		{
+			for (int i = 0; i < turretVector.size(); i++)
+			{
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.y + 1))
+				{
+					cout << "b" << endl;
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
+				}
+			}
+		}
 	}
 
 	return true;
