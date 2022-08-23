@@ -272,9 +272,9 @@ protected:
 	// Current FSM
 	FSM sCurrentFSM;
 
-	TurretType turretType;
-	TurretType upgradeLeft;
-	TurretType upgradeRight;
+	int turretType;
+	int upgradeLeft;
+	int upgradeRight;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
@@ -289,6 +289,7 @@ protected:
 	int TurretHP;
 	int TurretDamage;
 	int TurretElement;
+	int ElementChance;
 	double TurretCooldown;
 	double range;
 	glm::vec4 Colour;

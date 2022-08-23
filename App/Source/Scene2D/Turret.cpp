@@ -194,14 +194,13 @@ void CTurret::Update(const double dElapsedTime)
 				case MULTI_PEBBLE_TURRET:
 				case SHARP_STONE_TURRET:
 				case IRON_TURRET:
+				case WIND_TURRET:
 				case MYSTERIOUS_TURRET:
-				case ISTERIOUS_TURRET:
 				case SHARPER_STONE_TURRET:
 				case SNIPER_TURRET:
 				case BLUNT_METAL_TURRET:
 				case REINFORCED_IRON_TURRET:
 				case REINFORCED_IRON_TURRET2:
-				case TURRETINFINITY:
 				case SHINY_IRON_TURRET:
 				case GOLDEN_TURRET:
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
@@ -218,9 +217,25 @@ void CTurret::Update(const double dElapsedTime)
 				case ICE_FLOOR_TURRET:
 				case HOT_IRON_TURRET:
 				case ETERNAL_FLAME_SPEAR_TURRET:
+					if (rand() % 100 <= ElementChance)
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					}
+					else
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, NORMAL, Colour);
+					}
+					break;
 				case BLUE_FLAME_TURRET:
 				case DUO_FLAME_SPEAR_TURRET:
-					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					if (rand() % 100 <= ElementChance)
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					}
+					else
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, NORMAL, Colour);
+					}
 					break;
 
 				// Random DMG Turret
@@ -237,9 +252,45 @@ void CTurret::Update(const double dElapsedTime)
 				// GetRandomTurret
 				case GETRANDOMTURRET:
 				case GETRANDOMTURRET2:
-					upgradeLeft;
+				{
+					int Path = rand() % 4;
+					if (Path == 0 || Path == 1)
+					{
+						Path = 1;
+					}
+					else if (Path == 2 || Path == 3)
+					{
+						Path = 2;
+					}
+					else
+					{
+						Path = 3;
+					}
+					int Tier = rand() % 4 + 1;
+					int BranchNo;
+					switch (Tier)
+					{
+					case 1:
+						BranchNo = 1;
+						if (Path == 3)
+						{
+							Path = rand() % 2 + 1;
+						}
+						break;
+					case 2:
+						BranchNo = rand() % 2 + 1;
+						break;
+					case 3:
+						BranchNo = rand() % 6 + 1;
+						break;
+					case 4:
+						BranchNo = rand() % 15 + 1;
+						break;
+					}
+					upgradeLeft = int(Path + BranchNo * 10 + Tier * 1000);
 					UpgradeTurret(true);
 					break;
+				}
 
 				// TuretTuretTuret
 				case TURRET3:
@@ -253,17 +304,27 @@ void CTurret::Update(const double dElapsedTime)
 				case STONE_BURST_TOWER:
 				case IRON_BURST_TURRET:
 
-				// Misc
-				case ORE_GENERATOR:
-				case MULTISHOT_TURRET:
+				// Rainbow
+				case ISTERIOUS_TURRET:
+				case TURRETINFINITY:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					break;
+
+					// Glitched
 				case GLITCHED_TURRET:
 					TurretCooldown = static_cast<float>((rand() % 250)) / 100.f;
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
 					break;
-				case WIND_TURRET:
-				case THUNDER_TURRET:
-				case TANK:
-				case MIDAS_TOUCH:
+				case UPGRADED_GLITCHED_TURRET:
+					TurretCooldown = static_cast<float>((rand() % 150)) / 100.f;
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					break;
+
+				// Multishot
+				case MULTISHOT_TURRET:
 				case MULTIMULTISHOT_TURRET:
 				case STARSHOT_TURRET:
 					/*cBulletGenerator->GenerateBullet(this->vec2Index, 0);
@@ -272,6 +333,14 @@ void CTurret::Update(const double dElapsedTime)
 					cBulletGenerator->GenerateBullet(this->vec2Index, 5);
 					cBulletGenerator->GenerateBullet(this->vec2Index, 7);*/
 					break;
+
+				// Misc
+				case ORE_GENERATOR:
+				
+				case THUNDER_TURRET:
+				case TANK:
+				case MIDAS_TOUCH:
+				
 				case WRONGDIRECTION_TURRET:
 					cBulletGenerator->GenerateBullet(this->vec2Index, -(nearestEnemy->vec2Index), TurretDamage, TurretElement, Colour);
 					break;
@@ -294,12 +363,6 @@ void CTurret::Update(const double dElapsedTime)
 				{
 					int Direction = rand() % 7;
 					cBulletGenerator->GenerateBullet(this->vec2Index, Direction);
-					break;
-				}
-				case UPGRADED_GLITCHED_TURRET:
-				{
-					TurretCooldown = static_cast<float>((rand() % 150)) / 100.f;
-					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
 					break;
 				}
 				case ROBOT_PLAYER:
@@ -826,6 +889,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretDamage = 8;
 		TurretHP = 8;
 		TurretElement = BURN;
+		ElementChance = 20;
 		TurretCooldown = 1.5;
 		range = 10.0;
 		Colour = glm::vec4(1.f, 0.0f, 0.0f, 1.f);
@@ -842,6 +906,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretDamage = 5;
 		TurretHP = 8;
 		TurretElement = FROZEN;
+		ElementChance = 5;
 		TurretCooldown = 1.5;
 		range = 10.0;
 		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
@@ -873,6 +938,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = SHARPER_STONE_TURRET;
 		upgradeRight = SNIPER_TURRET;
 		upgradeRare = BLUNT_METAL_TURRET;
+		TurretDamage = 8;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case IRON_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronTurret.png", true);
@@ -883,11 +954,23 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = REINFORCED_IRON_TURRET;
 		upgradeRight = SHINY_IRON_TURRET;
 		upgradeRare = TANK;
+		TurretDamage = 8;
+		TurretHP = 22;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 	case ORE_GENERATOR:
 		upgradeLeft = GOLDEN_TURRET;
 		upgradeRight = ELEMENTAL_TURRET2;
 		upgradeRare = MIDAS_TOUCH;
+		TurretDamage = 0;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 10.0;
+		range = 100.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 
 	case STONE_BURST_TOWER:
@@ -899,6 +982,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = IRON_BURST_TURRET;
 		upgradeRight = HOT_IRON_TURRET;
 		upgradeRare = REINFORCED_IRON_TURRET;
+		TurretDamage = 4;
+		TurretHP = 6;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case MULTISHOT_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultishotTurret.png", true);
@@ -909,6 +998,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = MULTIMULTISHOT_TURRET;
 		upgradeRight = STARSHOT_TURRET;
 		upgradeRare = WRONGDIRECTION_TURRET;
+		TurretDamage = 4;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case TURRET2:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret2.png", true);
@@ -919,6 +1014,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = TURRET3;
 		upgradeRight = SHOTGUN_TURRET;
 		upgradeRare = TURRETINFINITY;
+		TurretDamage = 4;
+		TurretHP = 4;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 
 	case RANDOM_DMG_TURRETV2:
@@ -930,6 +1031,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = RANDOM_DMG_TURRETV3;
 		upgradeRight = FLIP_A_COIN_TURRET;
 		upgradeRare = RANDOM_DIRECTION_TURRET;
+		TurretDamage = 0;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.f, 0.f, 0.f, 1.f);
 		break;
 	case GLITCHED_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GlitchedTurret.png", true);
@@ -940,6 +1047,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = UPGRADED_GLITCHED_TURRET;
 		upgradeRight = GETRANDOMTURRET2;
 		upgradeRare = ROBOT_PLAYER;
+		TurretDamage = 4;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 		break;
 	case GETRANDOMTURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GetRandomTurret.png", true);
@@ -961,6 +1074,13 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = ETERNAL_FLAME_SPEAR_TURRET;
 		upgradeRight = BLUE_FLAME_TURRET;
 		upgradeRare = DUO_FLAME_SPEAR_TURRET;
+		TurretDamage = 8;
+		TurretHP = 10;
+		TurretElement = BURN;
+		ElementChance = 20;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 		break;
 	case FLAMETHROWER_TURRET: // All Below have not done the turret type yet
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlamethrowerTurret.png", true);
@@ -971,6 +1091,13 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 16;
+		TurretElement = BURN;
+		ElementChance = 100;
+		TurretCooldown = 0.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 		break;
 	case FIREWALL_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FirewallTurret.png", true);
@@ -992,6 +1119,13 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 8;
+		TurretHP = 10;
+		TurretElement = FROZEN;
+		ElementChance = 5;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case SNOWBALL_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SnowballTurret.png", true);
@@ -1002,6 +1136,13 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 8;
+		TurretElement = FROZEN;
+		ElementChance = 100;
+		TurretCooldown = 0.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 	case ICE_FLOOR_TURRET:
 		upgradeLeft = NONE;
@@ -1013,11 +1154,23 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 0.5;
+		range = 10.0;
+		Colour = glm::vec4(0.224f, 1.f, 0.078f, 1.f);
 		break;
 	case THUNDER_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 16;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 3.0;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 0.f, 1.f);
 		break;
 	case ISTERIOUS_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IsteriousTurret.png", true);
@@ -1028,6 +1181,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = -5;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 		break;
 
 	// Tier 4
@@ -1040,6 +1199,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 10;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case SNIPER_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SniperTurret.png", true);
@@ -1050,6 +1215,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 10;
+		TurretHP = 4;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 100.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case BLUNT_METAL_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BluntMetalTurret.png", true);
@@ -1060,6 +1231,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 10;
+		TurretHP = 15;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 5.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 
 	case REINFORCED_IRON_TURRET:
@@ -1071,11 +1248,23 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 10;
+		TurretHP = 24;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 	case SHINY_IRON_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 6;
+		TurretHP = 24;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 	case TANK:
 		upgradeLeft = NONE;
@@ -1092,6 +1281,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 7;
+		TurretHP = 4;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 0.843f, 0.0f, 1.f);
 		break;
 	case ELEMENTAL_TURRET2:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ElementalTurret.png", true);
@@ -1102,6 +1297,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 4;
+		TurretHP = 6;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.627f, 0.125f, 0.941f, 1.f);
 		break;
 	case MIDAS_TOUCH:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MidasTouch.png", true);
@@ -1112,6 +1313,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 25;
+		TurretHP = 30;
+		TurretElement = NORMAL;
+		TurretCooldown = 20.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 0.843f, 0.f, 1.f);
 		break;
 
 	case IRON_BURST_TURRET:
@@ -1123,6 +1330,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 6;
+		TurretHP = 12;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case HOT_IRON_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/HotIronTurret.png", true);
@@ -1133,6 +1346,13 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 4;
+		TurretHP = 6;
+		TurretElement = BURN;
+		ElementChance = 10;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 		break;
 	case REINFORCED_IRON_TURRET2:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedIronTurret.png", true);
@@ -1143,6 +1363,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 10;
+		TurretHP = 24;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 
 	case MULTIMULTISHOT_TURRET:
@@ -1154,6 +1380,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 4;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case STARSHOT_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StarshotTurret.png", true);
@@ -1164,6 +1396,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 8;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 0.f, 1.f);
 		break;
 	case WRONGDIRECTION_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WrongDirectionTurret.png", true);
@@ -1174,6 +1412,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 20;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.f, 0.f, 0.f, 1.f);
 		break;
 
 	case TURRET3:
@@ -1185,11 +1429,23 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 9;
+		TurretHP = 9;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case SHOTGUN_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 6;
+		TurretHP = 4;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
 	case TURRETINFINITY:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/TurretInfinity.png", true);
@@ -1200,6 +1456,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 9999;
+		TurretHP = 9999;
+		TurretElement = NORMAL;
+		TurretCooldown = 999.9;
+		range = 10.0;
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 		break;
 
 	case RANDOM_DMG_TURRETV3:
@@ -1211,6 +1473,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 15;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.f, 0.f, 0.f, 1.f);
 		break;
 	case FLIP_A_COIN_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlipACoinTurret.png", true);
@@ -1221,6 +1489,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 20;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 0.843f, 0.0f, 1.f);
 		break;
 	case RANDOM_DIRECTION_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDirectionTurret.png", true);
@@ -1231,6 +1505,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 15;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.f, 0.f, 0.f, 1.f);
 		break;
 
 	case UPGRADED_GLITCHED_TURRET:
@@ -1242,6 +1522,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 8;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 		break;
 	case GETRANDOMTURRET2:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GetRandomTurret.png", true);
@@ -1268,6 +1554,13 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 8;
+		TurretHP = 10;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		ElementChance = 100;
 		break;
 	case BLUE_FLAME_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BlueFlameSpearTurret.png", true);
@@ -1278,6 +1571,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 4;
+		TurretHP = 6;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.f, 0.f, 1.f, 1.f);
 		break;
 	case DUO_FLAME_SPEAR_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/DuoFlameSpearTurret.png", true);
@@ -1288,6 +1587,12 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 4;
+		TurretHP = 6;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 
 	case IRON_WALL:
