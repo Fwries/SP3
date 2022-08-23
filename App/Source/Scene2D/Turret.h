@@ -275,7 +275,6 @@ protected:
 	TurretType turretType;
 	TurretType upgradeLeft;
 	TurretType upgradeRight;
-	TurretType upgradeRare;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;

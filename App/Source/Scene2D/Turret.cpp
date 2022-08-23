@@ -129,7 +129,6 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		upgradeLeft = STONE_WALL;
 		upgradeRight = NONE;
-		upgradeRare = NONE;
 	}
 	else
 	{
@@ -148,7 +147,6 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
 		upgradeLeft = STONE_TURRET;
 		upgradeRight = ELEMENTAL_TURRET;
-		upgradeRare = NONE;
 	}
 
 	// If this class is initialised properly, then set the bIsActive to true
@@ -718,6 +716,8 @@ void CTurret::UpgradeTurret(bool IsLeft)
 	{
 		turretType = upgradeRight;
 	}
+
+	TurretType upgradeRare;
 
 	switch (turretType) // Setting up the stats for the different types
 	{
