@@ -374,7 +374,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 									ImVec2(100.0f * relativeScale_x,
 										30.0f * relativeScale_y),
 									ImVec2(0, 1), ImVec2(1, 0));
-								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.61f));
+								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.65f, (float)cSettings->iWindowHeight * 0.61f));
 								ImGui::BeginChild("Turret Function ", ImVec2(110.0f * relativeScale_x, 80.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
 									ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
