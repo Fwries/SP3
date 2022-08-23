@@ -98,7 +98,7 @@ public:
 
 	int GetCurrTurret();
 
-	int GetTurret(bool);
+	int GetNextTurret(bool);
 
 	CBulletGenerator* GetBulletGenerator();
 

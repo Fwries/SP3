@@ -1315,7 +1315,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 	}
 }
 
-int CTurret::GetTurret(bool IsLeft)
+int CTurret::GetNextTurret(bool IsLeft)
 {
 	if (IsLeft)
 	{
