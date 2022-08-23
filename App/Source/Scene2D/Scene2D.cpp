@@ -105,6 +105,9 @@ bool CScene2D::Init(void)
 	timeElapsed = 0.025;
 	spawnRate = 8;
 
+	waveLevel = 1;
+	spawnBoss = false;
+
 	// Create and initialise the Map 2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
@@ -236,8 +239,21 @@ bool CScene2D::Update(const double dElapsedTime)
 			enemyVector.push_back(cEnemy2D);
 		}
 	}
+	if (spawnBoss == true)
+	{
+		CEnemy2D* cEnemy2D = new CEnemy2D();
+		// Pass shader to cEnemy2D
+		cEnemy2D->SetShader("Shader2D_Colour");
+		// Initialise the instance
+		if (cEnemy2D->slimeBossInit() == true)
+		{
+			cEnemy2D->SetPlayer2D(cPlayer2D);
+			enemyVector.push_back(cEnemy2D);
+		}
+		spawnBoss = false;
+	}
 	//cout << remainder(elapsed, 60) << endl;
-	if (remainder(elapsed, 60) >= 0 && remainder(elapsed, 60) <= 0.025 && elapsed >= 6)
+	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6)
 	{
 		if (spawnRate > 4)
 		{
@@ -251,7 +267,11 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			spawnRate = spawnRate - 1;
 		}
-		cout << spawnRate << endl;
+		waveLevel += 1;
+		if (waveLevel % 2 != 0 && waveLevel != 1)
+		{
+			spawnBoss = true;
+		}
 	}
 	//cout << remainder(elapsed, spawnRate) << endl;
 

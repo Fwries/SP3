@@ -52,6 +52,7 @@ public:
 	// Init
 	bool Init(void);
 	bool babySlimeInit(glm::vec2 bossPos);
+	bool slimeBossInit(void);
 
 	// Update
 	void Update(const double dElapsedTime);

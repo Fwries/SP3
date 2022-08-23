@@ -127,6 +127,9 @@ protected:
 	int spawnRate;
 	int TurretNo;
 
+	int waveLevel;
+	bool spawnBoss;
+
 	bool extraEnemyToSpawn;
 
 	glm::vec2 slimeBossPos;
