@@ -395,15 +395,8 @@ bool CScene2D::Update(const double dElapsedTime)
 				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x - 1,cPlayer2D->vec2Index.y))
 				{
 					cout << "b" << endl;
-					cGUI_Scene2D->OpenUpgrade(); 
-					if (cGUI_Scene2D->Checkupgrade() == 1)
-					{
-						turretVector[i]->UpgradeTurret(true);
-					}
-					else if (cGUI_Scene2D->Checkupgrade() == 2)
-					{
-						turretVector[i]->UpgradeTurret(false);
-					}
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
 				}
 			}
 		}
@@ -557,4 +550,9 @@ void CScene2D::setSlimeBPos(glm::vec2 pos)
 glm::vec2 CScene2D::getSlimePos()
 {
 	return slimeBossPos;
+}
+
+int CScene2D::GetTurretNo(void)
+{
+	return TurretNo;
 }

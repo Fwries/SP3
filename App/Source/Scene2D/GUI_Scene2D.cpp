@@ -63,6 +63,8 @@ bool CGUI_Scene2D::Init(void)
 
 	cPlayer2D = CPlayer2D::GetInstance();
 
+	cScene2D = CScene2D::GetInstance();
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -105,11 +107,8 @@ bool CGUI_Scene2D::Init(void)
 	recipeNo = 0;
 	openCrafting = false;
 	openInventory = false;
-<<<<<<< Updated upstream
-=======
 	openUpgrade = false;
 	Upgrade = 0;
->>>>>>> Stashed changes
 
 	// Variables for buildings
 	itemEquipped = 0;
@@ -669,10 +668,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			}
 			ImGui::End();
 		}
-<<<<<<< Updated upstream
-=======
 		else if (openUpgrade)
 		{
+			turretVector = cScene2D->getTurretVec();
 			if (CSettings::GetInstance()->bDisableMousePointer == true)
 				glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			ImGuiWindowFlags inventoryBgWinFlags =
@@ -712,7 +710,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								if (ImGui::Button(" ", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
 								{
-									Upgrade = 1;
+									turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
 									openUpgrade = false;
 								}
 							}
@@ -739,7 +737,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								if (ImGui::Button(" ", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
 								{
-									Upgrade = 2;
+									turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(false);
 									openUpgrade = false;
 								}
 							}
@@ -779,7 +777,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			}
 			ImGui::End();
 		}
->>>>>>> Stashed changes
 		else
 		{
 			//Disable Cursor
@@ -896,6 +893,11 @@ int CGUI_Scene2D::GetEquipped(void)
 void CGUI_Scene2D::OpenUpgrade(void)
 {
 	openUpgrade = !openUpgrade;
+}
+
+bool CGUI_Scene2D::UpgradeState(void)
+{
+	return openUpgrade;
 }
 
 int CGUI_Scene2D::Checkupgrade(void)

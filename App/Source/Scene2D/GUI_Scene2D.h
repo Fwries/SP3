@@ -6,6 +6,8 @@
  */
 #pragma once
 
+class CScene2D;
+
 // Include SingletonTemplate
 #include "DesignPatterns/SingletonTemplate.h"
 
@@ -21,6 +23,8 @@
 #include "Inputs\KeyboardController.h"
 
 #include "Player2D.h"
+
+#include "Scene2D.h"
 
 // Include GLEW
 #ifndef GLEW_STATIC
@@ -71,6 +75,8 @@ public:
 	
 	void OpenUpgrade(void);
 
+	bool UpgradeState(void);
+
 	int Checkupgrade(void);
 
 protected:
@@ -88,20 +94,21 @@ protected:
 	float m_fProgressBar;
 	bool openInventory;
 	bool openCrafting;
-<<<<<<< Updated upstream
-=======
 	bool openUpgrade;
-	bool Upgrade;
->>>>>>> Stashed changes
+	int Upgrade;
 	int recipeNo;
 	unsigned int iTextureID;
 
 	// Variables for Buildings
 	int itemEquipped;
 
+	vector<CTurret*> turretVector;
+
 	CSettings* cSettings;
 
 	CPlayer2D* cPlayer2D;
+
+	CScene2D* cScene2D;
 
 	// The handler containing the instance of CInventoryManager
 	CInventoryManager* cInventoryManager;
@@ -109,5 +116,4 @@ protected:
 	CInventoryItem* cInventoryItem;
 
 	CKeyboardController* cKeyboardController;
-
 };

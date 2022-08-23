@@ -104,8 +104,6 @@ public:
 	bool bIsActive;
 	bool hitBox;
 
-	void UpgradeTurret(bool);
-
 protected:
 	enum DIRECTION
 	{
@@ -310,13 +308,9 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
-<<<<<<< Updated upstream
-=======
-
 	 
 	int GetTurret(bool);
 
 	int GetCurrTurret();
->>>>>>> Stashed changes
 };
 

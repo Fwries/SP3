@@ -8,6 +8,7 @@
 
 class CEnemy2D;
 class CTurret;
+class CGUI_Scene2D;
 
 // Include SingletonTemplate
 #include "DesignPatterns\SingletonTemplate.h"
@@ -74,12 +75,14 @@ public:
 	bool GetPlayerWon();
 
 	vector<CTurret*>& getTurretVec(void);
+
 	vector<CEntity2D*>& getEnemyVec(void);
 
 	void spawnExtraEnemy(int i);
 	void setSlimeBPos(glm::vec2 pos);
 	glm::vec2 getSlimePos();
 
+	int GetTurretNo(void);
 protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
@@ -122,6 +125,7 @@ protected:
 	double elapsed;
 	double timeElapsed;
 	int spawnRate;
+	int TurretNo;
 
 	bool extraEnemyToSpawn;
 
