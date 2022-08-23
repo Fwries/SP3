@@ -868,6 +868,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case ICE_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IceSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/IceSpearTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -983,6 +988,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeRare = NONE;
 		break;
 	case MIDAS_TOUCH:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MidasTouch.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MidasTouch.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -999,6 +1009,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeRare = NONE;
 		break;
 	case HOT_IRON_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/HotIronTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/HotIronTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1129,16 +1144,31 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case ETERNAL_FLAME_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalFlameSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/EternalFlameSpearTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
 		break;
 	case BLUE_FLAME_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BlueFlameSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/BlueFlameSpearTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
 		break;
 	case DUO_FLAME_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/DuoFlameSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/DuoFlameSpearTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
