@@ -98,6 +98,8 @@ public:
 
 	int GetCurrTurret();
 
+	int GetTurret(bool);
+
 	CBulletGenerator* GetBulletGenerator();
 
 	glm::vec2 getTurretPos();
@@ -273,6 +275,7 @@ protected:
 	TurretType turretType;
 	TurretType upgradeLeft;
 	TurretType upgradeRight;
+	TurretType upgradeRare;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
@@ -310,8 +313,6 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
-	 
-	int GetTurret(bool);
 
 };
 
