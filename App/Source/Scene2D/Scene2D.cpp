@@ -237,9 +237,17 @@ bool CScene2D::Update(const double dElapsedTime)
 	}
 	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6)
 	{
-		if (spawnRate > 2)
+		if (spawnRate > 4)
+		{
+			spawnRate = spawnRate - 4;
+		}
+		else if (spawnRate > 2)
 		{
 			spawnRate = spawnRate - 2;
+		}
+		else if (spawnRate > 1)
+		{
+			spawnRate = spawnRate - 1;
 		}
 	}
 	//cout << remainder(elapsed, spawnRate) << endl;
