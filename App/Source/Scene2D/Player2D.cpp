@@ -87,6 +87,8 @@ bool CPlayer2D::Init(void)
 
 	cMouseController = CMouseController::GetInstance();
 
+	cScene2D = CScene2D::GetInstance();
+
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
@@ -1264,4 +1266,26 @@ void CPlayer2D::changeBaseHP(int amount)
 int CPlayer2D::getPlayerDirection(void)
 {
 	return dir;
+}
+
+void CPlayer2D::findNearestEnemy()
+{
+	glm::vec2 NEWLive;
+	nearestEnemy = nullptr;
+	for (int i = 0; i < cScene2D->getEnemyVec().size(); i++)
+	{
+		glm::vec2 currIndex = glm::vec2(cScene2D->getEnemyVec()[i]->vec2Index.x, cScene2D->getEnemyVec()[i]->vec2Index.y);
+		if (glm::length(currIndex - vec2Index) < glm::length(NEWLive - vec2Index))
+		{
+			nearestLive = currIndex;
+			NEWLive = nearestLive;
+			nearestEnemyInt = i;
+			nearestEnemy = cScene2D->getEnemyVec()[i];
+		}
+	}
+}
+
+int CPlayer2D::getNearestEnemy(void)
+{
+	return nearestEnemyInt;
 }

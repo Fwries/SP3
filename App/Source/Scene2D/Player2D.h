@@ -25,6 +25,7 @@
 
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
+class CScene2D;
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
@@ -38,6 +39,8 @@ class CMap2D;
 
 // Include InventoryManager
 #include "InventoryManager.h"
+
+#include "Scene2D.h"
 
 
 // Include SoundController
@@ -79,6 +82,13 @@ public:
 
 	int getPlayerDirection(void);
 
+
+	CEntity2D* nearestEnemy;
+	glm::vec2 nearestLive;
+	int nearestEnemyInt;
+	void findNearestEnemy();
+	int getNearestEnemy(void);
+
 protected:
 	enum DIRECTION
 	{
@@ -99,6 +109,8 @@ protected:
 	glm::vec2 vec2OldMicroSteps;
 
 	CBulletGenerator* cBulletGenerator;
+
+	CScene2D* cScene2D;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;

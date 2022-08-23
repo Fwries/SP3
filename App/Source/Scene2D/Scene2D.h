@@ -6,10 +6,6 @@
  */
 #pragma once
 
-class CEnemy2D;
-class CTurret;
-class CGUI_Scene2D;
-
 // Include SingletonTemplate
 #include "DesignPatterns\SingletonTemplate.h"
 
@@ -23,6 +19,11 @@ class CGUI_Scene2D;
 #include <includes/glm.hpp>
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
+
+class CEnemy2D;
+class CTurret;
+class CGUI_Scene2D;
+class CPlayer2D;
 
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
@@ -89,7 +90,6 @@ protected:
 	// The handler containing the instance of CPlayer2Ds
 	CPlayer2D* cPlayer2D;
 	// The handler containing the instance of CPlayer2Ds
-	CMisc2D* cMisc2D;
 	// The handler containing the instance of CPlayer2Ds
 	CTurret* cTurret;
 	// A vector containing the instance of CEnemy2Ds

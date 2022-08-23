@@ -104,6 +104,8 @@ bool CEnemy2D::Init(void)
 
 	targetableTurret = false;
 
+	meleeCounter = 0;
+
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
@@ -457,6 +459,12 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
+	cout << cScene2D->getEnemyVec().size() << endl;
+	//Melee attack cooldown
+	if (meleeCounter < 100)
+	{
+		meleeCounter++;
+	}
 
 	//Turret damage handler
 	for (unsigned j = 0; j < cScene2D->getTurretVec().size(); ++j)
@@ -1356,13 +1364,22 @@ bool CEnemy2D::InteractWithPlayer(void)
 				HP = HP - cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
 				cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->SetbIsActive(false);
 			}
+			if (HP <= 0)
+			{
+				sCurrentFSM = DEAD;
+				if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
+				{
+					cPlayer2D->findNearestEnemy();
+					cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + cPlayer2D->getNearestEnemy());
+				}
+			}
 		}
 	}
 
 
 	if (GetHitBox() == true)
 	{
-		if (cMouseController->IsButtonReleased(GLFW_MOUSE_BUTTON_LEFT))
+		if (cMouseController->IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT) && meleeCounter >= 40)
 		{
 			if (enemyType == SKULL)
 			{
@@ -1373,7 +1390,18 @@ bool CEnemy2D::InteractWithPlayer(void)
 			{
 				cSoundController->PlaySoundByID(8);
 				HP = HP - 4;
-			}	
+			}
+
+			if (HP <= 0)
+			{
+				sCurrentFSM = DEAD;
+				if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
+				{
+					cPlayer2D->findNearestEnemy();
+					cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + cPlayer2D->getNearestEnemy());
+				}
+			}
+			meleeCounter = 0;
 		}
 	}
 

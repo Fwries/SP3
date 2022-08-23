@@ -221,6 +221,8 @@ protected:
 	// Max count in a state
 	const int iMaxFSMCounter = 60;
 
+	int meleeCounter;
+
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
 
