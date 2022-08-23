@@ -1260,3 +1260,8 @@ void CPlayer2D::changeBaseHP(int amount)
 	cInventoryItem = cInventoryManager->GetItem("Base HP");
 	cInventoryItem->Remove(amount);
 }
+
+int CPlayer2D::getPlayerDirection(void)
+{
+	return dir;
+}

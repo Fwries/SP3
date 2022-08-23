@@ -365,7 +365,8 @@ bool CScene2D::Update(const double dElapsedTime)
 			switch (cGUI_Scene2D->GetEquipped())
 			{
 			case 1:
-				if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0)
+				if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 0)
 				{
 					CTurret* cTurret = new CTurret();
 					// Pass shader to cEnemy2D
@@ -378,6 +379,55 @@ bool CScene2D::Update(const double dElapsedTime)
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("Turret")->Remove(1);
 					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0
+						&& cPlayer2D->getPlayerDirection() == 1)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, false) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0
+						&& cPlayer2D->getPlayerDirection() == 2)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, false) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0
+						&& cPlayer2D->getPlayerDirection() == 3)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, false) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
+					}
+					break;
 				}
 				break;
 			default:

@@ -77,6 +77,8 @@ public:
 
 	void changeBaseHP(int amount);
 
+	int getPlayerDirection(void);
+
 protected:
 	enum DIRECTION
 	{
