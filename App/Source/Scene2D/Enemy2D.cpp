@@ -289,13 +289,29 @@ bool CEnemy2D::Init(void)
 	}
 
 
-	animatedEnemy = CMeshBuilder::GenerateSpriteAnimation(5, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedEnemy = CMeshBuilder::GenerateSpriteAnimation(13, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	//Movement
 	animatedEnemy->AddAnimation("right", 0, 3);
 	animatedEnemy->AddAnimation("left", 4, 7);
 	animatedEnemy->AddAnimation("Hright", 8, 11);
 	animatedEnemy->AddAnimation("Hleft", 12, 15);
-	animatedEnemy->AddAnimation("Dright", 18, 19);
-	animatedEnemy->AddAnimation("Dleft", 16, 17);
+
+	//movement with status effect
+	//Burn
+	animatedEnemy->AddAnimation("frozenRight", 16, 19);
+	animatedEnemy->AddAnimation("frozenLeft", 20, 23);
+	animatedEnemy->AddAnimation("frozenHright", 24, 27);
+	animatedEnemy->AddAnimation("frozenHleft", 28, 31);
+	//Frozen
+	animatedEnemy->AddAnimation("burnRight", 32, 35);
+	animatedEnemy->AddAnimation("burnLeft", 36, 39);
+	animatedEnemy->AddAnimation("burnHright", 40, 43);
+	animatedEnemy->AddAnimation("burnHleft", 44, 47);
+	//Death
+	animatedEnemy->AddAnimation("Dright", 48, 51);
+	animatedEnemy->AddAnimation("Dleft", 52, 55);
+
+
 	
 	//CS: Play the "idle" animation as default
 	animatedEnemy->PlayAnimation("left", -1, 1.0f);
@@ -833,22 +849,58 @@ void CEnemy2D::Update(const double dElapsedTime)
 		{
 			if (GetHitBox() == true)
 			{
-				animatedEnemy->PlayAnimation("Hleft", -1, 1.0f);
+				switch (status)
+				{
+				case NORMAL:
+					animatedEnemy->PlayAnimation("Hleft", -1, 1.0f);
+					break;
+				case BURN:
+					animatedEnemy->PlayAnimation("burnHleft", -1, 1.0f);
+				case FROZEN:
+					animatedEnemy->PlayAnimation("frozenHleft", -1, 1.0f);
+				}
 			}
 			else
 			{
-				animatedEnemy->PlayAnimation("left", -1, 1.0f);
+				switch (status)
+				{
+				case NORMAL:
+					animatedEnemy->PlayAnimation("left", -1, 1.0f);
+					break;
+				case BURN:
+					animatedEnemy->PlayAnimation("burnLeft", -1, 1.0f);
+				case FROZEN:
+					animatedEnemy->PlayAnimation("frozenLeft", -1, 1.0f);
+				}
 			}
 		}
 		else
 		{
 			if (GetHitBox() == true)
 			{
-				animatedEnemy->PlayAnimation("Hright", -1, 1.0f);
+				switch (status)
+				{
+				case NORMAL:
+					animatedEnemy->PlayAnimation("Hright", -1, 1.0f);
+					break;
+				case BURN:
+					animatedEnemy->PlayAnimation("burnHright", -1, 1.0f);
+				case FROZEN:
+					animatedEnemy->PlayAnimation("frozenHright", -1, 1.0f);
+				}
 			}
 			else
 			{
-				animatedEnemy->PlayAnimation("right", -1, 1.0f);
+				switch (status)
+				{
+				case NORMAL:
+					animatedEnemy->PlayAnimation("right", -1, 1.0f);
+					break;
+				case BURN:
+					animatedEnemy->PlayAnimation("burnRight", -1, 1.0f);
+				case FROZEN:
+					animatedEnemy->PlayAnimation("frozenRight", -1, 1.0f);
+				}
 			}
 		}
 
