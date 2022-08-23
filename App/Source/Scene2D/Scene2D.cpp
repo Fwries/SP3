@@ -236,7 +236,8 @@ bool CScene2D::Update(const double dElapsedTime)
 			enemyVector.push_back(cEnemy2D);
 		}
 	}
-	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6)
+	//cout << remainder(elapsed, 60) << endl;
+	if (remainder(elapsed, 60) >= 0 && remainder(elapsed, 60) <= 0.025 && elapsed >= 6)
 	{
 		if (spawnRate > 4)
 		{
@@ -250,6 +251,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			spawnRate = spawnRate - 1;
 		}
+		cout << spawnRate << endl;
 	}
 	//cout << remainder(elapsed, spawnRate) << endl;
 
