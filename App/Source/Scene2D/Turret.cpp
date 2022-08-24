@@ -217,7 +217,7 @@ void CTurret::Update(const double dElapsedTime)
 				case ICE_FLOOR_TURRET:
 				case HOT_IRON_TURRET:
 				case ETERNAL_FLAME_SPEAR_TURRET:
-					if (rand() % 100 <= ElementChance)
+					if (rand() % 101 <= ElementChance)
 					{
 						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
 					}
@@ -228,7 +228,7 @@ void CTurret::Update(const double dElapsedTime)
 					break;
 				case BLUE_FLAME_TURRET:
 				case DUO_FLAME_SPEAR_TURRET:
-					if (rand() % 100 <= ElementChance)
+					if (rand() % 101 <= ElementChance)
 					{
 						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
 					}
@@ -266,7 +266,7 @@ void CTurret::Update(const double dElapsedTime)
 					{
 						Path = 3;
 					}
-					int Tier = rand() % 4 + 1;
+					int Tier = rand() % 5 + 1;
 					int BranchNo = 0;
 					switch (Tier)
 					{
@@ -274,17 +274,17 @@ void CTurret::Update(const double dElapsedTime)
 						BranchNo = 1;
 						if (Path == 3)
 						{
-							Path = rand() % 2 + 1;
+							Path = rand() % 3 + 1;
 						}
 						break;
 					case 2:
-						BranchNo = rand() % 2 + 1;
+						BranchNo = rand() % 3 + 1;
 						break;
 					case 3:
-						BranchNo = rand() % 6 + 1;
+						BranchNo = rand() % 7 + 1;
 						break;
 					case 4:
-						BranchNo = rand() % 15 + 1;
+						BranchNo = rand() % 16 + 1;
 						break;
 					}
 					upgradeLeft = int(Path + BranchNo * 10 + Tier * 1000);
@@ -348,7 +348,7 @@ void CTurret::Update(const double dElapsedTime)
 				case FLIP_A_COIN_TURRET:
 				{
 					int Damage;
-					if (rand() % 1 == 1)
+					if (rand() % 2 == 1)
 					{
 						Damage = 20;
 					}
@@ -361,7 +361,7 @@ void CTurret::Update(const double dElapsedTime)
 				}
 				case RANDOM_DIRECTION_TURRET:
 				{
-					int Direction = rand() % 7;
+					int Direction = rand() % 8;
 					cBulletGenerator->GenerateBullet(this->vec2Index, Direction);
 					break;
 				}
@@ -1609,9 +1609,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 
 	if (upgradeLeft != NONE && upgradeRight != NONE && upgradeRare != NONE)
 	{
-		if (rand() % 2 == 2) // 1 out of 3
+		if (rand() % 4 == 0) // 1 out of 4
 		{
-			if (rand() % 1 == 1) // 1 out of 2
+			if (rand() % 2 == 0) // 1 out of 2
 			{
 				upgradeLeft = upgradeRare;
 			}
