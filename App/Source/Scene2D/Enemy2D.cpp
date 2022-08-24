@@ -718,6 +718,28 @@ void CEnemy2D::Update(const double dElapsedTime)
 	{
 	case MOVING:
 	{
+		if (faceLeft == true)
+		{
+			if (hitBox == true)
+			{
+				animatedEnemy->PlayAnimation("Hleft", -1, 1.0f);
+			}
+			else
+			{
+				animatedEnemy->PlayAnimation("Left", -1, 1.0f);
+			}
+		}
+		else
+		{
+			if (hitBox == true)
+			{
+				animatedEnemy->PlayAnimation("Hright", -1, 1.0f);
+			}
+			else
+			{
+				animatedEnemy->PlayAnimation("Right", -1, 1.0f);
+			}
+		}
 		switch (enemyType)
 		{
 			//Monster1
@@ -726,29 +748,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SLIMEBABY:
 			case GOBLIN:
 			{
-				if (faceLeft == true)
-				{
-					if (hitBox == true)
-					{
-						animatedEnemy->PlayAnimation("Hleft", -1, 1.0f);
-					}
-					else
-					{
-						animatedEnemy->PlayAnimation("Left", -1, 1.0f);
-					}
-				}
-				else
-				{
-					if (hitBox == true)
-					{
-						animatedEnemy->PlayAnimation("Hright", -1, 1.0f);
-					}
-					else
-					{
-						animatedEnemy->PlayAnimation("Right", -1, 1.0f);
-					}
-				}
-
 				glm::vec2 posToGo = findNearestBasePart();
 				auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 				//Calculate new destination
