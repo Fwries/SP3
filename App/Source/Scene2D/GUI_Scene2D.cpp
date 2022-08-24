@@ -68,6 +68,14 @@ bool CGUI_Scene2D::Init(void)
 
 	cScene2D = CScene2D::GetInstance();
 
+	CImageLoader* Image = CImageLoader::GetInstance();
+	InventoryBG.fileName = "Image\\GUI\\Inventory.png";
+	InventoryBG.textureID = Image->LoadTextureGetID(InventoryBG.fileName.c_str(), true);
+	EquipButton.fileName = "Image\\GUI\\Equip.png";
+	EquipButton.textureID = Image->LoadTextureGetID(EquipButton.fileName.c_str(), true);
+	EquippedButton.fileName = "Image\\GUI\\Equipped.png";
+	EquippedButton.textureID = Image->LoadTextureGetID(EquippedButton.fileName.c_str(), true);
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -118,10 +126,6 @@ bool CGUI_Scene2D::Init(void)
 
 	// Variables for buildings
 	itemEquipped = 0;
-	iTextureID = 0;
-	LeftUpgrade = 0;
-	RightUpgrade = 0;
-
 	return true;
 }
 
@@ -174,6 +178,12 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			openInventory = false;
 			openUpgrade = false;
 		}
+		if (!openCrafting || !openInventory || !openUpgrade)
+		{
+			iTextureID = NULL;
+			LeftUpgrade = NULL;
+			RightUpgrade = NULL;
+		}
 		if (openInventory)
 		{
 			// Enable cursor
@@ -192,8 +202,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGui::SetNextWindowSize(ImVec2(400.0f * relativeScale_x, 500.0f * relativeScale_y));
 			ImGui::Begin("Inventory Background", NULL, inventoryBgWinFlags);
 			{
-				iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Inventory.png", true);
-				ImGui::Image((void*)(intptr_t)iTextureID,
+				ImGui::Image((ImTextureID)InventoryBG.textureID,
 					ImVec2(300.0f * relativeScale_x,
 						500.0f * relativeScale_y),
 				ImVec2(0, 1), ImVec2(1, 0));
@@ -207,12 +216,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						{
 							cInventoryItem = cInventoryManager->GetItem("Plank");
 							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.65f, (float)cSettings->iWindowHeight * 0.20f));
-
 							ImGui::BeginChild("Plank Child ", ImVec2(110.0f * relativeScale_x, 65.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 							{
 								ImGui::BeginChild("Plank Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
-									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+									ImGui::Image((ImTextureID)cInventoryItem->GetTextureID(),
 										ImVec2(60.0f * relativeScale_x,
 											60.0f * relativeScale_y),
 										ImVec2(0, 1), ImVec2(1, 0));
@@ -234,7 +242,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::BeginChild("Stone Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
-									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+									ImGui::Image((ImTextureID)cInventoryItem->GetTextureID(),
 										ImVec2(60.0f * relativeScale_x,
 											60.0f * relativeScale_y),
 										ImVec2(0, 1), ImVec2(1, 0));
@@ -256,7 +264,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::BeginChild("Iron Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
-									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+									ImGui::Image((ImTextureID)cInventoryItem->GetTextureID(),
 										ImVec2(60.0f * relativeScale_x,
 											60.0f * relativeScale_y),
 										ImVec2(0, 1), ImVec2(1, 0));
@@ -278,7 +286,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::BeginChild("Silver Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
-									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+									ImGui::Image((ImTextureID)cInventoryItem->GetTextureID(),
 										ImVec2(60.0f * relativeScale_x,
 											60.0f * relativeScale_y),
 										ImVec2(0, 1), ImVec2(1, 0));
@@ -300,7 +308,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::BeginChild("Bronze Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
-									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+									ImGui::Image((ImTextureID)cInventoryItem->GetTextureID(),
 										ImVec2(60.0f * relativeScale_x,
 											60.0f * relativeScale_y),
 										ImVec2(0, 1), ImVec2(1, 0));
@@ -322,7 +330,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::BeginChild("Gold Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
-									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+									ImGui::Image((ImTextureID)cInventoryItem->GetTextureID(),
 										ImVec2(60.0f * relativeScale_x,
 											60.0f * relativeScale_y),
 										ImVec2(0, 1), ImVec2(1, 0));
@@ -356,16 +364,12 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 									cInventoryItem->GetCount());
 								if (itemEquipped == 1)
 								{
-									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equipped.png", true);
+									ImGui::Image((ImTextureID)EquippedButton.textureID, ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								}
 								else
 								{
-									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equip.png", true);
+									ImGui::Image((ImTextureID)EquipButton.textureID, ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								}
-								ImGui::Image((void*)(intptr_t)iTextureID,
-									ImVec2(100.0f * relativeScale_x,
-										30.0f * relativeScale_y),
-									ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.65f, (float)cSettings->iWindowHeight * 0.61f));
 								ImGui::BeginChild("Turret Function ", ImVec2(110.0f * relativeScale_x, 80.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
@@ -396,7 +400,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						{
 							cInventoryItem = cInventoryManager->GetItem("WoodWall");
 							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.50f));
-
 							ImGui::BeginChild("Wood Wall Child ", ImVec2(110.0f * relativeScale_x, 90.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 							{
 								ImGui::BeginChild("Wood Wall Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
@@ -413,16 +416,12 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 									cInventoryItem->GetCount());
 								if (itemEquipped == 2)
 								{
-									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equipped.png", true);
+									ImGui::Image((ImTextureID)EquippedButton.textureID, ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								}
 								else
 								{
-									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equip.png", true);
+									ImGui::Image((ImTextureID)EquipButton.textureID, ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								}
-								ImGui::Image((void*)(intptr_t)iTextureID,
-									ImVec2(100.0f * relativeScale_x,
-										30.0f * relativeScale_y),
-									ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.61f));
 								ImGui::BeginChild("Wood Wall Function ", ImVec2(110.0f * relativeScale_x, 80.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
@@ -470,16 +469,12 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 									cInventoryItem->GetCount());
 								if (itemEquipped == 3)
 								{
-									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equipped.png", true);
+									ImGui::Image((ImTextureID)EquippedButton.textureID, ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								}
 								else
 								{
-									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equip.png", true);
+									ImGui::Image((ImTextureID)EquipButton.textureID, ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								}
-								ImGui::Image((void*)(intptr_t)iTextureID,
-									ImVec2(100.0f * relativeScale_x,
-										30.0f * relativeScale_y),
-									ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.65f, (float)cSettings->iWindowHeight * 0.78f));
 								ImGui::BeginChild("Stone Wall Function ", ImVec2(110.0f * relativeScale_x, 80.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
@@ -527,16 +522,12 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 									cInventoryItem->GetCount());
 								if (itemEquipped == 4)
 								{
-									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equipped.png", true);
+									ImGui::Image((ImTextureID)EquippedButton.textureID, ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								}
 								else
 								{
-									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equip.png", true);
+									ImGui::Image((ImTextureID)EquipButton.textureID, ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								}
-								ImGui::Image((void*)(intptr_t)iTextureID,
-									ImVec2(100.0f * relativeScale_x,
-										30.0f * relativeScale_y),
-									ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.78f));
 								ImGui::BeginChild("Iron Function ", ImVec2(110.0f * relativeScale_x, 80.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 								{
@@ -566,7 +557,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 					}
 					ImGui::End();
 				}
-				ImGui::PopStyleColor();
+				ImGui::PopStyleColor(1);
 			}
 			ImGui::End();
 		}
@@ -1366,7 +1357,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
 	}
-	ImGui::PopStyleColor();
+	ImGui::PopStyleColor(1);
 	ImGui::End();
 
 	// Render the Lives

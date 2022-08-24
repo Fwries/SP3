@@ -51,6 +51,12 @@ class CScene2D;
 #include <string>
 using namespace std;
 
+struct ImageData
+{
+	std::string fileName;
+	unsigned textureID;
+};
+
 class CGUI_Scene2D : public CSingletonTemplate<CGUI_Scene2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CGUI_Scene2D>;
@@ -97,9 +103,12 @@ protected:
 	bool openUpgrade;
 	int Upgrade;
 	int recipeNo;
-	unsigned int iTextureID;
-	unsigned int LeftUpgrade;
-	unsigned int RightUpgrade;
+	ImageData InventoryBG;
+	ImageData EquipButton;
+	ImageData EquippedButton;
+	unsigned iTextureID;
+	unsigned LeftUpgrade;
+	unsigned RightUpgrade;
 
 	// Variables for Buildings
 	int itemEquipped;
