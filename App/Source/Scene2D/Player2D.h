@@ -82,6 +82,8 @@ public:
 
 	int getPlayerDirection(void);
 
+	float SPE;
+
 
 	CEntity2D* nearestEnemy;
 	glm::vec2 nearestLive;

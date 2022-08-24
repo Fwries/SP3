@@ -253,7 +253,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		spawnBoss = false;
 	}
 	//cout << remainder(elapsed, 60) << endl;
-	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6)
+	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
 	{
 		if (spawnRate > 4)
 		{
@@ -272,6 +272,10 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			spawnBoss = true;
 		}
+	}
+	else if (remainder(elapsed, 60) >= 0 && remainder(elapsed, 60) <= 0.025 && waveLevel == 10)
+	{
+
 	}
 
 	for (int i = 0; i < enemyVector.size(); i++)
