@@ -86,6 +86,8 @@ public:
 	int GetTurretNo(void);
 
 	int getWaveLevel(void);
+
+	int getSpawnDeterminer(void);
 protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
@@ -123,6 +125,8 @@ protected:
 
 	int Closest;
 	bool PlayerWon;
+
+	int spawnDeterminer;
 
 	double elapsed;
 	double timeElapsed;

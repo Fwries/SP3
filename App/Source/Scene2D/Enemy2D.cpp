@@ -101,7 +101,7 @@ bool CEnemy2D::Init(void)
 
 	statMultiplier = 1;
 
-	spawnDeterminer = 4;
+	spawnDeterminer = 2;
 
 	targetableTurret = false;
 
@@ -176,7 +176,7 @@ bool CEnemy2D::Init(void)
 
 
 	//Determining enemy type randomly
-	randType = rand() % spawnDeterminer;
+	randType = rand() % cScene2D->getSpawnDeterminer();
 	//randType = 2;
 	
 

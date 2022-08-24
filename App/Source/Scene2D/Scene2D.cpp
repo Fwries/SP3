@@ -108,6 +108,8 @@ bool CScene2D::Init(void)
 	waveLevel = 1;
 	spawnBoss = false;
 
+	spawnDeterminer = 2;
+
 	// Create and initialise the Map 2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
@@ -253,7 +255,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		spawnBoss = false;
 	}
 	//cout << remainder(elapsed, 60) << endl;
-	if (remainder(elapsed, 30) >= 0 && remainder(elapsed, 30) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
+	if (remainder(elapsed, 5) >= 0 && remainder(elapsed, 5) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
 	{
 		if (spawnRate > 4)
 		{
@@ -271,6 +273,14 @@ bool CScene2D::Update(const double dElapsedTime)
 		if (waveLevel % 2 != 0 && waveLevel != 1)
 		{
 			spawnBoss = true;
+		}
+		if (waveLevel == 4)
+		{
+			spawnDeterminer = 3;
+		}
+		else if (waveLevel == 6)
+		{
+			spawnDeterminer = 4;
 		}
 	}
 	else if (remainder(elapsed, 60) >= 0 && remainder(elapsed, 60) <= 0.025 && waveLevel == 10)
@@ -874,4 +884,9 @@ int CScene2D::GetTurretNo(void)
 int CScene2D::getWaveLevel(void)
 {
 	return waveLevel;
+}
+
+int CScene2D::getSpawnDeterminer(void)
+{
+	return spawnDeterminer;
 }
