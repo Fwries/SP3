@@ -104,6 +104,9 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Turret", "Image/Turret/Turret.png", 999, 100);
+	cInventoryItem = cInventoryManager->Add("WoodWall", "Image/Turret/WoodWall.png", 999, 0);
+	cInventoryItem = cInventoryManager->Add("StoneWall", "Image/Turret/StoneWall.png", 999, 100);
+	cInventoryItem = cInventoryManager->Add("IronWall", "Image/Turret/IronWall.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
@@ -170,11 +173,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			openCrafting = !openCrafting;
 			openInventory = false;
 			openUpgrade = false;
-		}
-		// Check items in inv
-		if (cInventoryManager->GetItem("Turret")->GetCount() == 0)
-		{
-			itemEquipped = 0;
 		}
 		if (openInventory)
 		{
@@ -382,9 +380,180 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 											{
 												itemEquipped = 0;
 											}
-											else
+											else if(cInventoryItem->GetCount() != 0)
 											{
 												itemEquipped = 1;
+											}
+										}
+									}
+									ImGui::PopStyleColor(3);
+								}
+								ImGui::EndChild();
+							}
+							ImGui::EndChild();
+						}
+						// Wood Wall UI
+						{
+							cInventoryItem = cInventoryManager->GetItem("WoodWall");
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.50f));
+
+							ImGui::BeginChild("Wood Wall Child ", ImVec2(110.0f * relativeScale_x, 90.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							{
+								ImGui::BeginChild("Wood Wall Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+										ImVec2(60.0f * relativeScale_x,
+											60.0f * relativeScale_y),
+										ImVec2(0, 1), ImVec2(1, 0));
+								}
+								ImGui::EndChild();
+								ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%d",
+									cInventoryItem->GetCount());
+								if (itemEquipped == 2)
+								{
+									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equipped.png", true);
+								}
+								else
+								{
+									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equip.png", true);
+								}
+								ImGui::Image((void*)(intptr_t)iTextureID,
+									ImVec2(100.0f * relativeScale_x,
+										30.0f * relativeScale_y),
+									ImVec2(0, 1), ImVec2(1, 0));
+								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.61f));
+								ImGui::BeginChild("Wood Wall Function ", ImVec2(110.0f * relativeScale_x, 80.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+									ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+									ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
+									{
+										ImGui::SetWindowFontScale(0.5 * relativeScale_y);
+										if (ImGui::Button((" "), ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
+										{
+											if (itemEquipped == 2)
+											{
+												itemEquipped = 0;
+											}
+											else if (cInventoryItem->GetCount() != 0)
+											{
+												itemEquipped = 2;
+											}
+										}
+									}
+									ImGui::PopStyleColor(3);
+								}
+								ImGui::EndChild();
+							}
+							ImGui::EndChild();
+						}
+						// Stone Wall UI
+						{
+							cInventoryItem = cInventoryManager->GetItem("StoneWall");
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.65f, (float)cSettings->iWindowHeight * 0.67f));
+
+							ImGui::BeginChild("Stone Wall Child ", ImVec2(110.0f * relativeScale_x, 90.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							{
+								ImGui::BeginChild("Stone Wall Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+										ImVec2(60.0f * relativeScale_x,
+											60.0f * relativeScale_y),
+										ImVec2(0, 1), ImVec2(1, 0));
+								}
+								ImGui::EndChild();
+								ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%d",
+									cInventoryItem->GetCount());
+								if (itemEquipped == 3)
+								{
+									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equipped.png", true);
+								}
+								else
+								{
+									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equip.png", true);
+								}
+								ImGui::Image((void*)(intptr_t)iTextureID,
+									ImVec2(100.0f * relativeScale_x,
+										30.0f * relativeScale_y),
+									ImVec2(0, 1), ImVec2(1, 0));
+								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.65f, (float)cSettings->iWindowHeight * 0.78f));
+								ImGui::BeginChild("Stone Wall Function ", ImVec2(110.0f * relativeScale_x, 80.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+									ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+									ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
+									{
+										ImGui::SetWindowFontScale(0.5 * relativeScale_y);
+										if (ImGui::Button((" "), ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
+										{
+											if (itemEquipped == 3)
+											{
+												itemEquipped = 0;
+											}
+											else if (cInventoryItem->GetCount() != 0)
+											{
+												itemEquipped = 3;
+											}
+										}
+									}
+									ImGui::PopStyleColor(3);
+								}
+								ImGui::EndChild();
+							}
+							ImGui::EndChild();
+						}
+						// Iron Wall UI
+						{
+							cInventoryItem = cInventoryManager->GetItem("IronWall");
+							ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.67f));
+
+							ImGui::BeginChild("Iron Wall Child ", ImVec2(110.0f * relativeScale_x, 90.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+							{
+								ImGui::BeginChild("Iron Wall Image ", ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+										ImVec2(60.0f * relativeScale_x,
+											60.0f * relativeScale_y),
+										ImVec2(0, 1), ImVec2(1, 0));
+								}
+								ImGui::EndChild();
+								ImGui::SetWindowFontScale(1.5 * relativeScale_y);
+								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%d",
+									cInventoryItem->GetCount());
+								if (itemEquipped == 4)
+								{
+									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equipped.png", true);
+								}
+								else
+								{
+									iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/Equip.png", true);
+								}
+								ImGui::Image((void*)(intptr_t)iTextureID,
+									ImVec2(100.0f * relativeScale_x,
+										30.0f * relativeScale_y),
+									ImVec2(0, 1), ImVec2(1, 0));
+								ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.82f, (float)cSettings->iWindowHeight * 0.78f));
+								ImGui::BeginChild("Iron Function ", ImVec2(110.0f * relativeScale_x, 80.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
+								{
+									ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+									ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.f, 0.f, 0.f, 0.f));
+									ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.3f));
+									{
+										ImGui::SetWindowFontScale(0.5 * relativeScale_y);
+										if (ImGui::Button((" "), ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
+										{
+											if (itemEquipped == 4)
+											{
+												itemEquipped = 0;
+											}
+											else if (cInventoryItem->GetCount() != 0)
+											{
+												itemEquipped = 4;
 											}
 										}
 									}
@@ -559,6 +728,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 											}
 											break;
 										case 1:
+											break; 
+										case 2:
+											break;
+										case 3:
 											break;
 										default:
 											break;
@@ -594,7 +767,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										}
 										else
 										{
-											recipeNo = 1;
+											recipeNo = 3;
 										}
 									}
 								}
@@ -622,7 +795,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 								{
 									if (ImGui::Button(" ", ImVec2(30.0f*relativeScale_x, 30.0f*relativeScale_y)))
 									{
-										if (recipeNo != 1)
+										if (recipeNo != 3)
 										{
 											recipeNo++;
 										}
@@ -673,181 +846,308 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 					{
 						std::string LeftDesc;
 						std::string RightDesc;
-						switch (turretVector[cScene2D->GetTurretNo()]->GetCurrTurret())
+						// Left side Upgrades
+						switch (turretVector[cScene2D->GetTurretNo()]->GetNextTurret(true))
 						{
-						case 0001:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ElementalTurret.png", true);
-							LeftDesc = "Base Class for Physical Damage.";
-							RightDesc = "Base Class for Elemental Damage.";
-							break;
 						case 1011:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedStoneTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultiPebbleTurret.png", true);
-							LeftDesc = "A Heavy-Duty Turret with improved Damage and Health.";
-							RightDesc = "A Turret with fast Attack Speed.";
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneTurret.png", true);
+							LeftDesc = "Base Class for Physical Damage.";
 							break;
-						case 1012:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlameTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FrostTurret.png", true);
-							LeftDesc = "A Turret that shoots Elemental Flame Bullets. 20% to Burn.";
-							RightDesc = "A Turret that shoots Elemental Ice Shards. 5% to Freeze.";
-							break;
-							//Tier 2
 						case 2011:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SharpStoneTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronTurret.png", true);
-							LeftDesc = "An improved Turret. This time shooting sharp rocks!";
-							RightDesc = "A Heavy-Duty Turret with high Damage and Health.";
-							break;
-						case 2012:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneBurstTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultiShotTurret.png", true);
-							LeftDesc = "A Tower that shoots a burst of bullets and goes on cooldown.";
-							RightDesc = "A Tower that shoots multiple bullets in 4 directions.";
-							break;
-						case 2013:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDMGTurretVer2.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GlitchedTurret.png", true);
-							LeftDesc = "An upgraded Turret that shoots Bullets that deal a random damage from 6 to 12.";
-							RightDesc = "A Turret that shoots bullets at random intervals.";
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedStoneTurret.png", true);
+							LeftDesc = "A Heavy-Duty Turret with improved Damage and Health.";
 							break;
 						case 2021:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlameSpearTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlamethrowerTurret.png", true);
-							LeftDesc = "An upgraded Turret with extra range. 20% to Burn.";
-							RightDesc = "A Turret that blows Fire. 100% to Burn.";
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlameTurret.png", true);
+							LeftDesc = "A Turret that shoots Elemental Flame Bullets. 20% to Burn.";
 							break;
-						case 2022:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IceSpearTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SnowballTurret.png", true);
-							LeftDesc = "An upgraded Turret with extra range. 5% to Freeze.";
-							RightDesc = "A Turret that shoots Snowballs dealing no damage. 50% to Freeze.";
-							break;
-						case 2023:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WindTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ThunderTurret.png", true);
-							LeftDesc = "This mysterious turret consumes and fires bullets, but only air exits the barrel.";
-							RightDesc = "Exerts Thunder at enemies. Dealing 16 damage.";
-							break;
-							//Tier 3
 						case 3011:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SharperStoneTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SniperTurret.png", true);
-							LeftDesc = "The improved an improved Turret. This time shooting the sharper rocks!";
-							RightDesc = "A Turret with extrandory range. But can only shoot straight.";
-							break;
-						case 3012:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedIronTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ShinyIronTurret.png", true);
-							LeftDesc = "A powerful Turret with high raw stats.";
-							RightDesc = "A very VERY Shiny Turret attracts enemies.";
-							break;
-						case 3013:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GoldenTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ElementalTurret2.png", true);
-							LeftDesc = "A Turret that attracts enemies. Useless otherwise.";
-							RightDesc = "Base Class for Elemental Damage.";
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SharpStoneTurret.png", true);
+							LeftDesc = "An improved Turret. This time shooting sharp rocks!";
 							break;
 						case 3021:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronBurstTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/HotIronTurret.png", true);
-							LeftDesc = "An upgraded Turretthat shoots a burst of bullets and goes on cooldown.";
-							RightDesc = "A Turret that shoots hot bullets. 10% to Burn.";
-							break;
-						case 3022:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultimultishotTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StarShotTurret.png", true);
-							LeftDesc = "A Turret that shoots multiple bullets in 8 directions.";
-							RightDesc = "A Turret that shoots multiple bullets in 5 directions with increased damage.";
-							break;
-						case 3023:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret3.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ShotgunTurret.png", true);
-							LeftDesc = "A Turret that shoots 3 bullets at once.";
-							RightDesc = "A Turret that shoots 3 bullets at once in a 1x3 line.";
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneBurstTurret.png", true);
+							LeftDesc = "A Tower that shoots a burst of bullets and goes on cooldown.";
 							break;
 						case 3031:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDMGTurretVer2.png", true);
+							LeftDesc = "An upgraded Turret that shoots Bullets that deal a random damage from 6 to 12.";
 							break;
-						case 3032:
+						case 3041:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlameSpearTurret.png", true);
+							LeftDesc = "An upgraded Turret with extra range. 20% to Burn.";
+							break;
+						case 3051:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IceSpearTurret.png", true);
+							LeftDesc = "An upgraded Turret with extra range. 5% to Freeze.";
+							break;
+						case 3061:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WindTurret.png", true);
+							LeftDesc = "This mysterious turret consumes and fires bullets, but only air exits the barrel.";
+							break;
+						case 4011:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SharperStoneTurret.png", true);
+							LeftDesc = "The improved an improved Turret. This time shooting the sharper rocks!";
+							break;
+						case 4021:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ReinforcedIronTurret.png", true);
+							LeftDesc = "A powerful Turret with high raw stats.";
+							break;
+						case 4031:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GoldenTurret.png", true);
+							LeftDesc = "A Turret that attracts enemies. Useless otherwise.";
+							break;
+						case 4041:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronBurstTurret.png", true);
+							LeftDesc = "An upgraded Turret that shoots a burst of bullets and goes on cooldown.";
+							break;
+						case 4051:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultimultishotTurret.png", true);
+							LeftDesc = "A Turret that shoots multiple bullets in 8 directions.";
+							break;
+						case 4061:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret3.png", true);
+							LeftDesc = "A Turret that shoots 3 bullets at once.";
+							break;
+						case 4071:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RandomDmgTurretVer3.png", true);
+							LeftDesc = "An upgraded Turret that shoots Bullets that deal a random damage from 9 to 15.";
+							break;
+						case 4081:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/UpgradedGlitchTurret.png", true);
+							LeftDesc = "A Turret that shoots bullets at random intervals but faster.";
+							break;
+						case 4091:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalFlameSpearTurret.png", true);
+							LeftDesc = "The improved an improved Turret with extra range. 100% to Burn.";
+							break;
+						case 4111:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/UpgradedFlamethrowerTurret.png", true);
+							LeftDesc = "An upgraded Turret that blows Fire this time with extra range. 100% to Burn.";
+							break;
+						case 4121:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/UpgradedFirewallTurret.png", true);
+							LeftDesc = "A Turret that shoots a Firewall 5 blocks long.";
+							break;
+						case 4131:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalIceSpearTurret.png", true);
+							LeftDesc = "An upgraded Turret with extra range. 50% to Freeze.";
+							break;
+						case 4141:
+							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GiantSnowballTurret.png", true);
+							LeftDesc = "A Turret that shoots Giant Snowballs dealing damage. 100% to Freeze.";
+							break;
+						case 4151:
+							LeftDesc = "A Turret that shoots an Ice Floor 7 blocks long.";
+							break;
+						case 4161:
+							LeftDesc = "This mysterious turret consumes and fires bullets, deals damage and pushes enemies in a random direction. Knockback works 70% of the time.";
+							break;
+						case 4171:
+							LeftDesc = "Exerts Thunder at enemies at a shorter cooldown. Dealing 16 damage.";
+							break;
+						case 4181:
+							LeftDesc = "A Turret that shoot bullets. That heales enemies. Idk, how about you find out this time.";
+							break;
+							// Rare turrets
+						case 1013:
+							break;
+						case 2013:
+							break;
+						case 2023:
+							break;
+						case 3013:
+							break;
+						case 3023:
 							break;
 						case 3033:
 							break;
-						case 3041:
-							LeftUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalFlameSpearTurret.png", true);
-							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BlueFlameSpearTurret.png", true);
-							LeftDesc = "The improved an improved Turret with extra range. 100% to Burn.";
-							RightDesc = "An upgraded Turret with extra range. 20% to Burn. 10% to Freeze.";
-							break;
-						case 3042:
-							break; 
 						case 3043:
-							break;
-						case 3051:
-							break;
-						case 3052:
 							break;
 						case 3053:
 							break;
-						case 3061:
-							break;
-						case 3062:
-							break;
 						case 3063:
-							break;
-						// Tier 4
-						case 4011:
-							break;
-						case 4012:
 							break;
 						case 4013:
 							break;
-						case 4021:
-							break;
-						case 4022:
-							break;
 						case 4023:
-							break;
-						case 4031:
-							break;
-						case 4032:
 							break;
 						case 4033:
 							break;
-						case 4041:
-							break;
-						case 4042:
-							break;
 						case 4043:
-							break;
-						case 4051:
-							break;
-						case 4052:
 							break;
 						case 4053:
 							break;
-						case 4061:
-							break;
-						case 4062:
-							break;
 						case 4063:
-							break;
-						case 4071:
-							break;
-						case 4072:
 							break;
 						case 4073:
 							break;
-						case 4081:
-							break;
-						case 4082:
-							break;
 						case 4083:
+							break;
+						case 4093:
+							break;
+						case 4113:
+							break;
+						case 4123:
+							break;
+						case 4133:
+							break;
+						case 4143:
+							break;
+						case 4153:
+							break;
+						case 4163:
+							break;
+						case 4173:
+							break;
+						case 4183:
 							break;
 						default:
 							break;
 						}
-						cout<<turretVector[cScene2D->GetTurretNo()]->GetNextTurret(true);
+						// Right side Upgrades
+						switch (turretVector[cScene2D->GetTurretNo()]->GetNextTurret(false))
+						{
+						case 1012:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ElementalTurret.png", true);
+							RightDesc = "Base Class for Elemental Damage.";
+							break;
+						case 2012:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultiPebbleTurret.png", true);
+							RightDesc = "A Turret with fast Attack Speed.";
+							break;
+						case 2022:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FrostTurret.png", true);
+							RightDesc = "A Turret that shoots Elemental Ice Shards. 5% to Freeze.";
+							break;
+						case 3012:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronTurret.png", true);
+							RightDesc = "A Heavy-Duty Turret with high Damage and Health.";
+							break;
+						case 3022:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultiShotTurret.png", true);
+							RightDesc = "A Tower that shoots multiple bullets in 4 directions.";
+							break;
+						case 3032:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GlitchedTurret.png", true);
+							RightDesc = "A Turret that shoots bullets at random intervals.";
+							break;
+						case 3042:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlamethrowerTurret.png", true);
+							RightDesc = "A Turret that blows Fire. 100% to Burn.";
+							break;
+						case 3052:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SnowballTurret.png", true);
+							RightDesc = "A Turret that shoots Snowballs dealing no damage. 50% to Freeze.";
+							break;
+						case 3062:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ThunderTurret.png", true);
+							RightDesc = "Exerts Thunder at enemies. Dealing 16 damage.";
+							break;
+						case 4012:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SniperTurret.png", true);
+							RightDesc = "A Turret with extrandory range. But can only shoot straight.";
+							break;
+						case 4022:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ShinyIronTurret.png", true);
+							RightDesc = "A very VERY Shiny Turret attracts enemies.";
+							break;
+						case 4032:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ElementalTurret2.png", true);
+							RightDesc = "Base Class for Elemental Damage.";
+							break;
+						case 4042:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/HotIronTurret.png", true);
+							RightDesc = "A Turret that shoots hot bullets. 10% to Burn.";
+							break;
+						case 4052:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StarShotTurret.png", true);
+							RightDesc = "A Turret that shoots multiple bullets in 5 directions with increased damage.";
+							break;
+						case 4062:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/ShotgunTurret.png", true);
+							RightDesc = "A Turret that shoots 3 bullets at once in a 1x3 line.";
+							break;
+						case 4072:
+							break;
+						case 4082:
+							break;
+						case 4092:
+							RightUpgrade = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BlueFlameSpearTurret.png", true);
+							RightDesc = "An upgraded Turret with extra range. 20% to Burn. 10% to Freeze.";
+							break;
+						case 4112:
+							break;
+						case 4122:
+							break;
+						case 4132:
+							break;
+						case 4142:
+							break;
+						case 4152:
+							break;
+						case 4162:
+							break;
+						case 4172:
+							break;
+						case 4182:
+							break;
+						// Rare turrets
+						case 1013:
+							break;
+						case 2013:
+							break;
+						case 2023:
+							break;
+						case 3013:
+							break;
+						case 3023:
+							break;
+						case 3033:
+							break;
+						case 3043:
+							break;
+						case 3053:
+							break;
+						case 3063:
+							break;
+						case 4013:
+							break;
+						case 4023:
+							break;
+						case 4033:
+							break;
+						case 4043:
+							break;
+						case 4053:
+							break;
+						case 4063:
+							break;
+						case 4073:
+							break;
+						case 4083:
+							break;
+						case 4093:
+							break;
+						case 4113:
+							break;
+						case 4123:
+							break;
+						case 4133:
+							break;
+						case 4143:
+							break;
+						case 4153:
+							break;
+						case 4163:
+							break;
+						case 4173:
+							break;
+						case 4183:
+							break;
+						default:
+							break;
+						}
 						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.15f, (float)cSettings->iWindowHeight * 0.25f));
 						ImGui::BeginChild("Left Upgrade Icons", ImVec2(200.0f * relativeScale_x, 600.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 						{
@@ -959,7 +1259,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								if (ImGui::Button(" ", ImVec2(35.0f * relativeScale_x, 35.0f * relativeScale_y)))
 								{
-									
+									turretVector[cScene2D->GetTurretNo()]->SetGetTurretHP(0);
+									openUpgrade = false;
 								}
 							}
 							ImGui::PopStyleColor(3);
