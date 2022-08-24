@@ -510,26 +510,7 @@ bool CEnemy2D::slimeBossInit(void)
 
 	//Set the position of the enemy randomly on the edge of the map
 	int edge = rand() % 4;
-	int X = 0, Y = 0;
-	switch (edge)
-	{
-	case 0:
-		X = rand() % 62;
-		Y = 62;
-		break;
-	case 1:
-		X = 1;
-		Y = rand() % 62;
-		break;
-	case 2:
-		X = rand() % 62;
-		Y = 1;
-		break;
-	case 3:
-		X = 62;
-		Y = rand() % 62;
-		break;
-	}
+	int X = 1, Y = 1;
 	if (cMap2D->GetMapInfo(X, Y) != 0)
 	{
 		return false;
