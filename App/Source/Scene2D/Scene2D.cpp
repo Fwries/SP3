@@ -396,6 +396,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
 		{
 			//cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+			int WallType = cGUI_Scene2D->GetEquipped() - 1;
 			switch (cGUI_Scene2D->GetEquipped())
 			{
 			case 1:
@@ -406,7 +407,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1,WallType) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
 						cTurret->SetEnemyVector(enemyVector);
@@ -422,7 +423,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1,WallType) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
 						cTurret->SetEnemyVector(enemyVector);
@@ -438,7 +439,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x,WallType) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
 						cTurret->SetEnemyVector(enemyVector);
@@ -454,12 +455,210 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x,WallType) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("Turret")->Remove(1);
+					}
+					break;
+				}
+				break;
+			case 2:
+				if (cInventoryManager->GetItem("WoodWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 0)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("WoodWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("WoodWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 1)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("WoodWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("WoodWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 2)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("WoodWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("WoodWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 3)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("WoodWall")->Remove(1);
+					}
+					break;
+				}
+				break;
+			case 3:
+				if (cInventoryManager->GetItem("StoneWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 0)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("StoneWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("StoneWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 1)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("StoneWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("StoneWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 2)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("StoneWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("StoneWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 3)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("StoneWall")->Remove(1);
+					}
+					break;
+				}
+				break;
+			case 4:
+				if (cInventoryManager->GetItem("IronWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 0)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("IronWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("IronWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 1)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("IronWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("IronWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 2)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("IronWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("IronWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 3)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("IronWall")->Remove(1);
 					}
 					break;
 				}
