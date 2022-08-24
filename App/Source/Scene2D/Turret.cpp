@@ -168,6 +168,13 @@ void CTurret::Update(const double dElapsedTime)
 	if (TurretHP <= 0)
 	{
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
+		for (int i = cScene2D->getTurretVec().size() - 1; i >= 0; --i)
+		{
+			if (cScene2D->getTurretVec()[i]->getTurretPos() == vec2Index && cScene2D->getTurretVec().size() > 0)
+			{
+				cScene2D->getTurretVec().erase(cScene2D->getTurretVec().begin() + i);
+			}
+		}
 		bIsActive = false;
 		return;
 	}

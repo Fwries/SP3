@@ -783,7 +783,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				/*cout << toX << "    " << toY << endl;*/
 				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 0.5f)
+				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) <= 1.f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -823,7 +823,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				UpdatePosition(cPlayer2D->vec2Index);
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 				//Insert damaging part here
-				if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 0.5f)
+				if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -882,7 +882,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 					UpdatePosition(posToGo);
 					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 					//Insert damaging part here
-					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.f)
+					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) <= 1.f)
 					{
 						sCurrentFSM = ATTACK;
 						iFSMCounter = 0;
@@ -891,7 +891,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				else
 				{
 					glm::vec2 posToGo = findNearestBasePart();
-					cout << posToGo.x << "  " << posToGo.y << endl;
+					//cout << posToGo.x << "  " << posToGo.y << endl;
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 					//Calculate new destination
 					bool bFirstPosition = true;
@@ -921,7 +921,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 					}
 					UpdatePosition(glm::vec2(30, 34));
 					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 0.5f)
+					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) <= 1.f)
 					{
 						sCurrentFSM = ATTACK;
 						iFSMCounter = 0;
