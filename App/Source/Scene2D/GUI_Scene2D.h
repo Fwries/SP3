@@ -110,9 +110,31 @@ protected:
 	ImageData LeftButton;
 	ImageData RightButton;
 	ImageData CraftButton;
+	ImageData UpgradeButton;
+	ImageData DestroyButton;
 	unsigned iTextureID;
 	unsigned LeftUpgrade;
 	unsigned RightUpgrade;
+	unsigned Material1;
+	unsigned Material2;
+	unsigned Material3;
+	unsigned Material4;
+	unsigned Material5;
+	unsigned Material6;
+	std::string LeftDesc;
+	std::string RightDesc;
+	std::string Cost1;
+	std::string Cost2;
+	std::string Cost3;
+	std::string Cost4;
+	std::string Cost5;
+	std::string Cost6;
+
+	// Left Tower Costs (1 = Tier 1 Physical | 2 = Tier 2 Physical | 3 = Tier 3 Physical)
+	int LeftTowerCosts;
+	// Right Tower Costs(1 = Tier 1 Elemental | 2 = Tier 2 Elemental| 3 = Tier 3 Elemental)
+	int RightTowerCosts;
+
 
 	// Variables for Buildings
 	int itemEquipped;
