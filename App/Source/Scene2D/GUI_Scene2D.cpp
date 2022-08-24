@@ -171,12 +171,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			openInventory = false;
 			openUpgrade = false;
 		}
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_J))
-		{
-			openUpgrade = !openUpgrade;
-			openCrafting = false;
-			openInventory = false;
-		}
 		// Check items in inv
 		if (cInventoryManager->GetItem("Turret")->GetCount() == 0)
 		{
@@ -388,7 +382,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 											{
 												itemEquipped = 0;
 											}
-											itemEquipped = 1;
+											else
+											{
+												itemEquipped = 1;
+											}
 										}
 									}
 									ImGui::PopStyleColor(3);
@@ -563,10 +560,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 											break;
 										case 1:
 											break;
-										case 2:
-											break;
-										case 3:
-											break;
 										default:
 											break;
 										}
@@ -601,7 +594,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 										}
 										else
 										{
-											recipeNo = 4;
+											recipeNo = 1;
 										}
 									}
 								}
@@ -629,7 +622,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 								{
 									if (ImGui::Button(" ", ImVec2(30.0f*relativeScale_x, 30.0f*relativeScale_y)))
 									{
-										if (recipeNo != 3)
+										if (recipeNo != 1)
 										{
 											recipeNo++;
 										}
@@ -854,6 +847,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						default:
 							break;
 						}
+						cout<<turretVector[cScene2D->GetTurretNo()]->GetNextTurret(true);
 						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.15f, (float)cSettings->iWindowHeight * 0.25f));
 						ImGui::BeginChild("Left Upgrade Icons", ImVec2(200.0f * relativeScale_x, 600.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 						{
@@ -1094,6 +1088,8 @@ int CGUI_Scene2D::GetEquipped()
 void CGUI_Scene2D::OpenUpgrade()
 {
 	openUpgrade = !openUpgrade;
+	openCrafting = false;
+	openInventory = false;
 }
 
 bool CGUI_Scene2D::UpgradeState()
