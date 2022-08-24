@@ -199,6 +199,7 @@ void CTurret::Update(const double dElapsedTime)
 				case SHARPER_STONE_TURRET:
 				case SNIPER_TURRET:
 				case BLUNT_METAL_TURRET:
+				case MIDAS_TOUCH:
 				case REINFORCED_IRON_TURRET:
 				case REINFORCED_IRON_TURRET2:
 				case SHINY_IRON_TURRET:
@@ -303,6 +304,7 @@ void CTurret::Update(const double dElapsedTime)
 				// Burst
 				case STONE_BURST_TOWER:
 				case IRON_BURST_TURRET:
+					break;
 
 				// Rainbow
 				case ISTERIOUS_TURRET:
@@ -325,26 +327,45 @@ void CTurret::Update(const double dElapsedTime)
 
 				// Multishot
 				case MULTISHOT_TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 2, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 3, TurretDamage, TurretElement, Colour);
+					break;
 				case MULTIMULTISHOT_TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 2, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 3, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 4, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 5, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 6, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 7, TurretDamage, TurretElement, Colour);
+					break;
 				case STARSHOT_TURRET:
-					/*cBulletGenerator->GenerateBullet(this->vec2Index, 0);
-					cBulletGenerator->GenerateBullet(this->vec2Index, 1);
-					cBulletGenerator->GenerateBullet(this->vec2Index, 2);
-					cBulletGenerator->GenerateBullet(this->vec2Index, 5);
-					cBulletGenerator->GenerateBullet(this->vec2Index, 7);*/
+					cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 2, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 5, TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, 7, TurretDamage, TurretElement, Colour);
 					break;
 
 				// Misc
 				case ORE_GENERATOR:
-				
+					break;
 				case THUNDER_TURRET:
+					cBulletGenerator->GenerateBullet(glm::vec2(nearestEnemy->vec2Index.x, nearestEnemy->vec2Index.y + 5), 3, TurretDamage, TurretElement, Colour);
+					break;
 				case TANK:
-				case MIDAS_TOUCH:
-				
+					break;
 				case WRONGDIRECTION_TURRET:
 					cBulletGenerator->GenerateBullet(this->vec2Index, -(nearestEnemy->vec2Index), TurretDamage, TurretElement, Colour);
 					break;
 				case SHOTGUN_TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, glm::vec2(nearestEnemy->vec2Index.x - 2, nearestEnemy->vec2Index.y - 2), TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, glm::vec2(nearestEnemy->vec2Index.x, nearestEnemy->vec2Index.y), TurretDamage, TurretElement, Colour);
+					cBulletGenerator->GenerateBullet(this->vec2Index, glm::vec2(nearestEnemy->vec2Index.x + 2, nearestEnemy->vec2Index.y + 2), TurretDamage, TurretElement, Colour);
+					break;
 				case FLIP_A_COIN_TURRET:
 				{
 					int Damage;
@@ -1087,7 +1108,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		range = 20.0;
 		Colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 		break;
-	case FLAMETHROWER_TURRET: // All Below have not done the turret type yet
+	case FLAMETHROWER_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlamethrowerTurret.png", true);
 		if (iTextureID == 0)
 		{
@@ -1635,133 +1656,133 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 
-		case UPGRADED_FLAMETHROWER_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case FLAMEBLOWER_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case BLUE_FLAMETHROWER_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
+	case UPGRADED_FLAMETHROWER_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case FLAMEBLOWER_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case BLUE_FLAMETHROWER_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
-		case UPGRADED_FIREWALL_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case MULTIFIRE_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case FIRE_TORNADO_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
+	case UPGRADED_FIREWALL_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case MULTIFIRE_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case FIRE_TORNADO_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
-		case ETERNAL_ICE_SPEAR_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case FROSTBITE_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case ETERNAL_BLIZZARD_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
+	case ETERNAL_ICE_SPEAR_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case FROSTBITE_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ETERNAL_BLIZZARD_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
-		case GIANT_SNOWBALL:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case SNOWSTAR_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case ETERNAL_BLIZZARD_TURRET2:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
+	case GIANT_SNOWBALL:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case SNOWSTAR_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ETERNAL_BLIZZARD_TURRET2:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
-		case UPGRADED_ICE_FLOOR_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case FROSTBITE_TURRET2:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case ETERNAL_BLIZZARD_TURRET3:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
+	case UPGRADED_ICE_FLOOR_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case FROSTBITE_TURRET2:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case ETERNAL_BLIZZARD_TURRET3:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
-		case STRONG_WIND_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case BLOWBACK_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case WINDY_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
+	case STRONG_WIND_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case BLOWBACK_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case WINDY_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
-		case STORM_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case FINAL_THUNDER:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case TRIPLE_THUNDER_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
+	case STORM_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case FINAL_THUNDER:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case TRIPLE_THUNDER_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
-		case YOUSTERIOUS_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case THEYSTERIOUS_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
-		case WESTERIOUS_TURRET:
-			upgradeLeft = NONE;
-			upgradeRight = NONE;
-			upgradeRare = NONE;
-			break;
+	case YOUSTERIOUS_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case THEYSTERIOUS_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
+	case WESTERIOUS_TURRET:
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		break;
 
 	case IRON_WALL:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronWall.png", true);

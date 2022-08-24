@@ -35,12 +35,49 @@ CBullet::CBullet(glm::vec2 vec2Index, int direction)
 		std::cout << "Unable to load Image/Scene2D/Bullet.png" << std::endl;
 	}
 
-	FromTurret = false;
+	Directional = false;
 	bIsActive = true;
 	RotateAngle = 0.0f;
 	Damage = 4;
 	ElementType = 0;
 	runtimeColour = glm::vec4(1, 1, 0, 1);
+}
+
+CBullet::CBullet(glm::vec2 vec2Index, int direction, int NEWDamage, int NewELEMENT, glm::vec4 Colour)
+{
+	this->vec2Index = vec2Index;
+	dir = (DIRECTION)direction;
+
+	// Make sure to initialize matrix to identity matrix first
+	transform = glm::mat4(1.0f);
+
+	vec2NumMicroSteps = glm::i32vec2(0);
+
+	vec2UVCoordinate = glm::vec2(0.0f);
+
+	cSettings = CSettings::GetInstance();
+
+	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+
+	CShaderManager::GetInstance()->Use("Shader2D_Colour");
+	SetShader("Shader2D_Colour");
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	// Load the player texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D/Bullet.png", true);
+	if (iTextureID == 0)
+	{
+		std::cout << "Unable to load Image/Scene2D/Bullet.png" << std::endl;
+	}
+
+	Directional = false;
+	bIsActive = true;
+	RotateAngle = 0.0f;
+	Damage = NEWDamage;
+	ElementType = NewELEMENT;
+	runtimeColour = Colour;
 }
 
 CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT, glm::vec4 Colour)
@@ -72,7 +109,7 @@ CBullet::CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, 
 		std::cout << "Unable to load Image/Scene2D/Bullet.png" << std::endl;
 	}
 
-	FromTurret = true;
+	Directional = true;
 	bIsActive = true;
 	RotateAngle = 0.0f;
 	Damage = NEWDamage;
@@ -94,7 +131,7 @@ void CBullet::Update()
 	if (!bIsActive)
 		return;
 
-	if (FromTurret == true)
+	if (Directional == true)
 	{
 		if (vec2Index == Targetvec2Index)
 		{
@@ -103,7 +140,7 @@ void CBullet::Update()
 
 		vec2Index += glm::vec2(DivVector.x / BulletSpeed, DivVector.y / BulletSpeed);
 	}
-	else if (FromTurret == false)
+	else if (Directional == false)
 	{
 		switch (dir)
 		{

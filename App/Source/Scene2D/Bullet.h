@@ -36,7 +36,7 @@ private:
 	bool bIsActive;
 	float RotateAngle;
 	int Damage;
-	bool FromTurret;
+	bool Directional;
 	float BulletSpeed;
 
 	glm::vec2 Targetvec2Index;
@@ -49,6 +49,7 @@ public:
 	CMesh* quadMesh;
 
 	CBullet(glm::vec2 vec2Index, int direction);
+	CBullet(glm::vec2 vec2Index, int direction, int NEWDamage, int NewELEMENT, glm::vec4 Colour);
 	CBullet(glm::vec2 vec2Index, glm::vec2 targetvec2Index, int NEWDamage, int NewELEMENT, glm::vec4 Colour);
 	virtual ~CBullet();
 

@@ -19,6 +19,11 @@ void CBulletGenerator::GenerateBullet(glm::vec2 vec2Index, int direction)
 	bulletsVector.push_back(new CBullet(vec2Index, direction));
 }
 
+void CBulletGenerator::GenerateBullet(glm::vec2 vec2Index, int direction, int NEWDamage, int NewELEMENT, glm::vec4 Colour)
+{
+	bulletsVector.push_back(new CBullet(vec2Index, direction, NEWDamage, NewELEMENT, Colour));
+}
+
 void CBulletGenerator::GenerateBullet(glm::vec2 vec2Index, glm::vec2 Targetvec2Index, int NEWDamage, int NewELEMENT, glm::vec4 Colour)
 {
 	bulletsVector.push_back(new CBullet(vec2Index, Targetvec2Index, NEWDamage, NewELEMENT, Colour));
