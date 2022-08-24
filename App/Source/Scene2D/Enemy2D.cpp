@@ -178,7 +178,7 @@ bool CEnemy2D::Init(void)
 
 	//Determining enemy type randomly
 	randType = rand() % spawnDeterminer;
-	//randType = 69;
+	//randType = 2;
 	
 
 
@@ -728,6 +728,29 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SLIMEBABY:
 			case GOBLIN:
 			{
+				if (faceLeft == true)
+				{
+					if (hitBox == true)
+					{
+						animatedEnemy->PlayAnimation("Hleft", -1, 1.0f);
+					}
+					else
+					{
+						animatedEnemy->PlayAnimation("Left", -1, 1.0f);
+					}
+				}
+				else
+				{
+					if (hitBox == true)
+					{
+						animatedEnemy->PlayAnimation("Hright", -1, 1.0f);
+					}
+					else
+					{
+						animatedEnemy->PlayAnimation("Right", -1, 1.0f);
+					}
+				}
+
 				glm::vec2 posToGo = findNearestBasePart();
 				//Pathfinding method
 				auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
@@ -760,7 +783,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				/*cout << toX << "    " << toY << endl;*/
 				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.f)
+				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 0.5f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -800,7 +823,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				UpdatePosition(cPlayer2D->vec2Index);
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 				//Insert damaging part here
-				if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 1.0f)
+				if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 0.5f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -859,7 +882,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 					UpdatePosition(posToGo);
 					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 					//Insert damaging part here
-					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.5f)
+					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 1.f)
 					{
 						sCurrentFSM = ATTACK;
 						iFSMCounter = 0;
@@ -867,40 +890,42 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 				else
 				{
-					auto path = cMap2D->PathFind(vec2Index, glm::vec2(30, 34), heuristic::euclidean, 10);
+					glm::vec2 posToGo = findNearestBasePart();
+					cout << posToGo.x << "  " << posToGo.y << endl;
+					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 					//Calculate new destination
-									bool bFirstPosition = true;
-				for (const auto& coord : path)
-				{
-					if (bFirstPosition == true)
+					bool bFirstPosition = true;
+					for (const auto& coord : path)
 					{
-						// Set a destination
-						i32vec2Destination = coord;
-						// Calculate the direction between enemy2D and this destination
-						i32vec2Direction = i32vec2Destination - vec2Index;
-						/*std::cout << coord.x << ", " << coord.y << "\n";*/
-						bFirstPosition = false;
-					}
-					else
-					{
-						if ((coord - i32vec2Destination) == i32vec2Direction)
+						if (bFirstPosition == true)
 						{
-							// Set a destination:
+							// Set a destination
 							i32vec2Destination = coord;
+							// Calculate the direction between enemy2D and this destination
+							i32vec2Direction = i32vec2Destination - vec2Index;
+							/*std::cout << coord.x << ", " << coord.y << "\n";*/
+							bFirstPosition = false;
 						}
 						else
 						{
-							break;
+							if ((coord - i32vec2Destination) == i32vec2Direction)
+							{
+								// Set a destination:
+								i32vec2Destination = coord;
+							}
+							else
+							{
+								break;
+							}
 						}
 					}
-				}
-				}
-				UpdatePosition(glm::vec2(30, 34));
-				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				if (cPhysics2D.CalculateDistance(vec2Index, glm::vec2(30, 34)) < 1.0f)
-				{
-					sCurrentFSM = ATTACK;
-					iFSMCounter = 0;
+					UpdatePosition(glm::vec2(30, 34));
+					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) < 0.5f)
+					{
+						sCurrentFSM = ATTACK;
+						iFSMCounter = 0;
+					}
 				}
 				break;
 			}
@@ -1010,6 +1035,28 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 	case FROZEN:
 	{
+		if (faceLeft == true)
+		{
+			if (hitBox == true)
+			{
+				animatedEnemy->PlayAnimation("frozenHleft", -1, 1.0f);
+			}
+			else
+			{
+				animatedEnemy->PlayAnimation("frozenLeft", -1, 1.0f);
+			}
+		}
+		else
+		{
+			if (hitBox == true)
+			{
+				animatedEnemy->PlayAnimation("frozenHright", -1, 1.0f);
+			}
+			else
+			{
+				animatedEnemy->PlayAnimation("frozenRight", -1, 1.0f);
+			}
+		}
 		if (iFSMCounter >= 70)
 		{
 			sCurrentFSM = MOVING;
@@ -1037,10 +1084,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 				case BURN:
 					animatedEnemy->PlayAnimation("burnHleft", -1, 1.0f);
 					break;
-				case FROZEN:
-					animatedEnemy->PlayAnimation("frozenHleft", -1, 1.0f);
-					break;
 				}
+				//if (sCurrentFSM == FROZEN)
+				//{
+				//	animatedEnemy->PlayAnimation("frozenHleft", -1, 1.0f);
+				//}
 			}
 			else
 			{
@@ -1052,10 +1100,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 				case BURN:
 					animatedEnemy->PlayAnimation("burnLeft", -1, 1.0f);
 					break;
-				case FROZEN:
-					animatedEnemy->PlayAnimation("frozenLeft", -1, 1.0f);
-					break;
 				}
+				//if (sCurrentFSM == FROZEN)
+				//{
+				//	animatedEnemy->PlayAnimation("frozenleft", -1, 1.0f);
+				//}
 			}
 		}
 		else
@@ -1070,10 +1119,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 				case BURN:
 					animatedEnemy->PlayAnimation("burnHright", -1, 1.0f);
 					break;
-				case FREEZE:
-					animatedEnemy->PlayAnimation("frozenHright", -1, 1.0f);
-					break;
 				}
+				//if (sCurrentFSM == FROZEN)
+				//{
+				//	animatedEnemy->PlayAnimation("frozenHright", -1, 1.0f);
+				//}
 			}
 			else
 			{
@@ -1085,10 +1135,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 				case BURN:
 					animatedEnemy->PlayAnimation("burnRight", -1, 1.0f);
 					break;
-				case FREEZE:
-					animatedEnemy->PlayAnimation("frozenRight", -1, 1.0f);
-					break;
 				}
+				//if (sCurrentFSM == FROZEN)
+				//{
+				//	animatedEnemy->PlayAnimation("frozenRight", -1, 1.0f);
+				//}
 			}
 		}
 
@@ -1748,7 +1799,7 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 glm::vec2& CEnemy2D::findNearestTurret()
 {
 	nearestLive = glm::vec2(1000, 1000);
-	for (int i = 0; i < cScene2D->getTurretVec().size(); i++)
+	for (int i = cScene2D->getTurretVec().size() - 1; i >= 0; i--)
 	{
 		glm::vec2 currIndex = glm::vec2(cScene2D->getTurretVec()[i]->vec2Index.x, (int)cSettings->NUM_TILES_YAXIS - cScene2D->getTurretVec()[i]->vec2Index.y - 1);
 		if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
@@ -1764,17 +1815,17 @@ glm::vec2& CEnemy2D::findNearestTurret()
 glm::vec2& CEnemy2D::findNearestBasePart()
 {
 	nearestLive = glm::vec2(1000, 1000);
-	for (int i = 0; i < 64; i++)
+	for (int i = 64 - 1; i >= 0; i--)
 	{
-		for (int j = 0; j < 64; j++)
+		for (int j = 64 - 1; j >= 0; j--)
 		{
 			if (cMap2D->GetMapInfo(j, i) >= 136 && cMap2D->GetMapInfo(j, i) <= 139)
 			{
-				glm::vec2 currIndex = glm::vec2(j, (int)cSettings->NUM_TILES_YAXIS - i - 1);
+				glm::vec2 currIndex = glm::vec2(j, i);
 				if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
 				{
 					nearestLive = currIndex;
-					nearestBasePart = glm::vec2(j, i);
+					nearestBasePart = glm::vec2(((int)cSettings->NUM_TILES_XAXIS) - j, ((int)cSettings->NUM_TILES_YAXIS) - i);
 				}
 			}
 		}
