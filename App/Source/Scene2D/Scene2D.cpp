@@ -406,7 +406,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, false) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
 						cTurret->SetEnemyVector(enemyVector);
@@ -422,7 +422,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, false) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
 						cTurret->SetEnemyVector(enemyVector);
@@ -438,7 +438,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, false) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
 						cTurret->SetEnemyVector(enemyVector);
@@ -454,7 +454,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Pass shader to cEnemy2D
 					cTurret->SetShader("Shader2D_Colour");
 					// Initialise the instance
-					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, false) == true)
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == true)
 					{
 						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
 						cTurret->SetEnemyVector(enemyVector);

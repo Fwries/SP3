@@ -52,7 +52,9 @@ public:
 	virtual ~CTurret(void);
 
 	// Init
-	bool Init(int, int, bool);
+	bool Init(int, int);
+
+	bool Init(int, int, int);
 
 	// Update
 	void Update(const double dElapsedTime);

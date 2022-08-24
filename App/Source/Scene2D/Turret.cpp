@@ -75,7 +75,7 @@ CTurret::~CTurret(void)
 /**
   @brief Initialise this instance
   */
-bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
+bool CTurret::Init(int uiRow, int uiCol)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -114,8 +114,70 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 	Time = 0.0;
 	CurrTime = 0.0;
 
-	if (IsWall)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret.png", true);
+	if (iTextureID == 0)
 	{
+		cout << "Unable to load Image/Tiles/Turret.png" << endl;
+		return false;
+	}
+	turretType = TURRET;
+	TurretHP = 6;
+	TurretDamage = 4;
+	TurretElement = NORMAL;
+	TurretCooldown = 1.5;
+	range = 10.0;
+	Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
+	upgradeLeft = STONE_TURRET;
+	upgradeRight = ELEMENTAL_TURRET;
+
+	// If this class is initialised properly, then set the bIsActive to true
+	bIsActive = true;
+
+	return true;
+}
+
+bool CTurret::Init(int uiRow, int uiCol, int WallType)
+{
+	// Get the handler to the CSettings instance
+	cSettings = CSettings::GetInstance();
+
+	cScene2D = CScene2D::GetInstance();
+
+	// Get the handler to the CMap2D instance
+	cMap2D = CMap2D::GetInstance();
+	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
+
+	// Set the start position of the Player to iRow and iCol
+	vec2Index = glm::i32vec2(uiCol, uiRow);
+	// By default, microsteps should be zero
+	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	//CS: Create the Quad Mesh using the mesh builder
+	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+
+	//CS: Init the color to white
+	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+	// Set the Physics to fall status by default
+	cPhysics2D.Init();
+
+	// Load the sounds into CSoundController
+	cSoundController = CSoundController::GetInstance();
+
+	cBulletGenerator = new CBulletGenerator();
+
+	// Rand seeding
+	srand(time(NULL));
+
+	Time = 0.0;
+	CurrTime = 0.0;
+
+	switch (WallType)
+	{
+	case 1: // WOOD
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WoodWall.png", true);
 		if (iTextureID == 0)
 		{
@@ -127,26 +189,39 @@ bool CTurret::Init(int uiRow, int uiCol, bool IsWall)
 		TurretCooldown = 0.0;
 		range = 0.0;
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
-		upgradeLeft = STONE_WALL;
+		upgradeLeft = NONE;
 		upgradeRight = NONE;
-	}
-	else
-	{
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret.png", true);
+		break;
+	case 2: // STONE
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneWall.png", true);
 		if (iTextureID == 0)
 		{
-			cout << "Unable to load Image/Tiles/Turret.png" << endl;
-			return false;
+			cout << "Unable to load Image/Tiles/StoneWall.png" << endl;
 		}
-		turretType = TURRET;
-		TurretHP = 6;
-		TurretDamage = 4;
-		TurretElement = NORMAL;
-		TurretCooldown = 1.5;
-		range = 10.0;
-		Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
-		upgradeLeft = STONE_TURRET;
-		upgradeRight = ELEMENTAL_TURRET;
+		turretType = STONE_WALL;
+		TurretHP = 10;
+		TurretDamage = 0;
+		TurretCooldown = 0.0;
+		range = 0.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		break;
+	case 3: // IRON
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronWall.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/IronWall.png" << endl;
+		}
+		turretType = IRON_WALL;
+		TurretHP = 20;
+		TurretDamage = 0;
+		TurretCooldown = 0.0;
+		range = 0.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		break;
 	}
 
 	// If this class is initialised properly, then set the bIsActive to true
@@ -812,16 +887,6 @@ void CTurret::UpgradeTurret(bool IsLeft)
 
 	switch (turretType) // Setting up the stats for the different types
 	{
-	case STONE_WALL:
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneWall.png", true);
-		if (iTextureID == 0)
-		{
-			cout << "Unable to load Image/Tiles/StoneWall.png" << endl;
-		}
-		upgradeLeft = IRON_WALL;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
-		break;
 	case STONE_TURRET:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneTurret.png", true);
 		if (iTextureID == 0)
@@ -1776,30 +1841,54 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case YOUSTERIOUS_TURRET:
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
-		break;
-	case THEYSTERIOUS_TURRET:
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
-		break;
-	case WESTERIOUS_TURRET:
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
-		break;
-
-	case IRON_WALL:
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronWall.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Yousterious.png", true);
 		if (iTextureID == 0)
 		{
-			cout << "Unable to load Image/Tiles/IronWall.png" << endl;
+			cout << "Unable to load Image/Tiles/Yousterious.png" << endl;
 		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = -5;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+		break;
+		break;
+	case THEYSTERIOUS_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/TheysteriousTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/TheysteriousTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		TurretDamage = -5;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+		break;
+		break;
+	case WESTERIOUS_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WesteriousTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/WesteriousTurret.png" << endl;
+		}
+		upgradeLeft = NONE;
+		upgradeRight = NONE;
+		upgradeRare = NONE;
+		TurretDamage = -5;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 		break;
 	}
 

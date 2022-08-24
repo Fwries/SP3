@@ -29,6 +29,8 @@ private:
 		NONE = 0,
 		FLAME = 1,
 		FREEZE = 2,
+		WIND = 3,
+		GOLD = 4,
 	};
 
 	DIRECTION dir;
