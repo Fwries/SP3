@@ -284,7 +284,7 @@ void CTurret::Update(const double dElapsedTime)
 						BranchNo = rand() % 7 + 1;
 						break;
 					case 4:
-						BranchNo = rand() % 16 + 1;
+						BranchNo = rand() % 19 + 1;
 						break;
 					}
 					upgradeLeft = int(Path + BranchNo * 10 + Tier * 1000);
@@ -1093,9 +1093,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/FlamethrowerTurret.png" << endl;
 		}
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
+		upgradeLeft = UPGRADED_FLAMETHROWER_TURRET;
+		upgradeRight = FLAMEBLOWER_TURRET;
+		upgradeRare = BLUE_FLAMETHROWER_TURRET;
 		TurretDamage = 0;
 		TurretHP = 16;
 		TurretElement = BURN;
@@ -1110,9 +1110,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/FirewallTurret.png" << endl;
 		}
-		upgradeLeft = WIND_TURRET;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
+		upgradeLeft = UPGRADED_FIREWALL_TURRET;
+		upgradeRight = MULTIFIRE_TURRET;
+		upgradeRare = FIRE_TORNADO_TURRET;
 		break;
 
 	case ICE_SPEAR_TURRET:
@@ -1121,9 +1121,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/IceSpearTurret.png" << endl;
 		}
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
+		upgradeLeft = ETERNAL_ICE_SPEAR_TURRET;
+		upgradeRight = FROSTBITE_TURRET;
+		upgradeRare = ETERNAL_BLIZZARD_TURRET;
 		TurretDamage = 8;
 		TurretHP = 10;
 		TurretElement = FROZEN;
@@ -1138,9 +1138,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/SnowballTurret.png" << endl;
 		}
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
+		upgradeLeft = GIANT_SNOWBALL;
+		upgradeRight = SNOWSTAR_TURRET;
+		upgradeRare = ETERNAL_BLIZZARD_TURRET2;
 		TurretDamage = 0;
 		TurretHP = 8;
 		TurretElement = FROZEN;
@@ -1155,9 +1155,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/IceFloorTurret.png" << endl;
 		}
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
+		upgradeLeft = UPGRADED_ICE_FLOOR_TURRET;
+		upgradeRight = FROSTBITE_TURRET;
+		upgradeRare = ETERNAL_BLIZZARD_TURRET3;
 		break;
 
 	case WIND_TURRET:
@@ -1166,9 +1166,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/WindTurret.png" << endl;
 		}
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
+		upgradeLeft = STRONG_WIND_TURRET;
+		upgradeRight = BLOWBACK_TURRET;
+		upgradeRare = WINDY_TURRET;
 		TurretDamage = 0;
 		TurretHP = 8;
 		TurretElement = NORMAL;
@@ -1182,9 +1182,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/ThunderTurret.png" << endl;
 		}
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
+		upgradeLeft = STORM_TURRET;
+		upgradeRight = FINAL_THUNDER;
+		upgradeRare = TRIPLE_THUNDER_TURRET;
 		TurretDamage = 16;
 		TurretHP = 8;
 		TurretElement = NORMAL;
@@ -1198,9 +1198,9 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		{
 			cout << "Unable to load Image/Tiles/IsteriousTurret.png" << endl;
 		}
-		upgradeLeft = NONE;
-		upgradeRight = NONE;
-		upgradeRare = NONE;
+		upgradeLeft = YOUSTERIOUS_TURRET;
+		upgradeRight = THEYSTERIOUS_TURRET;
+		upgradeRare = WESTERIOUS_TURRET;
 		TurretDamage = -5;
 		TurretHP = 8;
 		TurretElement = NORMAL;
@@ -1634,6 +1634,134 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		range = 20.0;
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
+
+		case UPGRADED_FLAMETHROWER_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case FLAMEBLOWER_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case BLUE_FLAMETHROWER_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+
+		case UPGRADED_FIREWALL_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case MULTIFIRE_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case FIRE_TORNADO_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+
+		case ETERNAL_ICE_SPEAR_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case FROSTBITE_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case ETERNAL_BLIZZARD_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+
+		case GIANT_SNOWBALL:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case SNOWSTAR_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case ETERNAL_BLIZZARD_TURRET2:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+
+		case UPGRADED_ICE_FLOOR_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case FROSTBITE_TURRET2:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case ETERNAL_BLIZZARD_TURRET3:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+
+		case STRONG_WIND_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case BLOWBACK_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case WINDY_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+
+		case STORM_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case FINAL_THUNDER:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case TRIPLE_THUNDER_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+
+		case YOUSTERIOUS_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case THEYSTERIOUS_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
+		case WESTERIOUS_TURRET:
+			upgradeLeft = NONE;
+			upgradeRight = NONE;
+			upgradeRare = NONE;
+			break;
 
 	case IRON_WALL:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronWall.png", true);
