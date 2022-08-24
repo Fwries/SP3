@@ -759,7 +759,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) <= 1.f)
+				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) <= 2.f)
 				{
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
@@ -868,7 +868,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				else
 				{
 					glm::vec2 posToGo = findNearestBasePart();
-					//cout << posToGo.x << "  " << posToGo.y << endl;
+					cout << posToGo.x << "   " << posToGo.y << endl;
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 					//Calculate new destination
 					bool bFirstPosition = true;
@@ -898,13 +898,13 @@ void CEnemy2D::Update(const double dElapsedTime)
 					}
 					UpdatePosition(glm::vec2(30, 34));
 					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
-					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) <= 1.f)
+					if (cPhysics2D.CalculateDistance(vec2Index, posToGo) <= 2.f)
 					{
 						sCurrentFSM = ATTACK;
 						iFSMCounter = 0;
 					}
+					break;
 				}
-				break;
 			}
 
 		}
@@ -937,11 +937,14 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 			case SKULL:
 			{
-				if (iFSMCounter >= 40)
+				cPlayer2D->UpdateHealthLives();
+				cSoundController->PlaySoundByID(7);
+				if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
 				{
-					cPlayer2D->changeBaseHP(ATK);
-					iFSMCounter = 0;
+					cPlayer2D->findNearestEnemy();
+					cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + cPlayer2D->getNearestEnemy());
 				}
+				iFSMCounter = 0;
 				break;
 			}
 			case VAMPIRE:
@@ -1314,7 +1317,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1323,8 +1326,8 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150 ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x - 1) >= 100) && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 150)
 			{
 				return false;
 			}
@@ -1332,12 +1335,6 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 	}
 	else if (eDirection == RIGHT)
 	{
-		// If the new position is at the top row, then return true
-		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
-		{
-			i32vec2NumMicroSteps.x = 0;
-			return true;
-		}
 
 		// If the new position is fully within a row, then check this row only
 		if (i32vec2NumMicroSteps.y == 0)
@@ -1391,12 +1388,6 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 	}
 	else if (eDirection == DOWN)
 	{
-		// If the new position is at the top row, then return true
-		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS + 1)
-		{
-			i32vec2NumMicroSteps.y = 0;
-			return true;
-		}
 
 		// If the new position is fully within a column, then check this column only
 		if (i32vec2NumMicroSteps.x == 0)
@@ -1599,16 +1590,16 @@ bool CEnemy2D::InteractWithPlayer(void)
 	}
 
 	// Check if the enemy2D is within 1.5 indices of the player2D
-	if (((vec2Index.x >= i32vec2PlayerPos.x - 0.5) && 
-		(vec2Index.x <= i32vec2PlayerPos.x + 0.5))
-		&& 
-		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
-		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
-	{
-		// Since the player has been caught, then reset the FSM
-		iFSMCounter = 0;
-		return true;
-	}
+	//if (((vec2Index.x >= i32vec2PlayerPos.x - 0.5) && 
+	//	(vec2Index.x <= i32vec2PlayerPos.x + 0.5))
+	//	&& 
+	//	((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
+	//	(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
+	//{
+	//	// Since the player has been caught, then reset the FSM
+	//	iFSMCounter = 0;
+	//	return true;
+	//}
 	return false;
 }
 
@@ -1802,7 +1793,7 @@ glm::vec2& CEnemy2D::findNearestBasePart()
 				if (glm::length(currIndex - vec2Index) < glm::length(nearestLive - vec2Index))
 				{
 					nearestLive = currIndex;
-					nearestBasePart = glm::vec2(((int)cSettings->NUM_TILES_XAXIS) - j, ((int)cSettings->NUM_TILES_YAXIS) - i);
+					nearestBasePart = glm::vec2(((int)cSettings->NUM_TILES_XAXIS) - j - 1, ((int)cSettings->NUM_TILES_YAXIS) - i - 1);
 				}
 			}
 		}
