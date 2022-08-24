@@ -1212,7 +1212,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						default:
 							break;
 						}
-						// Turret Costs
+						// Turret Costs 
 						switch (LeftTowerCosts)
 						{
 						case 1:
@@ -1387,7 +1387,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 											cInventoryManager->GetItem("Stone")->Remove(1);
 											cInventoryManager->GetItem("Iron")->Remove(1);
 											cInventoryManager->GetItem("Silver")->Remove(1);
-											turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+											turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(false);
 										}
 										break;
 									default:
