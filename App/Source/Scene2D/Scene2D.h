@@ -84,6 +84,8 @@ public:
 	glm::vec2 getSlimePos();
 
 	int GetTurretNo(void);
+
+	int getWaveLevel(void);
 protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;

@@ -273,7 +273,6 @@ bool CScene2D::Update(const double dElapsedTime)
 			spawnBoss = true;
 		}
 	}
-	//cout << remainder(elapsed, spawnRate) << endl;
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
@@ -671,4 +670,9 @@ glm::vec2 CScene2D::getSlimePos()
 int CScene2D::GetTurretNo(void)
 {
 	return TurretNo;
+}
+
+int CScene2D::getWaveLevel(void)
+{
+	return waveLevel;
 }

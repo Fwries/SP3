@@ -144,6 +144,8 @@ protected:
 	int spawnDeterminer;
 	int randType;
 
+	int statMultiplier;
+
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;

@@ -100,6 +100,8 @@ bool CEnemy2D::Init(void)
 	elapsed = 0;
 	spawnRate = 1;
 
+	statMultiplier = 1;
+
 	spawnDeterminer = 4;
 
 	targetableTurret = false;
@@ -113,6 +115,8 @@ bool CEnemy2D::Init(void)
 
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
+
+	cScene2D = CScene2D::GetInstance();
 	//// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	//unsigned int uiRow = -1;
 	//unsigned int uiCol = -1;
@@ -174,46 +178,61 @@ bool CEnemy2D::Init(void)
 
 	//Determining enemy type randomly
 	randType = rand() % spawnDeterminer;
-	//randType = 1;
+	//randType = 69;
+	
 
+
+	//Determine monster difficulty
+	if (cScene2D->getWaveLevel() == 5)
+	{
+		statMultiplier = 2;
+	}
+	else if (cScene2D->getWaveLevel() == 8)
+	{
+		statMultiplier = 3;
+	}
+	else if (cScene2D->getWaveLevel() == 10)
+	{
+		statMultiplier = 4;
+	}
 	//int randType = 3;
 	switch (randType)
 	{
 	case 0:
 		enemyType = SKELE1;
-		HP = 20;
-		ATK = 1;
-		SPE = 1;
+		HP = 20 * statMultiplier;
+		ATK = 1 * statMultiplier;
+		SPE = 1 * statMultiplier;
 		break;
 	case 1:
 		enemyType = SKULL;
-		HP = 4;
-		ATK = 4;
-		SPE = 1.5;
+		HP = 4 * statMultiplier;
+		ATK = 4 * statMultiplier;
+		SPE = 1.5 * statMultiplier;
 		break;
 	case 2:
 		enemyType = VAMPIRE;
-		HP = 20;
-		ATK = 1;
-		SPE = 1;
+		HP = 20 * statMultiplier;
+		ATK = 1 * statMultiplier;
+		SPE = 1 * statMultiplier;
 		break;
 	case 3:
 		enemyType = GOBLIN;
-		HP = 24;
-		ATK = 2;
-		SPE = 2;
+		HP = 24 * statMultiplier;
+		ATK = 2 * statMultiplier;
+		SPE = 2 * statMultiplier;
 		break;
 	case 4:
 		enemyType = SLIMEBOSS;
-		HP = 1;
-		ATK = 4;
-		SPE = 0.9;
+		HP = 1 * statMultiplier;
+		ATK = 4 * statMultiplier;
+		SPE = 0.9 * statMultiplier;
 		break;
 	default:
 		enemyType = SKELE1;
-		HP = 20;
-		ATK = 1;
-		SPE = 1;
+		HP = 20 * statMultiplier;
+		ATK = 1 * statMultiplier;
+		SPE = 1 * statMultiplier;
 		break;
 	}
 	//cout << enemyType << endl;
@@ -361,6 +380,8 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 	elapsed = 0;
 	spawnRate = 1;
 
+	statMultiplier = 1;
+
 	targetableTurret = false;
 
 	// Get the handler to the CSettings instance
@@ -371,6 +392,8 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 
 	cMouseController = CMouseController::GetInstance();
 
+	cScene2D = CScene2D::GetInstance();
+
 	//Set the position of the enemy randomly on the edge of the map
 	int edge = rand() % 4;
 	int X =bossPos.x, Y = bossPos.y;
@@ -380,9 +403,9 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 	//}
 	//Determining enemy type randomly
 	enemyType = SLIMEBABY;
-	HP = 12;
-	ATK = 1;
-	SPE = 1;
+	HP = 12 * statMultiplier;
+	ATK = 1 * statMultiplier;
+	SPE = 1 * statMultiplier;
 
 	//cout << enemyType << endl;
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
@@ -472,6 +495,8 @@ bool CEnemy2D::slimeBossInit(void)
 	elapsed = 0;
 	spawnRate = 1;
 
+	statMultiplier = 1;
+
 	targetableTurret = false;
 
 	// Get the handler to the CSettings instance
@@ -481,6 +506,8 @@ bool CEnemy2D::slimeBossInit(void)
 	cMap2D = CMap2D::GetInstance();
 
 	cMouseController = CMouseController::GetInstance();
+
+	cScene2D = CScene2D::GetInstance();
 
 	//Set the position of the enemy randomly on the edge of the map
 	int edge = rand() % 4;
@@ -514,9 +541,9 @@ bool CEnemy2D::slimeBossInit(void)
 	//}
 	//Determining enemy type randomly
 	enemyType = SLIMEBOSS;
-	HP = 12;
-	ATK = 1;
-	SPE = 1;
+	HP = 12 * statMultiplier;
+	ATK = 1 * statMultiplier;
+	SPE = 1 * statMultiplier;
 
 	//cout << enemyType << endl;
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
