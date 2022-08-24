@@ -131,6 +131,9 @@ protected:
 		NORMAL = 0,
 		BURN = 1,
 		FREEZE = 2,
+		WIND = 3,
+		GOLD = 4,
+		FROST = 5,
 		NUMOFSTATUSES
 	};
 
