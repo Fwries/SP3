@@ -1737,6 +1737,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case UPGRADED_FLAMETHROWER_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/UpgradedFlamethrowerTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/UpgradedFlamethrowerTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1749,6 +1754,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 		break;
 	case FLAMEBLOWER_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FlameblowerTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FlameblowerTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1761,6 +1771,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 		break;
 	case BLUE_FLAMETHROWER_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BlueFlamethrowerTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/BlueFlamethrowerTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1773,22 +1788,42 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case UPGRADED_FIREWALL_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/UpgradedFirewallTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/UpgradedFirewallTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
 		break;
 	case MULTIFIRE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/MultiFireTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/MultiFireTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
 		break;
 	case FIRE_TORNADO_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FireTornadoTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FireTornadoTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
 		break;
 
 	case ETERNAL_ICE_SPEAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalIceSpearTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/EternalIceSpearTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1801,6 +1836,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case FROSTBITE_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FrostbiteTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FrostbiteTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1813,6 +1853,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case ETERNAL_BLIZZARD_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalBlizzardTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/EternalBlizzardTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1826,6 +1871,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case GIANT_SNOWBALL:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/GiantSnowballTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/GiantSnowballTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1838,6 +1888,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 	case SNOWSTAR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/SnowStarTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/SnowStarTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1850,6 +1905,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 	case ETERNAL_BLIZZARD_TURRET2:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalBlizzardTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/EternalBlizzardTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1863,11 +1923,21 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case UPGRADED_ICE_FLOOR_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/UpgradedIceFloorTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/UpgradedIceFloorTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
 		break;
 	case FROSTBITE_TURRET2:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FrostbiteTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FrostbiteTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1880,6 +1950,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case ETERNAL_BLIZZARD_TURRET3:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/EternalBlizzardTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/EternalBlizzardTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1893,6 +1968,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case STRONG_WIND_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StrongWindTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/StrongWindTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1905,6 +1985,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.224f, 1.f, 0.078f, 1.f);
 		break;
 	case BLOWBACK_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/BlowbackTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/BlowbackTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1917,6 +2002,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.224f, 1.f, 0.078f, 1.f);
 		break;
 	case WINDY_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WindyTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/WindyTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1930,6 +2020,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		break;
 
 	case STORM_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StormTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/StormTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1942,6 +2037,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(0.224f, 1.f, 0.078f, 1.f);
 		break;
 	case FINAL_THUNDER:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/FinalThunderTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/FinalThunderTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
@@ -1953,6 +2053,11 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		Colour = glm::vec4(1.f, 1.f, 0.f, 1.f);
 		break;
 	case TRIPLE_THUNDER_TURRET:
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/TripleThunderTurret.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Tiles/TripleThunderTurret.png" << endl;
+		}
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
