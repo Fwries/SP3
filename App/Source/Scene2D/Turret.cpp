@@ -294,12 +294,19 @@ void CTurret::Update(const double dElapsedTime)
 				case FROST_TURRET:
 				case FLAME_SPEAR_TURRET:
 				case FLAMETHROWER_TURRET:
-				case FIREWALL_TURRET:
 				case ICE_SPEAR_TURRET:
 				case SNOWBALL_TURRET:
-				case ICE_FLOOR_TURRET:
 				case HOT_IRON_TURRET:
 				case ETERNAL_FLAME_SPEAR_TURRET:
+				case UPGRADED_FLAMETHROWER_TURRET:
+				case FLAMEBLOWER_TURRET:
+				case ETERNAL_ICE_SPEAR_TURRET:
+				case FROSTBITE_TURRET:
+				case FROSTBITE_TURRET2:
+				case GIANT_SNOWBALL:
+				case STRONG_WIND_TURRET:
+				case BLOWBACK_TURRET:
+				case WINDY_TURRET:
 					if (rand() % 101 <= ElementChance)
 					{
 						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
@@ -317,7 +324,17 @@ void CTurret::Update(const double dElapsedTime)
 					}
 					else
 					{
-						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, NORMAL, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, FROZEN, Colour);
+					}
+					break;
+				case BLUE_FLAMETHROWER_TURRET:
+					if (rand() % 101 <= 80)
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, BURN, Colour);
+					}
+					else
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, FROZEN, Colour);
 					}
 					break;
 
@@ -386,11 +403,50 @@ void CTurret::Update(const double dElapsedTime)
 				// Burst
 				case STONE_BURST_TOWER:
 				case IRON_BURST_TURRET:
+					if (Burst > CurrBurst)
+					{
+						TurretCooldown = 0;
+						CurrBurst++;
+					}
+					else
+					{
+						TurretCooldown = 1.5;
+						CurrBurst = 0;
+					}
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
 					break;
 
 				// Rainbow
 				case ISTERIOUS_TURRET:
 				case TURRETINFINITY:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					break;
+				case YOUSTERIOUS_TURRET:
+					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					break;
+				case THEYSTERIOUS_TURRET:
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x - 1,	this->vec2Index.y + 1), glm::vec2(nearestEnemy->vec2Index.x - 1,	nearestEnemy->vec2Index.y + 1), TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x,		this->vec2Index.y + 1), glm::vec2(nearestEnemy->vec2Index.x,		nearestEnemy->vec2Index.y + 1), TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x + 1,	this->vec2Index.y + 1), glm::vec2(nearestEnemy->vec2Index.x + 1,	nearestEnemy->vec2Index.y + 1), TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x - 1,	this->vec2Index.y),		glm::vec2(nearestEnemy->vec2Index.x - 1,	nearestEnemy->vec2Index.y),		TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x,		this->vec2Index.y),		glm::vec2(nearestEnemy->vec2Index.x,		nearestEnemy->vec2Index.y),		TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x + 1,	this->vec2Index.y),		glm::vec2(nearestEnemy->vec2Index.x + 1,	nearestEnemy->vec2Index.y),		TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x - 1,	this->vec2Index.y - 1), glm::vec2(nearestEnemy->vec2Index.x - 1,	nearestEnemy->vec2Index.y - 1), TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x,		this->vec2Index.y - 1), glm::vec2(nearestEnemy->vec2Index.x,		nearestEnemy->vec2Index.y - 1), TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					cBulletGenerator->GenerateBullet(glm::vec2(this->vec2Index.x + 1,	this->vec2Index.y - 1), glm::vec2(nearestEnemy->vec2Index.x + 1,	nearestEnemy->vec2Index.y - 1), TurretDamage, TurretElement, Colour);
+					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
+					break;
+				case WESTERIOUS_TURRET:
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
 					Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 					break;
@@ -431,14 +487,89 @@ void CTurret::Update(const double dElapsedTime)
 					cBulletGenerator->GenerateBullet(this->vec2Index, 5, TurretDamage, TurretElement, Colour);
 					cBulletGenerator->GenerateBullet(this->vec2Index, 7, TurretDamage, TurretElement, Colour);
 					break;
+				case MULTIFIRE_TURRET:
+					if (rand() % 101 <= ElementChance)
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, TurretElement, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, TurretElement, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 2, TurretDamage, TurretElement, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 3, TurretDamage, TurretElement, Colour);
+					}
+					else
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, NORMAL, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, NORMAL, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 2, TurretDamage, NORMAL, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 3, TurretDamage, NORMAL, Colour);
+					}
+					break;
+				case SNOWSTAR_TURRET:
+					if (rand() % 101 <= ElementChance)
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, TurretElement, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, TurretElement, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 2, TurretDamage, TurretElement, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 5, TurretDamage, TurretElement, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 7, TurretDamage, TurretElement, Colour);
+					}
+					else
+					{
+						cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, NORMAL, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, NORMAL, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 2, TurretDamage, NORMAL, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 5, TurretDamage, NORMAL, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, 7, TurretDamage, NORMAL, Colour);
+					}
+					break;
+
+					// FireWall
+				case FIREWALL_TURRET:
+				case UPGRADED_FIREWALL_TURRET:
+					break;
+
+					// Ice Floor
+				case ICE_FLOOR_TURRET:
+				case UPGRADED_ICE_FLOOR_TURRET:
+					break;
+
+					// Tornado
+				case FIRE_TORNADO_TURRET:
+				case ETERNAL_BLIZZARD_TURRET:
+				case ETERNAL_BLIZZARD_TURRET2:
+				case ETERNAL_BLIZZARD_TURRET3:
+				{
+					int RandX = rand() % cSettings->NUM_TILES_XAXIS + 1;
+					int RandY = rand() % cSettings->NUM_TILES_YAXIS + 1;
+					if (rand() % 101 <= ElementChance)
+					{
+						cBulletGenerator->GenerateBullet(glm::vec2(RandX, RandY + 5), 3, TurretDamage, TurretElement, Colour);
+					}
+					else
+					{
+						cBulletGenerator->GenerateBullet(glm::vec2(RandX, RandY + 5), 3, TurretDamage, NORMAL, Colour);
+					}
+					break;
+				}
 
 				// Misc
 				case ORE_GENERATOR:
 					break;
 				case THUNDER_TURRET:
+				case FINAL_THUNDER:
 					cBulletGenerator->GenerateBullet(glm::vec2(nearestEnemy->vec2Index.x, nearestEnemy->vec2Index.y + 5), 3, TurretDamage, TurretElement, Colour);
 					break;
-				case TANK:
+				case STORM_TURRET:
+					if (rand() % 101 <= ElementChance)
+					{
+						cBulletGenerator->GenerateBullet(glm::vec2(nearestEnemy->vec2Index.x, nearestEnemy->vec2Index.y + 5), 3, TurretDamage, TurretElement, Colour);
+					}
+					else
+					{
+						cBulletGenerator->GenerateBullet(glm::vec2(nearestEnemy->vec2Index.x, nearestEnemy->vec2Index.y + 5), 3, TurretDamage, NORMAL, Colour);
+					}
+					break;
+				case TRIPLE_THUNDER_TURRET:
+					cBulletGenerator->GenerateBullet(glm::vec2(nearestEnemy->vec2Index.x, nearestEnemy->vec2Index.y + 5), 3, TurretDamage, TurretElement, Colour);
 					break;
 				case WRONGDIRECTION_TURRET:
 					cBulletGenerator->GenerateBullet(this->vec2Index, -(nearestEnemy->vec2Index), TurretDamage, TurretElement, Colour);
@@ -470,6 +601,9 @@ void CTurret::Update(const double dElapsedTime)
 				}
 				case ROBOT_PLAYER:
 					break;
+				case TANK:
+					break;
+
 				}
 			}
 		}
@@ -1084,6 +1218,8 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretHP = 6;
 		TurretElement = NORMAL;
 		TurretCooldown = 1.5;
+		CurrBurst = 0;
+		Burst = 3;
 		range = 10.0;
 		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
@@ -1464,6 +1600,8 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretHP = 12;
 		TurretElement = NORMAL;
 		TurretCooldown = 1.5;
+		CurrBurst = 0;
+		Burst = 3;
 		range = 10.0;
 		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
@@ -2082,7 +2220,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretHP = 8;
 		TurretElement = NORMAL;
 		TurretCooldown = 1.5;
-		range = 10.0;
+		range = 20.0;
 		Colour = glm::vec4(static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, static_cast<float>((rand() % 100)) / 100.f, 1);
 		break;
 		break;

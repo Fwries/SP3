@@ -207,7 +207,7 @@ protected:
 		ETERNAL_FLAME_SPEAR_TURRET = 4091,
 		BLUE_FLAME_TURRET = 4092,
 		DUO_FLAME_SPEAR_TURRET = 4093,
-		// New Turrets
+
 		UPGRADED_FLAMETHROWER_TURRET = 4111,
 		FLAMEBLOWER_TURRET = 4112,
 		BLUE_FLAMETHROWER_TURRET = 4113,
@@ -328,6 +328,9 @@ protected:
 	double TurretCooldown;
 	double range;
 	glm::vec4 Colour;
+
+	int Burst;
+	int CurrBurst;
 
 	double Time;
 	double CurrTime;
