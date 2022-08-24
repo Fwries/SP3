@@ -253,7 +253,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		spawnBoss = false;
 	}
 	//cout << remainder(elapsed, 60) << endl;
-	if (remainder(elapsed, 10) >= 0 && remainder(elapsed, 10) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
+	if (remainder(elapsed, 30) >= 0 && remainder(elapsed, 30) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
 	{
 		if (spawnRate > 4)
 		{
