@@ -1393,6 +1393,13 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
+		TurretDamage = 10;
+		TurretHP = 24;
+		TurretElement = NORMAL;
+		TurretCooldown = 1.5;
+		range = 15.0;
+		Colour = glm::vec4(0.f, 0.f, 0.f, 1.f);
 		break;
 
 	case GOLDEN_TURRET:
@@ -1506,7 +1513,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretDamage = 4;
 		TurretHP = 10;
 		TurretElement = NORMAL;
-		TurretCooldown = 1.5;
+		TurretCooldown = 2.0;
 		range = 10.0;
 		Colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.f);
 		break;
@@ -1522,7 +1529,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretDamage = 8;
 		TurretHP = 10;
 		TurretElement = NORMAL;
-		TurretCooldown = 1.5;
+		TurretCooldown = 2.5;
 		range = 10.0;
 		Colour = glm::vec4(1.f, 1.f, 0.f, 1.f);
 		break;
@@ -1676,6 +1683,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
 		break;
 
 	case ETERNAL_FLAME_SPEAR_TURRET:
@@ -1732,16 +1740,36 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 16;
+		TurretElement = BURN;
+		ElementChance = 100;
+		TurretCooldown = 0.5;
+		range = 20.0;
+		Colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 		break;
 	case FLAMEBLOWER_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 16;
+		TurretElement = BURN;
+		ElementChance = 100;
+		TurretCooldown = 0.25;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 		break;
 	case BLUE_FLAMETHROWER_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 16;
+		TurretElement = NORMAL;
+		TurretCooldown = 0.5;
+		range = 10.0;
+		Colour = glm::vec4(0.f, 0.f, 1.f, 1.f);
 		break;
 
 	case UPGRADED_FIREWALL_TURRET:
@@ -1764,32 +1792,74 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 8;
+		TurretHP = 10;
+		TurretElement = FROZEN;
+		ElementChance = 50;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case FROSTBITE_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 12;
+		TurretHP = 10;
+		TurretElement = FROST;
+		ElementChance = 5;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case ETERNAL_BLIZZARD_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 20;
+		TurretHP = 10;
+		TurretElement = FROZEN;
+		ElementChance = 50;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 
 	case GIANT_SNOWBALL:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 4;
+		TurretHP = 8;
+		TurretElement = FROZEN;
+		ElementChance = 100;
+		TurretCooldown = 0.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 	case SNOWSTAR_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 8;
+		TurretElement = FROZEN;
+		ElementChance = 100;
+		TurretCooldown = 2.5;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 	case ETERNAL_BLIZZARD_TURRET2:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 20;
+		TurretHP = 10;
+		TurretElement = FROZEN;
+		ElementChance = 50;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 
 	case UPGRADED_ICE_FLOOR_TURRET:
@@ -1801,43 +1871,97 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 12;
+		TurretHP = 10;
+		TurretElement = FROST;
+		ElementChance = 5;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 	case ETERNAL_BLIZZARD_TURRET3:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 20;
+		TurretHP = 10;
+		TurretElement = FROZEN;
+		ElementChance = 50;
+		TurretCooldown = 1.5;
+		range = 20.0;
+		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 
 	case STRONG_WIND_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 4;
+		TurretHP = 8;
+		TurretElement = WIND;
+		ElementChance = 70;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.224f, 1.f, 0.078f, 1.f);
 		break;
 	case BLOWBACK_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 8;
+		TurretElement = WIND;
+		ElementChance = 100;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.224f, 1.f, 0.078f, 1.f);
 		break;
 	case WINDY_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 0;
+		TurretHP = 8;
+		TurretElement = WIND;
+		ElementChance = 100;
+		TurretCooldown = 0.5;
+		range = 10.0;
+		Colour = glm::vec4(0.224f, 1.f, 0.078f, 1.f);
 		break;
 
 	case STORM_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 16;
+		TurretHP = 8;
+		TurretElement = WIND;
+		ElementChance = 60;
+		TurretCooldown = 1.5;
+		range = 10.0;
+		Colour = glm::vec4(0.224f, 1.f, 0.078f, 1.f);
 		break;
 	case FINAL_THUNDER:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 16;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 3.0;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 0.f, 1.f);
 		break;
 	case TRIPLE_THUNDER_TURRET:
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		TurretDamage = 16;
+		TurretHP = 8;
+		TurretElement = NORMAL;
+		TurretCooldown = 3.0;
+		range = 10.0;
+		Colour = glm::vec4(1.f, 1.f, 0.f, 1.f);
 		break;
 
 	case YOUSTERIOUS_TURRET:
