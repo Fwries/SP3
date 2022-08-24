@@ -8,7 +8,6 @@
 
 #include <iostream>
 using namespace std;
-
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 // Include Mesh Builder
@@ -752,7 +751,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 
 				glm::vec2 posToGo = findNearestBasePart();
-				//Pathfinding method
+				cout << posToGo.x << "  " << posToGo.y << endl;
 				auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
@@ -780,7 +779,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 						}
 					}
 				}
-				/*cout << toX << "    " << toY << endl;*/
 				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 				if (cPhysics2D.CalculateDistance(vec2Index, posToGo) <= 1.f)
@@ -790,6 +788,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				}
 				break;
 			}
+
 			case SKULL:
 			{
 				//Pathfinding method
