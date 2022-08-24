@@ -868,7 +868,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 				else
 				{
 					glm::vec2 posToGo = findNearestBasePart();
-					cout << posToGo.x << "   " << posToGo.y << endl;
+					//cout << posToGo.x << "   " << posToGo.y << endl;
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 					//Calculate new destination
 					bool bFirstPosition = true;
