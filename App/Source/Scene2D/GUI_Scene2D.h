@@ -106,6 +106,10 @@ protected:
 	ImageData InventoryBG;
 	ImageData EquipButton;
 	ImageData EquippedButton;
+	ImageData CraftingBG;
+	ImageData LeftButton;
+	ImageData RightButton;
+	ImageData CraftButton;
 	unsigned iTextureID;
 	unsigned LeftUpgrade;
 	unsigned RightUpgrade;
