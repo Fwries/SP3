@@ -248,6 +248,7 @@ protected:
 		FROZEN = 2,
 		WIND = 3,
 		GOLD = 4,
+		FROST = 5,
 	};
 
 	glm::vec2 i32vec2OldIndex;

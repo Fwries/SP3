@@ -635,7 +635,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 				if (glm::length(vec2Index - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetBulletPos()) <= 2)
 				{
 					HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
-					cout << cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector().size() << endl;
 					switch (cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetElement())
 					{
 						case BURN:
@@ -1322,15 +1321,15 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
 bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 {
 
-	// If the new position is at the top row, then return true
-	if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
-	{
-		i32vec2NumMicroSteps.x = 0;
-		return true;
-	}
-
 	if (eDirection == LEFT)
 	{
+		// If the new position is at the top row, then return true
+		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
+		{
+			i32vec2NumMicroSteps.x = 0;
+			return true;
+		}
+
 		// If the new position is fully within a row, then check this row only
 		if (i32vec2NumMicroSteps.y == 0)
 		{
@@ -1413,7 +1412,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 	else if (eDirection == DOWN)
 	{
 		// If the new position is at the top row, then return true
-		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
+		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS + 1)
 		{
 			i32vec2NumMicroSteps.y = 0;
 			return true;

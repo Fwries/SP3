@@ -899,8 +899,8 @@ void CPlayer2D::RandomTileGenerator(void)
 {
 	while (n_wood > 0)
 	{
-		X = rand() % 62 + 1;
-		Y = rand() % 62 + 1;
+		X = 15 + (rand() % 35);
+		Y = 15 + (rand() % 35);
 		if (cMap2D->GetMapInfo(X, Y) == 0)
 		{
 			cMap2D->SetMapInfo(X, Y, 135);
@@ -909,8 +909,8 @@ void CPlayer2D::RandomTileGenerator(void)
 	}
 	while (n_stone > 0)
 	{
-		X = rand() % 62 + 1;
-		Y = rand() % 62 + 1;
+		X = 15 + (rand() % 35);
+		Y = 15 + (rand() % 35);
 		if (cMap2D->GetMapInfo(X, Y) == 0)
 		{
 			cMap2D->SetMapInfo(X, Y, 140);
@@ -919,8 +919,8 @@ void CPlayer2D::RandomTileGenerator(void)
 	}
 	while (n_iron > 0)
 	{
-		X = rand() % 62 + 1;
-		Y = rand() % 62 + 1;
+		X = 10 + (rand() % 50);
+		Y = 10 + (rand() % 50);
 		if (cMap2D->GetMapInfo(X, Y) == 0)
 		{
 			cMap2D->SetMapInfo(X, Y, 141);
@@ -929,8 +929,8 @@ void CPlayer2D::RandomTileGenerator(void)
 	}
 	while (n_silver > 0)
 	{
-		X = rand() % 62 + 1;
-		Y = rand() % 62 + 1;
+		X = 10 + (rand() % 50);
+		Y = 10 + (rand() % 50);
 		if (cMap2D->GetMapInfo(X, Y) == 0)
 		{
 			cMap2D->SetMapInfo(X, Y, 142);
@@ -939,8 +939,8 @@ void CPlayer2D::RandomTileGenerator(void)
 	}
 	while (n_bronze > 0)
 	{
-		X = rand() % 62 + 1;
-		Y = rand() % 62 + 1;
+		X = 5 + (rand() % 55);
+		Y = 5 + (rand() % 55);
 		if (cMap2D->GetMapInfo(X, Y) == 0)
 		{
 			cMap2D->SetMapInfo(X, Y, 143);
@@ -949,8 +949,8 @@ void CPlayer2D::RandomTileGenerator(void)
 	}
 	while (n_gold > 0)
 	{
-		X = rand() % 62 + 1;
-		Y = rand() % 62 + 1;
+		X = 5 + (rand() % 55);
+		Y = 5+ (rand() % 55);
 		if (cMap2D->GetMapInfo(X, Y) == 0)
 		{
 			cMap2D->SetMapInfo(X, Y, 144);

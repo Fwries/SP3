@@ -31,6 +31,7 @@ private:
 		FREEZE = 2,
 		WIND = 3,
 		GOLD = 4,
+		FORST = 5,
 	};
 
 	DIRECTION dir;
