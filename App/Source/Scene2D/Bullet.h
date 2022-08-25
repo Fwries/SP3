@@ -8,6 +8,9 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
+// Include vector
+#include <vector>
+
 class CBullet : public CEntity2D
 {
 private:
@@ -48,6 +51,13 @@ private:
 	// Current color
 	glm::vec4 runtimeColour;
 
+	// A vector containing the instance of CEnemy2Ds
+	vector<CEntity2D*> enemyVector;
+
+	glm::vec2 nearestLive;
+	CEntity2D* nearestEnemy;
+	int nearestEnemyInt;
+
 public:
 	CMesh* quadMesh;
 
@@ -73,4 +83,8 @@ public:
 	void SetbIsActive(bool);
 
 	glm::vec2 GetBulletPos();
+
+	void SetEnemyVector(vector<CEntity2D*>);
+
+	void findNearestEnemy();
 };

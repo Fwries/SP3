@@ -86,6 +86,9 @@ bool CTurret::Init(int uiRow, int uiCol)
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 
+	// Store the keyboard controller singleton instance here
+	cKeyboardController = CKeyboardController::GetInstance();
+
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
@@ -146,6 +149,9 @@ bool CTurret::Init(int uiRow, int uiCol, int WallType)
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
+
+	// Store the keyboard controller singleton instance here
+	cKeyboardController = CKeyboardController::GetInstance();
 
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
@@ -600,8 +606,10 @@ void CTurret::Update(const double dElapsedTime)
 					break;
 				}
 				case ROBOT_PLAYER:
+					UpdatePosition();
 					break;
 				case TANK:
+					UpdatePosition();
 					break;
 
 				}
@@ -611,6 +619,7 @@ void CTurret::Update(const double dElapsedTime)
 		for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
 		{
 			cBulletGenerator->GetBulletsVector()[i]->Update();
+			cBulletGenerator->GetBulletsVector()[i]->SetEnemyVector(enemyVector);
 		}
 	}
 
@@ -1003,7 +1012,128 @@ void CTurret::FlipHorizontalDirection(void)
 */
 void CTurret::UpdatePosition(void)
 {
+	float SPE = 1.9;
+	glm::vec2 vec2OldIndex = vec2Index;
 
+	if (turretType == ROBOT_PLAYER)
+	{
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+		{
+			// Calculate the new position to the left
+			if (vec2Index.x >= 0)
+			{
+				vec2NumMicroSteps.x -= SPE;
+				if (vec2NumMicroSteps.x < 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
+			}
+
+			// Constraint the player's position within the screen boundary
+			Constraint(LEFT);
+
+			// If the new position is not feasible, then revert to old position
+			if (CheckPosition(LEFT) == false)
+			{
+				vec2Index = vec2OldIndex;
+				vec2NumMicroSteps.x = 0;
+			}
+
+			FaceDirection = LEFT;
+
+			//CS: Change Color
+			//runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+		}
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
+		{
+			// Calculate the new position to the right
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x += SPE;
+
+				if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x = 0;
+					vec2Index.x++;
+				}
+			}
+
+			// Constraint the player's position within the screen boundary
+			Constraint(RIGHT);
+
+			// If the new position is not feasible, then revert to old position
+			if (CheckPosition(RIGHT) == false)
+			{
+				vec2NumMicroSteps.x = 0;
+			}
+
+			FaceDirection = RIGHT;
+
+			//CS: Change Color
+			//runtimeColour = glm::vec4(1.0, 1.0, 0.0, 1.0);
+		}
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
+		{
+			// Calculate the new position up
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y += SPE;
+				if (vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+
+			// Constraint the player's position within the screen boundary
+			Constraint(UP);
+
+			// If the new position is not feasible, then revert to old position
+			if (CheckPosition(UP) == false)
+			{
+				vec2NumMicroSteps.y = 0;
+			}
+		}
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
+		{
+			vec2OldIndex = vec2Index;
+
+			// Calculate the new position down
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y -= SPE;
+				if (vec2NumMicroSteps.y < 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+
+			// Constraint the player's position within the screen boundary
+			Constraint(DOWN);
+
+			// If the new position is not feasible, then revert to old position
+			if (CheckPosition(DOWN) == false)
+			{
+				vec2Index = vec2OldIndex;
+				vec2NumMicroSteps.y = 0;
+			}
+		}
+	}
+	else if (turretType == TANK)
+	{
+
+	}
+
+	if (FaceDirection)
+	{
+
+	}
+	else
+	{
+
+	}
 }
 
 void CTurret::UpgradeTurret(bool IsLeft)

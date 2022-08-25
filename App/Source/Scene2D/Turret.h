@@ -42,6 +42,9 @@ class CScene2D;
 
 #include "BulletGenerator.h"
 
+// Include Keyboard controller
+#include "Inputs\KeyboardController.h"
+
 class CTurret : public CEntity2D
 {
 public:
@@ -334,6 +337,8 @@ protected:
 
 	double Time;
 	double CurrTime;
+
+	int FaceDirection;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);

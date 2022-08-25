@@ -185,6 +185,8 @@ void CBullet::Update()
 		}
 	}
 
+	findNearestEnemy();
+
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 
@@ -266,4 +268,26 @@ void CBullet::SetbIsActive(bool yes)
 glm::vec2 CBullet::GetBulletPos()
 {
 	return vec2Index;
+}
+
+void CBullet::SetEnemyVector(vector<CEntity2D*> NEWenemyVector)
+{
+	enemyVector = NEWenemyVector;
+}
+
+void CBullet::findNearestEnemy()
+{
+	glm::vec2 NEWLive;
+	nearestEnemy = nullptr;
+	for (int i = 0; i < enemyVector.size(); i++)
+	{
+		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, enemyVector[i]->vec2Index.y);
+		if (glm::length(currIndex - vec2Index) < glm::length(NEWLive - vec2Index))
+		{
+			nearestLive = currIndex;
+			NEWLive = nearestLive;
+			nearestEnemyInt = i;
+			nearestEnemy = enemyVector[i];
+		}
+	}
 }
