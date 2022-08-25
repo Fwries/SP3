@@ -692,6 +692,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		}
 	}
 
+	//Status handler
 	switch (status)
 	{
 		case BURN:
@@ -734,6 +735,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	MoveCooldown += dElapsedTime;
 	AttackCooldown += dElapsedTime;
 
+	//FSM handler
 	switch (sCurrentFSM)
 	{
 	case MOVING:
@@ -770,6 +772,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 			{
 				glm::vec2 posToGo = findNearestBasePart();
 				auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
+				if (path.size() == 0)
+				{
+					sCurrentFSM = BLOCKED;
+					iFSMCounter = 0;
+				}
 				//Calculate new destination
 				bool bFirstPosition = true;
 				for (const auto& coord : path)
@@ -869,6 +876,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 					glm::vec2 posToGo = findNearestTurret();
 					//cout << findNearestTurret().x << "   " << findNearestTurret().y << endl;
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
+					if (path.size() == 0)
+					{
+						sCurrentFSM = BLOCKED;
+						iFSMCounter = 0;
+					}
 					//Calculate new destination
 					bool bFirstPosition = true;
 					for (const auto& coord : path)
@@ -909,6 +921,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 					glm::vec2 posToGo = findNearestBasePart();
 					//cout << posToGo.x << "   " << posToGo.y << endl;
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
+					if (path.size() == 0)
+					{
+						sCurrentFSM = BLOCKED;
+						iFSMCounter = 0;
+					}
 					//Calculate new destination
 					bool bFirstPosition = true;
 					for (const auto& coord : path)
@@ -953,7 +970,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 	case BLOCKED:
 	{
-		
+		runtimeColour = glm::vec4(0.67, 0.0, 0.50, 1.0);
 		iFSMCounter++;
 		break;
 	}
