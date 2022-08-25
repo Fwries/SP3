@@ -243,7 +243,7 @@ bool CGUI_Scene2D::Init(void)
 	}
 	for (int i = 0; i < TurretImg.size(); i++)
 	{
-		TurretImg[i].textureID = Image->LoadTextureGetID(TurretImg[i].fileName.c_str(), false);
+		TurretImg[i].textureID = Image->LoadTextureGetID(TurretImg[i].fileName.c_str(), true);
 	}
 
 	recipeNo = 0;
@@ -1136,78 +1136,103 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							// Rare turrets
 						case 2013:
 							LeftUpgrade = TurretImg[4].textureID;
+							LeftDesc = "A RARE Turret that shoots Bullets that deal a random damage from 4 to 10.";
 							break;
 						case 2023:
 							LeftUpgrade = TurretImg[7].textureID;
+							LeftDesc = "A Mysterious Turret, holding unknown potential.";
 							break;
 						case 3013:
 							LeftUpgrade = TurretImg[10].textureID;
+							LeftDesc = "An ore generator that generates materials. Does not shoot.";
 							break;
 						case 3023:
 							LeftUpgrade = TurretImg[13].textureID;
+							LeftDesc = "A Tower that shoots 2 bullets at once.";
 							break;
 						case 3033:
 							LeftUpgrade = TurretImg[16].textureID;
+							LeftDesc = "Upgrades your turret into a random turret";
 							break;
 						case 3043:
 							LeftUpgrade = TurretImg[19].textureID;
+							LeftDesc = "A Turret that shoots a Firewall 3 blocks long.";
 							break;
 						case 3053:
 							LeftUpgrade = TurretImg[22].textureID;
+							LeftDesc = "A Turret that shoots an Ice Floor 5 blocks long.";
 							break;
 						case 3063:
 							LeftUpgrade = TurretImg[25].textureID;
+							LeftDesc = "A Turret that shoot bullets. That heales enemies.";
 							break;
 						case 4013:
 							LeftUpgrade = TurretImg[28].textureID;
+							LeftDesc = "A Turret that has short range but has high damage.";
 							break;
 						case 4023:
 							LeftUpgrade = TurretImg[31].textureID;
+							LeftDesc = "C     L     U     N     K.";
 							break;
 						case 4033:
 							LeftUpgrade = TurretImg[34].textureID;
+							LeftDesc = "A powerful Turret that attracts enemies and turns enemies to gold.";
 							break;
 						case 4043:
 							LeftUpgrade = TurretImg[37].textureID;
+							LeftDesc = "A powerful Turret with high raw stats.";
 							break;
 						case 4053:
 							LeftUpgrade = TurretImg[40].textureID;
+							LeftDesc = "A Turret that shoots bullets in the opposite direction.";
 							break;
 						case 4063:
 							LeftUpgrade = TurretImg[43].textureID;
+							LeftDesc = "A Turret that has infinite cooldown and infinite health.";
 							break;
 						case 4073:
 							LeftUpgrade = TurretImg[46].textureID;
+							LeftDesc = "A Turret that shoots in a random direction.";
 							break;
 						case 4083:
 							LeftUpgrade = TurretImg[49].textureID;
+							LeftDesc = "Creates a Robot Clone of the Player. Moves exactly like him.";
 							break;
 						case 4093:
 							LeftUpgrade = TurretImg[52].textureID;
+							LeftDesc = "An upgraded Turret with extra range that shoots 2 Bullets at once. 20% to Burn.";
 							break;
 						case 4113:
 							LeftUpgrade = TurretImg[55].textureID;
+							LeftDesc = "A Turret that blows blue Fire. 80% to Burn. 20% to Freeze.";
 							break;
 						case 4123:
 							LeftUpgrade = TurretImg[58].textureID;
+							LeftDesc = "A Turret that shoots 5 Firewall blocks randomly around the map.";
 							break;
 						case 4133:
 							LeftUpgrade = TurretImg[61].textureID;
+							LeftDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4143:
 							LeftUpgrade = TurretImg[64].textureID;
+							LeftDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4153:
 							LeftUpgrade = TurretImg[67].textureID;
+							LeftDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4163:
 							LeftUpgrade = TurretImg[69].textureID;
+							LeftDesc = "This mysterious turret consumes and fires bullets, but only air exits the barrel.";
 							break;
 						case 4173:
 							LeftUpgrade = TurretImg[73].textureID;
+							LeftDesc = "Exerts Thunder at 3 enemies. Dealing 16 damage.";
 							break;
 						case 4183:
 							LeftUpgrade = TurretImg[76].textureID;
+							LeftDesc = "A Turret that shoot bullets. That heales us.";
 							break;
 						default:
 							break;
@@ -1278,9 +1303,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							break;
 						case 4072:
 							RightUpgrade = TurretImg[45].textureID;
+							RightDesc = "A Turret that does 0 or 20 damage.";
 							break;
 						case 4082:
 							RightUpgrade = TurretImg[48].textureID;
+							RightDesc = "Upgrades your turret into a random turret";
 							break;
 						case 4092:
 							RightUpgrade = TurretImg[51].textureID;
@@ -1288,80 +1315,136 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							break;
 						case 4112:
 							RightUpgrade = TurretImg[54].textureID;
+							RightDesc = "A Turret that blows Fire. 100% to Burn. Able to push back enemies.";
 							break;
 						case 4122:
 							RightUpgrade = TurretImg[57].textureID;
+							RightDesc = "A Turret that shoots a Firewall 3 blocks long.";
 							break;
 						case 4132:
 							RightUpgrade = TurretImg[60].textureID;
+							RightDesc = "An upgraded Turret with extra range that deals extra damage to Frozen Enemies. 5% to Freeze.";
 							break;
 						case 4142:
 							RightUpgrade = TurretImg[63].textureID;
+							RightDesc = "A Turret that shoots Snowballs in 5 directions dealing no damage. 50% to Freeze.";
 							break;
 						case 4152:
 							RightUpgrade = TurretImg[66].textureID;
+							RightDesc = "An upgraded Turret with extra range that deals extra damage to Frozen Enemies. 5% to Freeze.";
 							break;
 						case 4162:
 							RightUpgrade = TurretImg[70].textureID;
+							RightDesc = "100% to Knockback. Lul.";
 							break;
 						case 4172:
 							RightUpgrade = TurretImg[72].textureID;
+							RightDesc = "Exerts Thunder at an enemy. Dealing 16 damage.";
 							break;
 						case 4182:
 							RightUpgrade = TurretImg[75].textureID;
+							RightDesc = "A Turret that shoot multiple bullets. That heales enemies.";
 							break;
-						// Rare turrets
-						case 1013:
-							break;
+							// Rare turrets
 						case 2013:
+							RightUpgrade = TurretImg[4].textureID;
+							RightDesc = "A RARE Turret that shoots Bullets that deal a random damage from 4 to 10.";
 							break;
 						case 2023:
+							RightUpgrade = TurretImg[7].textureID;
+							RightDesc = "A Mysterious Turret, holding unknown potential.";
 							break;
 						case 3013:
+							RightUpgrade = TurretImg[10].textureID;
+							RightDesc = "An ore generator that generates materials. Does not shoot.";
 							break;
 						case 3023:
+							RightUpgrade = TurretImg[13].textureID;
+							RightDesc = "A Tower that shoots 2 bullets at once.";
 							break;
 						case 3033:
+							RightUpgrade = TurretImg[16].textureID;
+							RightDesc = "Upgrades your turret into a random turret";
 							break;
 						case 3043:
+							RightUpgrade = TurretImg[19].textureID;
+							RightDesc = "A Turret that shoots a Firewall 3 blocks long.";
 							break;
 						case 3053:
+							RightUpgrade = TurretImg[22].textureID;
+							RightDesc = "A Turret that shoots an Ice Floor 5 blocks long.";
 							break;
 						case 3063:
+							RightUpgrade = TurretImg[25].textureID;
+							RightDesc = "A Turret that shoot bullets. That heales enemies.";
 							break;
 						case 4013:
+							RightUpgrade = TurretImg[28].textureID;
+							RightDesc = "A Turret that has short range but has high damage.";
 							break;
 						case 4023:
+							RightUpgrade = TurretImg[31].textureID;
+							RightDesc = "C     L     U     N     K.";
 							break;
 						case 4033:
+							RightUpgrade = TurretImg[34].textureID;
+							RightDesc = "A powerful Turret that attracts enemies and turns enemies to gold.";
 							break;
 						case 4043:
+							RightUpgrade = TurretImg[37].textureID;
+							RightDesc = "A powerful Turret with high raw stats.";
 							break;
 						case 4053:
+							RightUpgrade = TurretImg[40].textureID;
+							RightDesc = "A Turret that shoots bullets in the opposite direction.";
 							break;
 						case 4063:
+							RightUpgrade = TurretImg[43].textureID;
+							RightDesc = "A Turret that has infinite cooldown and infinite health.";
 							break;
 						case 4073:
+							RightUpgrade = TurretImg[46].textureID;
+							RightDesc = "A Turret that shoots in a random direction.";
 							break;
 						case 4083:
+							RightUpgrade = TurretImg[49].textureID;
+							RightDesc = "Creates a Robot Clone of the Player. Moves exactly like him.";
 							break;
 						case 4093:
+							RightUpgrade = TurretImg[52].textureID;
+							RightDesc = "An upgraded Turret with extra range that shoots 2 Bullets at once. 20% to Burn.";
 							break;
 						case 4113:
+							RightUpgrade = TurretImg[55].textureID;
+							RightDesc = "A Turret that blows blue Fire. 80% to Burn. 20% to Freeze.";
 							break;
 						case 4123:
+							RightUpgrade = TurretImg[58].textureID;
+							RightDesc = "A Turret that shoots 5 Firewall blocks randomly around the map.";
 							break;
 						case 4133:
+							RightUpgrade = TurretImg[61].textureID;
+							RightDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4143:
+							RightUpgrade = TurretImg[64].textureID;
+							RightDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4153:
+							RightUpgrade = TurretImg[67].textureID;
+							RightDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4163:
+							RightUpgrade = TurretImg[69].textureID;
+							RightDesc = "This mysterious turret consumes and fires bullets, but only air exits the barrel.";
 							break;
 						case 4173:
+							RightUpgrade = TurretImg[73].textureID;
+							RightDesc = "Exerts Thunder at 3 enemies. Dealing 16 damage.";
 							break;
 						case 4183:
+							RightUpgrade = TurretImg[76].textureID;
+							RightDesc = "A Turret that shoot bullets. That heales us.";
 							break;
 						default:
 							break;
