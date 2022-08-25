@@ -106,6 +106,7 @@ bool CScene2D::Init(void)
 	spawnRate = 8;
 
 	waveLevel = 1;
+	previousWave = 0;
 	spawnBoss = false;
 
 	spawnDeterminer = 2;
@@ -257,6 +258,9 @@ bool CScene2D::Update(const double dElapsedTime)
 	//cout << remainder(elapsed, 60) << endl;
 	if (remainder(elapsed, 30) >= 0 && remainder(elapsed, 30) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
 	{
+		previousWave = waveLevel;
+		waveLevel += 1;
+
 		if (spawnRate > 4)
 		{
 			spawnRate = spawnRate - 4;
@@ -269,7 +273,6 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			spawnRate = spawnRate - 1;
 		}
-		waveLevel += 1;
 		if (waveLevel % 2 != 0 && waveLevel != 1)
 		{
 			spawnBoss = true;
@@ -931,4 +934,9 @@ int CScene2D::getSpawnDeterminer(void)
 int CScene2D::getElapsed(void)
 {
 	return round(elapsed);
+}
+
+int CScene2D::getPrevLevel(void)
+{
+	return previousWave;
 }
