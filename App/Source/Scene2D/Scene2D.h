@@ -87,6 +87,8 @@ public:
 
 	int getWaveLevel(void);
 
+	int getElapsed(void);
+
 	int getSpawnDeterminer(void);
 protected:
 	// The handler containing the instance of the 2D Map

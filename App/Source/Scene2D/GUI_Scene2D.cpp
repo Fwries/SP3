@@ -1680,7 +1680,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::End();
 	//This is the line that I cannot cross
 	
-	// Render the Lives
+	// Render the Lives---------------------------------------------------------------------------------------------------
 	ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
@@ -1710,15 +1710,42 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d", cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 	ImGui::End();
-	// Render Prommpt 
+	//-------------------------------------------------------------------------------------------------------------------------------
+	// Render Prommpt ---------------------------------------------------------------------------------------------------------------
 	if (cPlayer2D->GetMaterialRange() == true)
 	{
 		ImGui::Begin("Prompt", NULL, livesWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.35f, cSettings->iWindowHeight * 0.45f));
 		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5 * relativeScale_y);
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press 'X' to collect materials");
 		ImGui::End();
 	}
+	//-------------------------------------------------------------------------------------------------------------------------------
+	// Wave level--------------------------------------------------------------------------------------------------------------------
+	ImGuiWindowFlags wavesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("Wave level", NULL, wavesWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.0f, cSettings->iWindowHeight * 0.01f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Wave Level: %d", cScene2D->getWaveLevel());
+	ImGui::End();
+	ImGui::Begin("Elapsed time", NULL, wavesWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.0f, cSettings->iWindowHeight * 0.09f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Time elapsed: %d", cScene2D->getElapsed());
+	ImGui::End();
+	//-------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 	/*ImGui::Begin("Invisible window", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));

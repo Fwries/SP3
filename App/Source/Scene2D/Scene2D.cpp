@@ -927,3 +927,8 @@ int CScene2D::getSpawnDeterminer(void)
 {
 	return spawnDeterminer;
 }
+
+int CScene2D::getElapsed(void)
+{
+	return round(elapsed);
+}
