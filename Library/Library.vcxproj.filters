@@ -33,6 +33,12 @@
     <Filter Include="GUI">
       <UniqueIdentifier>{c5d36a64-f753-4667-942a-1ea55042231d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{3cf8dcd2-1b79-4493-903e-0ad64e2d1629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{b516ffe8-06f8-4ef3-9970-b3a55d534bfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\TimeControl\FPSCounter.cpp">
@@ -103,6 +109,15 @@
     </ClCompile>
     <ClCompile Include="Source\Primitives\CollisionManager.cpp">
       <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Vector3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Mtx44.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +195,18 @@
     </ClInclude>
     <ClInclude Include="Source\Primitives\CollisionManager.h">
       <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\MyMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Mtx44.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,6 +15,8 @@
 #include "System\ImageLoader.h"
 #include "Primitives/MeshBuilder.h"
 
+#include "Math/Mtx44.h"
+
 #include <iostream>
 #include <vector>
 #include <math.h>
@@ -75,6 +77,8 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
+
+	camera.Init(Vector3(0.f, 0.f, 1.f), Vector3(0.f, 0.f, 0.f), Vector3(0.f, 1.f, 0.f));
 
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -543,7 +547,27 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 */
 void CMap2D::Update(const double dElapsedTime)
 {
+<<<<<<< Updated upstream
 
+=======
+	//CS: Update the animated sprite
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_Y))
+	{
+		amtX += 0.01;
+	}
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_H))
+	{
+		amtX -= 0.01;
+	}
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_U))
+	{
+		amtY -= 0.01;
+	}
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_J))
+	{
+		amtY += 0.01;
+	}	
+>>>>>>> Stashed changes
 }
 
 /**
@@ -565,12 +589,10 @@ void CMap2D::PreRender(void)
 /**
  @brief Render Render this instance
  */
-void CMap2D::Render(void)
+void CMap2D::Render(const glm::mat4& view, const glm::mat4& projection)
 {
 	// get matrix's uniform location and set matrix
 	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-	//cout << cPlayer2D->vec2Index.x << "   " << cPlayer2D->vec2Index.y << endl;
 	// Render
 
 	glm::vec2 startPos = glm::vec2(cPlayer2D->vec2Index.x - ((float)cSettings->NUM_TILES_XAXIS / 2.f), cPlayer2D->vec2Index.y - ((float)cSettings->NUM_TILES_YAXIS / 2.f));
@@ -597,15 +619,21 @@ void CMap2D::Render(void)
 		for (unsigned int uiCol = startPos.x; uiCol < endPos.x; uiCol++)
 		{
 			transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+<<<<<<< Updated upstream
 			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol - startPos.x, false, 0.f),
 															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow - startPos.y, true, 0.f),
 															0.0f));
 			/*transform = glm::translate(transform, -glm::vec3(cPlayer2D->vec2Index.x * 0.0625f - (cSettings->NUM_TILES_XAXIS / 2 * 0.0625f),
 				cPlayer2D->vec2Index.y * 0.08333f - (cSettings->NUM_TILES_YAXIS / 2 * 0.08333f), 0.0f));*/
 			//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+=======
+			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
+															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
+															0.f));
+>>>>>>> Stashed changes
 
 			// Update the shaders with the latest transform
-			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(projection * view * transform));
 
 			// Render a tile
 			RenderTile(uiRow, uiCol);

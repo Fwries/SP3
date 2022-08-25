@@ -37,6 +37,8 @@
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
 
+#include "Camera/Camera.h"
+
 // Include files for AStar
 #include <queue>
 #include <functional>
@@ -94,7 +96,7 @@ public:
 	void PreRender(void);
 
 	// Render
-	void Render(void);
+	void Render(const glm::mat4& view, const glm::mat4& projection);
 
 	// PostRender
 	void PostRender(void);
@@ -137,6 +139,8 @@ public:
 	bool hitBox;
 
 protected:
+	Camera camera;
+
 	// The variable containing the rapidcsv::Document
 	// We will load the CSV file's content into this Document
 	rapidcsv::Document doc;

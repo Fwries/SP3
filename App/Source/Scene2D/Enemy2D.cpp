@@ -431,7 +431,7 @@ void CEnemy2D::PreRender(void)
 /**
  @brief Render this instance
  */
-void CEnemy2D::Render(void)
+void CEnemy2D::Render(const glm::mat4& view, const glm::mat4& projection)
 {
 	if (!bIsActive)
 		return;
@@ -447,7 +447,7 @@ void CEnemy2D::Render(void)
 		vec2UVCoordinate.y,
 		0.0f));
 	// Update the shaders with the latest transform
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(projection * view * transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
 
 	// Get the texture to be rendered

@@ -192,7 +192,7 @@ void CTurret::PreRender(void)
 /**
  @brief Render this instance
  */
-void CTurret::Render(void)
+void CTurret::Render(const glm::mat4& view, const glm::mat4& projection)
 {
 	if (!bIsActive)
 		return;
@@ -219,7 +219,7 @@ void CTurret::Render(void)
 	quadMesh->Render();
 	//animatedMisc->Render();
 	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
-		cBulletGenerator->GetBulletsVector()[i]->Render();
+		cBulletGenerator->GetBulletsVector()[i]->Render(view, projection);
 	glBindVertexArray(0);
 
 }

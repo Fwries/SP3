@@ -29,11 +29,6 @@ public:
 	void Run(void);
 	// Destroy this class instance
 	void Destroy(void);
-
-	// Get window height
-	int GetWindowHeight(void) const;
-	// Get window width
-	int GetWindowWidth(void) const;
 	
 protected:
 	// Declare timer for calculating time per frame

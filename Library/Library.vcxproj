@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Camera\Camera.cpp" />
     <ClCompile Include="Source\GameControl\Settings.cpp" />
     <ClCompile Include="Source\GUI\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="Source\GUI\backends\imgui_impl_opengl3.cpp" />
@@ -21,6 +22,8 @@
     <ClCompile Include="Source\GUI\imgui_widgets.cpp" />
     <ClCompile Include="Source\Inputs\KeyboardController.cpp" />
     <ClCompile Include="Source\Inputs\MouseController.cpp" />
+    <ClCompile Include="Source\Math\Mtx44.cpp" />
+    <ClCompile Include="Source\Math\Vector3.cpp" />
     <ClCompile Include="Source\Primitives\Collider.cpp" />
     <ClCompile Include="Source\Primitives\CollisionManager.cpp" />
     <ClCompile Include="Source\Primitives\Entity2D.cpp" />
@@ -36,6 +39,7 @@
     <ClCompile Include="Source\TimeControl\StopWatch.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\DesignPatterns\SingletonTemplate.h" />
     <ClInclude Include="Source\GameControl\Settings.h" />
     <ClInclude Include="Source\GUI\backends\imgui_impl_glfw.h" />
@@ -45,6 +49,9 @@
     <ClInclude Include="Source\GUI\imgui_internal.h" />
     <ClInclude Include="Source\Inputs\KeyboardController.h" />
     <ClInclude Include="Source\Inputs\MouseController.h" />
+    <ClInclude Include="Source\Math\Mtx44.h" />
+    <ClInclude Include="Source\Math\MyMath.h" />
+    <ClInclude Include="Source\Math\Vector3.h" />
     <ClInclude Include="Source\Primitives\Collider.h" />
     <ClInclude Include="Source\Primitives\CollisionManager.h" />
     <ClInclude Include="Source\Primitives\Entity2D.h" />
@@ -101,7 +108,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_VARIADIC_MAX=10;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)/glew/include;$(SolutionDir)/glfw/include;$(SolutionDir)/glm;$(SolutionDir)/SOIL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Library/Source;$(SolutionDir)/glew/include;$(SolutionDir)/glfw/include;$(SolutionDir)/glm;$(SolutionDir)/SOIL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -119,7 +126,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_VARIADIC_MAX=10;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)/glew/include;$(SolutionDir)/glfw/include;$(SolutionDir)/glm;$(SolutionDir)/freetype/include;$(SolutionDir)/SOIL;$(SolutionDir)/Lua/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Library/Source;$(SolutionDir)/glew/include;$(SolutionDir)/glfw/include;$(SolutionDir)/glm;$(SolutionDir)/freetype/include;$(SolutionDir)/SOIL;$(SolutionDir)/Lua/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
