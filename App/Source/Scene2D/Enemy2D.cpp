@@ -1793,9 +1793,9 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		if (vec2Index.y >= 0)
 		{
 			i32vec2NumMicroSteps.y -= SPE;
-			if (i32vec2NumMicroSteps.y <= -((int)cSettings->NUM_STEPS_PER_TILE_YAXIS))
+			if (i32vec2NumMicroSteps.y <= 0)
 			{
-				i32vec2NumMicroSteps.y = 0;
+				i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS);
 				vec2Index.y--;
 			}
 		}
@@ -1807,7 +1807,7 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipVerticalDirection();
 			//vec2Index = i32vec2OldIndex;
-			i32vec2NumMicroSteps.y = 0;
+			i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS);
 		}
 		InteractWithPlayer();
 	}
@@ -1857,16 +1857,6 @@ void CEnemy2D::updateWindBLow(int direction)
 	{
 		case 0:
 		{
-			//if (vec2Index.x >= 0 && distancedBlown <= 10)
-			//{
-			//	i32vec2NumMicroSteps.x -= SPE;
-			//	if (i32vec2NumMicroSteps.x <= -((int)cSettings->NUM_STEPS_PER_TILE_XAXIS))
-			//	{
-			//		i32vec2NumMicroSteps.x = 0;
-			//		vec2Index.x--;
-			//		distancedBlown++;
-			//	}
-			//}
 			Constraint(LEFT);
 			if (cMap2D->GetMapInfo(vec2Index.x - 2, vec2Index.y) == 0)
 			{
