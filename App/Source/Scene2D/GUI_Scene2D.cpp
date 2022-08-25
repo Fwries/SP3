@@ -134,6 +134,7 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	prevWave = 0;
+	announcementTimer = 0;
 
 	// All Turret Images
 	{
@@ -1814,6 +1815,13 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			}
 		}
 		ImGui::End();
+		announcementTimer++;
+	}
+	//Logic for how long to show announcement
+	if (announcementTimer >= 100)
+	{
+		announcementTimer = 0;
+		prevWave = cScene2D->getPrevLevel();
 	}
 	//-------------------------------------------------------------------------------------------------------------------------------
 

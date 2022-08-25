@@ -138,6 +138,7 @@ protected:
 	int RightTowerCosts;
 
 	int prevWave;
+	float announcementTimer;
 
 	// Variables for Buildings
 	int itemEquipped;
