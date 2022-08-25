@@ -642,14 +642,22 @@ void CEnemy2D::Update(const double dElapsedTime)
 					HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
 					switch (cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetElement())
 					{
-						case BURN:
+						case 1:
 						{
 							status = BURN;
 							break;
 						}
-						case FREEZE:
+						case 2:
 						{
 							status = FREEZE;
+							break;
+						}
+						case 5:
+						{
+							if (status == FREEZE)
+							{
+								HP = HP - cScene2D->getTurretVec()[j]->GetBulletGenerator()->GetBulletsVector()[i]->GetDamage();
+							}
 							break;
 						}
 						default:
