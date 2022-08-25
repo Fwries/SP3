@@ -72,6 +72,11 @@ CEnemy2D::~CEnemy2D(void)
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
+	cInventoryItem = NULL;
+	cInventoryManager = NULL;
+	animatedEnemy = NULL;
+	cMouseController = NULL;
+
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -184,17 +189,13 @@ bool CEnemy2D::Init(void)
 
 
 	//Determine monster difficulty
-	if (cScene2D->getWaveLevel() == 5)
+	if (cScene2D->getWaveLevel() == 7)
 	{
 		statMultiplier = 2;
 	}
-	else if (cScene2D->getWaveLevel() == 8)
+	else if (cScene2D->getWaveLevel() == 9)
 	{
 		statMultiplier = 3;
-	}
-	else if (cScene2D->getWaveLevel() == 10)
-	{
-		statMultiplier = 4;
 	}
 	//int randType = 3;
 	switch (randType)
@@ -534,7 +535,7 @@ bool CEnemy2D::slimeBossInit(void)
 	//}
 	//Determining enemy type randomly
 	enemyType = SLIMEBOSS;
-	HP = 12 * statMultiplier;
+	HP = 120 * statMultiplier;
 	MAXHP = 12 * statMultiplier;
 	ATK = 1 * statMultiplier;
 	SPE = 1 * statMultiplier;
@@ -1764,19 +1765,6 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 			//FlipHorizontalDirection();
 			//vec2Index = i32vec2OldIndex;
 			i32vec2NumMicroSteps.x = 0;
-			if (i32vec2Direction == glm::vec2(1, 0))
-			{
-				if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
-				{
-					i32vec2NumMicroSteps.y += SPE;
-
-					if (i32vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
-					{
-						i32vec2NumMicroSteps.y = 0;
-						vec2Index.y++;
-					}
-				}
-			}
 		}
 
 		faceLeft = false;

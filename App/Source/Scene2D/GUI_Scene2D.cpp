@@ -118,6 +118,7 @@ bool CGUI_Scene2D::Init(void)
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Tree as one of the inventory items
+	cInventoryItem = cInventoryManager->Add("Blank", "Image/Materials/Blank.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Plank", "Image/Materials/Plank.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Stone", "Image/Materials/Stone.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Iron", "Image/Materials/Iron.png", 999, 0);
@@ -125,12 +126,15 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Bronze", "Image/Materials/Bronze.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
-	cInventoryItem = cInventoryManager->Add("Turret", "Image/Turret/Turret.png", 999, 100);
+	cInventoryItem = cInventoryManager->Add("Turret", "Image/Turret/Turret.png", 999, 00);
 	cInventoryItem = cInventoryManager->Add("WoodWall", "Image/Turret/WoodWall.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("StoneWall", "Image/Turret/StoneWall.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("IronWall", "Image/Turret/IronWall.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	prevWave = 0;
+	announcementTimer = 0;
 
 	// All Turret Images
 	{
@@ -186,7 +190,7 @@ bool CGUI_Scene2D::Init(void)
 		TurretImg[34].fileName = "Image/Turret/MidasTouch.png";
 
 		TurretImg[35].fileName = "Image/Turret/IronBurstTurret.png";
-		TurretImg[36].fileName = "Image/Turret/HotIronnTurret.png";
+		TurretImg[36].fileName = "Image/Turret/HotIronTurret.png";
 		TurretImg[37].fileName = "Image/Turret/ReinforcedIronTurret.png";
 
 		TurretImg[38].fileName = "Image/Turret/MultimultishotTurret.png";
@@ -221,7 +225,7 @@ bool CGUI_Scene2D::Init(void)
 		TurretImg[60].fileName = "Image/Turret/FrostbiteTurret.png";
 		TurretImg[61].fileName = "Image/Turret/EternalBlizzardTurret.png";
 
-		TurretImg[62].fileName = "Image/Turret/GiantSnowball.png";
+		TurretImg[62].fileName = "Image/Turret/GiantSnowballTurret.png";
 		TurretImg[63].fileName = "Image/Turret/SnowStarTurret.png";
 		TurretImg[64].fileName = "Image/Turret/EternalBlizzardTurret.png";
 
@@ -237,13 +241,13 @@ bool CGUI_Scene2D::Init(void)
 		TurretImg[72].fileName = "Image/Turret/FinalThunderTurret.png";
 		TurretImg[73].fileName = "Image/Turret/TripleThunderTurret.png";
 
-		TurretImg[74].fileName = "Image/Turret/YousteriousTurret.png";
+		TurretImg[74].fileName = "Image/Turret/Yousterious.png";
 		TurretImg[75].fileName = "Image/Turret/TheysteriousTurret.png";
 		TurretImg[76].fileName = "Image/Turret/WesteriousTurret.png";
 	}
 	for (int i = 0; i < TurretImg.size(); i++)
 	{
-		TurretImg[i].textureID = Image->LoadTextureGetID(TurretImg[i].fileName.c_str(), false);
+		TurretImg[i].textureID = Image->LoadTextureGetID(TurretImg[i].fileName.c_str(), true);
 	}
 
 	recipeNo = 0;
@@ -1024,7 +1028,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				{
 					//Turret Upgrade Icons
 					{
-						CImageLoader* Image = CImageLoader::GetInstance();
 						// Left side Upgrades
 						switch (turretVector[cScene2D->GetTurretNo()]->GetNextTurret(true))
 						{
@@ -1036,6 +1039,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						case 2011:
 							LeftUpgrade = TurretImg[2].textureID;
 							LeftDesc = "A Heavy-Duty Turret with improved Damage and Health.";
+							LeftTowerCosts = 2;
 							break;
 						case 2021:
 							LeftUpgrade = TurretImg[5].textureID;
@@ -1136,78 +1140,103 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							// Rare turrets
 						case 2013:
 							LeftUpgrade = TurretImg[4].textureID;
+							LeftDesc = "A RARE Turret that shoots Bullets that deal a random damage from 4 to 10.";
 							break;
 						case 2023:
 							LeftUpgrade = TurretImg[7].textureID;
+							LeftDesc = "A Mysterious Turret, holding unknown potential.";
 							break;
 						case 3013:
 							LeftUpgrade = TurretImg[10].textureID;
+							LeftDesc = "An ore generator that generates materials. Does not shoot.";
 							break;
 						case 3023:
 							LeftUpgrade = TurretImg[13].textureID;
+							LeftDesc = "A Tower that shoots 2 bullets at once.";
 							break;
 						case 3033:
 							LeftUpgrade = TurretImg[16].textureID;
+							LeftDesc = "Upgrades your turret into a random turret";
 							break;
 						case 3043:
 							LeftUpgrade = TurretImg[19].textureID;
+							LeftDesc = "A Turret that shoots a Firewall 3 blocks long.";
 							break;
 						case 3053:
 							LeftUpgrade = TurretImg[22].textureID;
+							LeftDesc = "A Turret that shoots an Ice Floor 5 blocks long.";
 							break;
 						case 3063:
 							LeftUpgrade = TurretImg[25].textureID;
+							LeftDesc = "A Turret that shoot bullets. That heales enemies.";
 							break;
 						case 4013:
 							LeftUpgrade = TurretImg[28].textureID;
+							LeftDesc = "A Turret that has short range but has high damage.";
 							break;
 						case 4023:
 							LeftUpgrade = TurretImg[31].textureID;
+							LeftDesc = "C     L     U     N     K.";
 							break;
 						case 4033:
 							LeftUpgrade = TurretImg[34].textureID;
+							LeftDesc = "A powerful Turret that attracts enemies and turns enemies to gold.";
 							break;
 						case 4043:
 							LeftUpgrade = TurretImg[37].textureID;
+							LeftDesc = "A powerful Turret with high raw stats.";
 							break;
 						case 4053:
 							LeftUpgrade = TurretImg[40].textureID;
+							LeftDesc = "A Turret that shoots bullets in the opposite direction.";
 							break;
 						case 4063:
 							LeftUpgrade = TurretImg[43].textureID;
+							LeftDesc = "A Turret that has infinite cooldown and infinite health.";
 							break;
 						case 4073:
 							LeftUpgrade = TurretImg[46].textureID;
+							LeftDesc = "A Turret that shoots in a random direction.";
 							break;
 						case 4083:
 							LeftUpgrade = TurretImg[49].textureID;
+							LeftDesc = "Creates a Robot Clone of the Player. Moves exactly like him.";
 							break;
 						case 4093:
 							LeftUpgrade = TurretImg[52].textureID;
+							LeftDesc = "An upgraded Turret with extra range that shoots 2 Bullets at once. 20% to Burn.";
 							break;
 						case 4113:
 							LeftUpgrade = TurretImg[55].textureID;
+							LeftDesc = "A Turret that blows blue Fire. 80% to Burn. 20% to Freeze.";
 							break;
 						case 4123:
 							LeftUpgrade = TurretImg[58].textureID;
+							LeftDesc = "A Turret that shoots 5 Firewall blocks randomly around the map.";
 							break;
 						case 4133:
 							LeftUpgrade = TurretImg[61].textureID;
+							LeftDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4143:
 							LeftUpgrade = TurretImg[64].textureID;
+							LeftDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4153:
 							LeftUpgrade = TurretImg[67].textureID;
+							LeftDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4163:
 							LeftUpgrade = TurretImg[69].textureID;
+							LeftDesc = "This mysterious turret consumes and fires bullets, but only air exits the barrel.";
 							break;
 						case 4173:
 							LeftUpgrade = TurretImg[73].textureID;
+							LeftDesc = "Exerts Thunder at 3 enemies. Dealing 16 damage.";
 							break;
 						case 4183:
 							LeftUpgrade = TurretImg[76].textureID;
+							LeftDesc = "A Turret that shoot bullets. That heales us.";
 							break;
 						default:
 							break;
@@ -1223,6 +1252,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						case 2012:
 							RightUpgrade = TurretImg[3].textureID;
 							RightDesc = "A Turret with fast Attack Speed.";
+							RightTowerCosts = 2;
 							break;
 						case 2022:
 							RightUpgrade = TurretImg[6].textureID;
@@ -1278,9 +1308,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							break;
 						case 4072:
 							RightUpgrade = TurretImg[45].textureID;
+							RightDesc = "A Turret that does 0 or 20 damage.";
 							break;
 						case 4082:
 							RightUpgrade = TurretImg[48].textureID;
+							RightDesc = "Upgrades your turret into a random turret";
 							break;
 						case 4092:
 							RightUpgrade = TurretImg[51].textureID;
@@ -1288,80 +1320,136 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							break;
 						case 4112:
 							RightUpgrade = TurretImg[54].textureID;
+							RightDesc = "A Turret that blows Fire. 100% to Burn. Able to push back enemies.";
 							break;
 						case 4122:
 							RightUpgrade = TurretImg[57].textureID;
+							RightDesc = "A Turret that shoots a Firewall 3 blocks long.";
 							break;
 						case 4132:
 							RightUpgrade = TurretImg[60].textureID;
+							RightDesc = "An upgraded Turret with extra range that deals extra damage to Frozen Enemies. 5% to Freeze.";
 							break;
 						case 4142:
 							RightUpgrade = TurretImg[63].textureID;
+							RightDesc = "A Turret that shoots Snowballs in 5 directions dealing no damage. 50% to Freeze.";
 							break;
 						case 4152:
 							RightUpgrade = TurretImg[66].textureID;
+							RightDesc = "An upgraded Turret with extra range that deals extra damage to Frozen Enemies. 5% to Freeze.";
 							break;
 						case 4162:
 							RightUpgrade = TurretImg[70].textureID;
+							RightDesc = "100% to Knockback. Lul.";
 							break;
 						case 4172:
 							RightUpgrade = TurretImg[72].textureID;
+							RightDesc = "Exerts Thunder at an enemy. Dealing 16 damage.";
 							break;
 						case 4182:
 							RightUpgrade = TurretImg[75].textureID;
+							RightDesc = "A Turret that shoot multiple bullets. That heales enemies.";
 							break;
-						// Rare turrets
-						case 1013:
-							break;
+							// Rare turrets
 						case 2013:
+							RightUpgrade = TurretImg[4].textureID;
+							RightDesc = "A RARE Turret that shoots Bullets that deal a random damage from 4 to 10.";
 							break;
 						case 2023:
+							RightUpgrade = TurretImg[7].textureID;
+							RightDesc = "A Mysterious Turret, holding unknown potential.";
 							break;
 						case 3013:
+							RightUpgrade = TurretImg[10].textureID;
+							RightDesc = "An ore generator that generates materials. Does not shoot.";
 							break;
 						case 3023:
+							RightUpgrade = TurretImg[13].textureID;
+							RightDesc = "A Tower that shoots 2 bullets at once.";
 							break;
 						case 3033:
+							RightUpgrade = TurretImg[16].textureID;
+							RightDesc = "Upgrades your turret into a random turret";
 							break;
 						case 3043:
+							RightUpgrade = TurretImg[19].textureID;
+							RightDesc = "A Turret that shoots a Firewall 3 blocks long.";
 							break;
 						case 3053:
+							RightUpgrade = TurretImg[22].textureID;
+							RightDesc = "A Turret that shoots an Ice Floor 5 blocks long.";
 							break;
 						case 3063:
+							RightUpgrade = TurretImg[25].textureID;
+							RightDesc = "A Turret that shoot bullets. That heales enemies.";
 							break;
 						case 4013:
+							RightUpgrade = TurretImg[28].textureID;
+							RightDesc = "A Turret that has short range but has high damage.";
 							break;
 						case 4023:
+							RightUpgrade = TurretImg[31].textureID;
+							RightDesc = "C     L     U     N     K.";
 							break;
 						case 4033:
+							RightUpgrade = TurretImg[34].textureID;
+							RightDesc = "A powerful Turret that attracts enemies and turns enemies to gold.";
 							break;
 						case 4043:
+							RightUpgrade = TurretImg[37].textureID;
+							RightDesc = "A powerful Turret with high raw stats.";
 							break;
 						case 4053:
+							RightUpgrade = TurretImg[40].textureID;
+							RightDesc = "A Turret that shoots bullets in the opposite direction.";
 							break;
 						case 4063:
+							RightUpgrade = TurretImg[43].textureID;
+							RightDesc = "A Turret that has infinite cooldown and infinite health.";
 							break;
 						case 4073:
+							RightUpgrade = TurretImg[46].textureID;
+							RightDesc = "A Turret that shoots in a random direction.";
 							break;
 						case 4083:
+							RightUpgrade = TurretImg[49].textureID;
+							RightDesc = "Creates a Robot Clone of the Player. Moves exactly like him.";
 							break;
 						case 4093:
+							RightUpgrade = TurretImg[52].textureID;
+							RightDesc = "An upgraded Turret with extra range that shoots 2 Bullets at once. 20% to Burn.";
 							break;
 						case 4113:
+							RightUpgrade = TurretImg[55].textureID;
+							RightDesc = "A Turret that blows blue Fire. 80% to Burn. 20% to Freeze.";
 							break;
 						case 4123:
+							RightUpgrade = TurretImg[58].textureID;
+							RightDesc = "A Turret that shoots 5 Firewall blocks randomly around the map.";
 							break;
 						case 4133:
+							RightUpgrade = TurretImg[61].textureID;
+							RightDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4143:
+							RightUpgrade = TurretImg[64].textureID;
+							RightDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4153:
+							RightUpgrade = TurretImg[67].textureID;
+							RightDesc = "Spawns bullets randomly around the map. 50% to Freeze.";
 							break;
 						case 4163:
+							RightUpgrade = TurretImg[69].textureID;
+							RightDesc = "This mysterious turret consumes and fires bullets, but only air exits the barrel.";
 							break;
 						case 4173:
+							RightUpgrade = TurretImg[73].textureID;
+							RightDesc = "Exerts Thunder at 3 enemies. Dealing 16 damage.";
 							break;
 						case 4183:
+							RightUpgrade = TurretImg[76].textureID;
+							RightDesc = "A Turret that shoot bullets. That heales us.";
 							break;
 						default:
 							break;
@@ -1369,6 +1457,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						// Turret Costs 
 						switch (LeftTowerCosts)
 						{
+						// Tier 1 Physical===================================================
 						case 1:
 							cInventoryItem = cInventoryManager->GetItem("Stone");
 							Material1 = cInventoryItem->GetTextureID();
@@ -1380,11 +1469,30 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							Material3 = cInventoryItem->GetTextureID();
 							Cost3 = "1";
 							break;
+						// ==================================================================
+						// Tier 2 Physical===================================================
+						case 2:
+							cInventoryItem = cInventoryManager->GetItem("Stone");
+							Material1 = cInventoryItem->GetTextureID();
+							Cost1 = "2";
+							cInventoryItem = cInventoryManager->GetItem("Iron");
+							Material2 = cInventoryItem->GetTextureID();
+							Cost2 = "2";
+							cInventoryItem = cInventoryManager->GetItem("Bronze");
+							Material3 = cInventoryItem->GetTextureID();
+							Cost3 = "1";
+							break;
+						// ==================================================================
+						// Tier 2 Elemental==================================================
+						case 3:
+							break;
+						// ==================================================================
 						default:
 							break;
 						}
 						switch (RightTowerCosts)
 						{
+						// Tier 1 Elemental===================================================
 						case 1:
 							cInventoryItem = cInventoryManager->GetItem("Stone");
 							Material4 = cInventoryItem->GetTextureID();
@@ -1396,6 +1504,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							Material6 = cInventoryItem->GetTextureID();
 							Cost6 = "1";
 							break;
+						// ====================================================================
 						default:
 							break;
 						}
@@ -1595,8 +1704,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	}
 	ImGui::PopStyleColor(1);
 	ImGui::End();
-
-	// Render the Lives
+	//This is the line that I cannot cross
+	
+	// Render the Lives---------------------------------------------------------------------------------------------------
 	ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
@@ -1626,15 +1736,143 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d", cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 	ImGui::End();
-	// Render Prommpt 
+	//-------------------------------------------------------------------------------------------------------------------------------
+	// Render Prommpt ---------------------------------------------------------------------------------------------------------------
 	if (cPlayer2D->GetMaterialRange() == true)
 	{
 		ImGui::Begin("Prompt", NULL, livesWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.35f, cSettings->iWindowHeight * 0.45f));
 		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5 * relativeScale_y);
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press 'X' to collect materials");
 		ImGui::End();
 	}
+	//-------------------------------------------------------------------------------------------------------------------------------
+	// Wave level--------------------------------------------------------------------------------------------------------------------
+	ImGuiWindowFlags wavesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("Wave level", NULL, wavesWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.0f, cSettings->iWindowHeight * 0.01f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Wave Level: %d", cScene2D->getWaveLevel());
+	ImGui::End();
+	ImGui::Begin("Elapsed time", NULL, wavesWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.0f, cSettings->iWindowHeight * 0.09f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Time elapsed: %d", cScene2D->getElapsed());
+	ImGui::End();
+	if (prevWave < cScene2D->getPrevLevel())
+	{
+		ImGui::Begin("WAVE INCREASE ANNOUNCEMENT", NULL, wavesWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.05f, cSettings->iWindowHeight * 0.3f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(2.5f * relativeScale_y);
+		switch (cScene2D->getWaveLevel())
+		{
+			
+			case 3:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !! Monsters are coming faster!!!", cScene2D->getWaveLevel());
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "      BOSS SLIME HAS SPAWNED!!!         ");
+				break;
+				break;
+			}
+			case 2:
+			case 4:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !! Monsters are coming faster!!!", cScene2D->getWaveLevel());
+				break;
+			}
+			case 5:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !!   A NEW monster appears   !!!", cScene2D->getWaveLevel());
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "      BOSS SLIME HAS SPAWNED!!!         ");
+				break;
+			}
+			case 6:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !!   A NEW monster appears   !!!", cScene2D->getWaveLevel());
+				break;
+			}
+			case 7:
+			case 9:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !! The monsters are much stronger!!!", cScene2D->getWaveLevel());
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "        BOSS SLIME HAS SPAWNED!!!           ");
+				break;
+			}
+			default:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "                Wave %d !!              ", cScene2D->getWaveLevel());
+				break;
+			}
+		}
+		ImGui::End();
+		announcementTimer++;
+	}
+	//Logic for how long to show announcement
+	if (announcementTimer >= 100)
+	{
+		announcementTimer = 0;
+		prevWave = cScene2D->getPrevLevel();
+	}
+	//-------------------------------------------------------------------------------------------------------------------------------
+	// UI to show what item the player has equipped
+	ImGuiWindowFlags equipWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("Item equipped", NULL, equipWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.3f, cSettings->iWindowHeight * 0.9f));
+	ImGui::SetWindowSize(ImVec2(1000.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Currently equipped: ");
+	ImGui::SameLine();
+	switch (itemEquipped)
+	{
+		case 0:
+		{
+			cInventoryItem = cInventoryManager->GetItem("Blank");
+			break;
+		}
+		case 1:
+		{
+			cInventoryItem = cInventoryManager->GetItem("Turret");
+			break;
+		}
+		case 2:
+		{
+			cInventoryItem = cInventoryManager->GetItem("WoodWall");
+			break;
+		}
+		case 3:
+		{
+			cInventoryItem = cInventoryManager->GetItem("StoneWall");
+			break;
+		}
+		case 4:
+		{
+			cInventoryItem = cInventoryManager->GetItem("IronWall");
+			break;
+		}
+	}
+	ImGui::Image((ImTextureID)cInventoryItem->GetTextureID(),
+		ImVec2(25 * relativeScale_x, 25 * relativeScale_y),
+		ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::End();
+
+
+
 
 	/*ImGui::Begin("Invisible window", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));

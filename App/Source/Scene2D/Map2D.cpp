@@ -460,10 +460,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 		// Turrets
 		{
-			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Tiles/tile038.png", true);
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/Turret.png", true);
 			if (iTextureID == 0)
 			{
-				cout << "Image/Tiles/tile038.png" << endl;
+				cout << "Image/Turret/Turret.png" << endl;
 				return false;
 			}
 			else

@@ -144,7 +144,7 @@ bool CPlayer2D::Init(void)
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Lives icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 20, 1);
+	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 20, 20);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Bullets", "Image/Scene2D/Bullet.png", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -167,7 +167,7 @@ bool CPlayer2D::Init(void)
 	X = Y = 0;
 	MaterialRange = false;
 
-	SPE = 1.9;
+	SPE = 3;
 
 	openCrafting = false;
 	openInventory = false;
@@ -508,7 +508,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cInventoryManager->GetItem("Silver")->Add(cInventoryItem->GetMaxCount());
 		cInventoryManager->GetItem("Bronze")->Add(cInventoryItem->GetMaxCount());
 		cInventoryManager->GetItem("Gold")->Add(cInventoryItem->GetMaxCount());
-		cInventoryManager->GetItem("Coal")->Add(cInventoryItem->GetMaxCount());
+		cInventoryManager->GetItem("Turret")->Add(cInventoryItem->GetMaxCount());
 	}
 
 	// Randomly generates tiles
