@@ -134,7 +134,7 @@ bool CGUI_Scene2D::Init(void)
 
 	// All Turret Images
 	{
-		for (int i = 0; i < 76; i++)
+		for (int i = 0; i < 77; i++)
 		{
 			TurretImg.push_back(ImageData());
 		}
