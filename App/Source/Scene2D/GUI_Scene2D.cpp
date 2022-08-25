@@ -1824,6 +1824,52 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		prevWave = cScene2D->getPrevLevel();
 	}
 	//-------------------------------------------------------------------------------------------------------------------------------
+	// UI to show what item the player has equipped
+	ImGuiWindowFlags equipWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("Item equipped", NULL, equipWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.3f, cSettings->iWindowHeight * 0.9f));
+	ImGui::SetWindowSize(ImVec2(1000.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Currently equipped: ");
+	ImGui::SameLine();
+	switch (itemEquipped)
+	{
+		case 0:
+		{
+			cInventoryItem = cInventoryManager->GetItem("Blank");
+			break;
+		}
+		case 1:
+		{
+			cInventoryItem = cInventoryManager->GetItem("Turret");
+			break;
+		}
+		case 2:
+		{
+			cInventoryItem = cInventoryManager->GetItem("WoodWall");
+			break;
+		}
+		case 3:
+		{
+			cInventoryItem = cInventoryManager->GetItem("StoneWall");
+			break;
+		}
+		case 4:
+		{
+			cInventoryItem = cInventoryManager->GetItem("IronWall");
+			break;
+		}
+	}
+	ImGui::Image((ImTextureID)cInventoryItem->GetTextureID(),
+		ImVec2(25 * relativeScale_x, 25 * relativeScale_y),
+		ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::End();
 
 
 
