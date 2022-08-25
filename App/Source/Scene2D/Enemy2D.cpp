@@ -652,6 +652,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 							status = FREEZE;
 							break;
 						}
+						case 3:
+						{
+							int randomDirection = rand() % 4;
+							updateWindBLow(randomDirection);
+							break;
+						}
 						case 5:
 						{
 							if (status == FREEZE)
@@ -1842,4 +1848,58 @@ glm::vec2& CEnemy2D::findNearestBasePart()
 		}
 	}
 	return nearestBasePart;
+}
+
+void CEnemy2D::updateWindBLow(int direction)
+{
+	int distancedBlown = 0;
+	switch (direction)
+	{
+		case 0:
+		{
+			//if (vec2Index.x >= 0 && distancedBlown <= 10)
+			//{
+			//	i32vec2NumMicroSteps.x -= SPE;
+			//	if (i32vec2NumMicroSteps.x <= -((int)cSettings->NUM_STEPS_PER_TILE_XAXIS))
+			//	{
+			//		i32vec2NumMicroSteps.x = 0;
+			//		vec2Index.x--;
+			//		distancedBlown++;
+			//	}
+			//}
+			Constraint(LEFT);
+			if (cMap2D->GetMapInfo(vec2Index.x - 2, vec2Index.y) == 0)
+			{
+				vec2Index.x -= 2;
+			}
+			break;
+		}
+		case 1:
+		{
+			Constraint(RIGHT);
+			if (cMap2D->GetMapInfo(vec2Index.x + 2, vec2Index.y) == 0)
+			{
+				vec2Index.x += 2;
+			}
+			break;
+		}
+		case 2:
+		{
+			Constraint(UP);
+			if (cMap2D->GetMapInfo(vec2Index.x, vec2Index.y + 2) == 0)
+			{
+				vec2Index.y += 2;
+			}
+			break;
+		}
+		case 3:
+		{
+			Constraint(DOWN);
+			if (cMap2D->GetMapInfo(vec2Index.x, vec2Index.y - 2) == 0)
+			{
+				vec2Index.y -= 2;
+			}
+			break;
+		}
+	}
 }

@@ -122,8 +122,8 @@ bool CTurret::Init(int uiRow, int uiCol)
 	}
 	turretType = TURRET;
 	TurretHP = 6;
-	TurretDamage = 4;
-	TurretElement = FROST;
+	TurretDamage = 0;
+	TurretElement = WIND;
 	TurretCooldown = 1.5;
 	range = 10.0;
 	Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);

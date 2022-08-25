@@ -266,5 +266,7 @@ protected:
 
 	// Update position
 	void UpdatePosition(glm::vec2 destination);
+
+	void updateWindBLow(int direction);
 };
 
