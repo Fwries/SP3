@@ -1378,7 +1378,6 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 	}
 	else if (eDirection == RIGHT)
 	{
-
 		// If the new position is fully within a row, then check this row only
 		if (i32vec2NumMicroSteps.y == 0)
 		{
@@ -1602,8 +1601,9 @@ bool CEnemy2D::InteractWithPlayer(void)
 				sCurrentFSM = DEAD;
 				if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
 				{
-					cPlayer2D->findNearestEnemy();
-					cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + cPlayer2D->getNearestEnemy());
+					cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->findNearestEnemy();
+					cout << cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->getNearestEnemy() << endl;
+					cScene2D->getEnemyVec().erase(cScene2D->getEnemyVec().begin() + (cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->getNearestEnemy()));
 				}
 			}
 		}
@@ -1721,7 +1721,20 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipHorizontalDirection();
 			//vec2Index = i32vec2OldIndex;
-			//i32vec2NumMicroSteps.x = 0;
+			i32vec2NumMicroSteps.x = 0;
+			if (i32vec2Direction == glm::vec2(-1, 0))
+			{
+				if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+				{
+					i32vec2NumMicroSteps.y += SPE;
+
+					if (i32vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+					{
+						i32vec2NumMicroSteps.y = 0;
+						vec2Index.y++;
+					}
+				}
+			}
 		}
 
 		faceLeft = true;
@@ -1750,7 +1763,20 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipHorizontalDirection();
 			//vec2Index = i32vec2OldIndex;
-			//i32vec2NumMicroSteps.x = 0;
+			i32vec2NumMicroSteps.x = 0;
+			if (i32vec2Direction == glm::vec2(1, 0))
+			{
+				if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+				{
+					i32vec2NumMicroSteps.y += SPE;
+
+					if (i32vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+					{
+						i32vec2NumMicroSteps.y = 0;
+						vec2Index.y++;
+					}
+				}
+			}
 		}
 
 		faceLeft = false;
@@ -1781,7 +1807,7 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipVerticalDirection();
 			//vec2Index = i32vec2OldIndex;
-			//i32vec2NumMicroSteps.y = 0;
+			i32vec2NumMicroSteps.y = 0;
 		}
 		InteractWithPlayer();
 	}
@@ -1807,7 +1833,7 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipVerticalDirection();
 			//vec2Index = i32vec2OldIndex;
-			//i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS);
+			i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS);
 		}
 		InteractWithPlayer();
 	}

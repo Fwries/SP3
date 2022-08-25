@@ -87,4 +87,6 @@ public:
 	void SetEnemyVector(vector<CEntity2D*>);
 
 	void findNearestEnemy();
+
+	int getNearestEnemy(void);
 };
