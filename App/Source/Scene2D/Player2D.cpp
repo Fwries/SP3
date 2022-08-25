@@ -167,7 +167,7 @@ bool CPlayer2D::Init(void)
 	X = Y = 0;
 	MaterialRange = false;
 
-	SPE = 1.9;
+	SPE = 3;
 
 	openCrafting = false;
 	openInventory = false;
