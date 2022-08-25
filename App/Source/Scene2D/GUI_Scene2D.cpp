@@ -118,6 +118,7 @@ bool CGUI_Scene2D::Init(void)
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Tree as one of the inventory items
+	cInventoryItem = cInventoryManager->Add("Blank", "Image/Materials/Blank.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Plank", "Image/Materials/Plank.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Stone", "Image/Materials/Stone.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Iron", "Image/Materials/Iron.png", 999, 0);
@@ -131,6 +132,8 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("IronWall", "Image/Turret/IronWall.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	prevWave = 0;
 
 	// All Turret Images
 	{
@@ -1764,6 +1767,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Time elapsed: %d", cScene2D->getElapsed());
 	ImGui::End();
+	if (prevWave < cScene2D->getPrevLevel())
+	{
+
+	}
 	//-------------------------------------------------------------------------------------------------------------------------------
 
 
