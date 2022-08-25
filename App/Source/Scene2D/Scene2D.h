@@ -86,6 +86,7 @@ public:
 	int GetTurretNo(void);
 
 	int getWaveLevel(void);
+	int getPrevLevel(void);
 
 	int getElapsed(void);
 
@@ -136,6 +137,7 @@ protected:
 	int TurretNo;
 
 	int waveLevel;
+	int previousWave;
 	bool spawnBoss;
 
 	bool extraEnemyToSpawn;
