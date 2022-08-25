@@ -83,6 +83,8 @@ bool CGUI_Scene2D::Init(void)
 	RightButton.textureID = Image->LoadTextureGetID(RightButton.fileName.c_str(), true);
 	CraftButton.fileName = "Image\\GUI\\Craft.png";
 	CraftButton.textureID = Image->LoadTextureGetID(CraftButton.fileName.c_str(), true);
+	UpgradeBG.fileName = "Image\\GUI\\UpgradeMenu.png";
+	UpgradeBG.textureID = Image->LoadTextureGetID(UpgradeBG.fileName.c_str(), true);
 	UpgradeButton.fileName = "Image\\GUI\\Upgrade.png";
 	UpgradeButton.textureID = Image->LoadTextureGetID(UpgradeButton.fileName.c_str(), true);
 	DestroyButton.fileName = "Image\\GUI\\Destroy.png";
@@ -129,6 +131,20 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("IronWall", "Image/Turret/IronWall.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("Coin", "Image/Tiles/tile086.png", 999, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	// All Turret Images
+	{
+		for(int i=0;i<2;i++)
+		{ 
+			TurretImg.push_back(ImageData());
+		}
+		TurretImg[0].fileName = "Image/Turret/StoneTurret.png";
+		TurretImg[1].fileName = "Image/Turret/ElementalTurret.png";
+	}
+	for (int i = 0; i < TurretImg.size(); i++)
+	{
+		TurretImg[i].textureID = Image->LoadTextureGetID(TurretImg[i].fileName.c_str(), false);
+	}
 
 	recipeNo = 0;
 	openCrafting = false;
@@ -897,8 +913,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGui::SetNextWindowSize(ImVec2(700.0f * relativeScale_x, 450.0f * relativeScale_y));
 			ImGui::Begin("Upgrade Background", NULL, inventoryBgWinFlags);
 			{
-				iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/UpgradeMenu.png", true);
-				ImGui::Image((void*)(intptr_t)iTextureID,
+				ImGui::Image((ImTextureID)UpgradeBG.textureID,
 					ImVec2(690.0f * relativeScale_x,
 						450.0f * relativeScale_y),
 					ImVec2(0, 1), ImVec2(1, 0));
@@ -912,7 +927,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						switch (turretVector[cScene2D->GetTurretNo()]->GetNextTurret(true))
 						{
 						case 1011:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/StoneTurret.png", true);
+							LeftUpgrade = TurretImg[0].textureID;
 							LeftDesc = "Base Class for Physical Damage.";
 							LeftTowerCosts = 1;
 							break;
@@ -1072,7 +1087,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						switch (turretVector[cScene2D->GetTurretNo()]->GetNextTurret(false))
 						{
 						case 1012:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/ElementalTurret.png", true);
+							RightUpgrade = TurretImg[1].textureID;
 							RightDesc = "Base Class for Elemental Damage.";
 							RightTowerCosts = 1;
 							break;

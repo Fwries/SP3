@@ -110,8 +110,10 @@ protected:
 	ImageData LeftButton;
 	ImageData RightButton;
 	ImageData CraftButton;
+	ImageData UpgradeBG;
 	ImageData UpgradeButton;
 	ImageData DestroyButton;
+	vector<ImageData> TurretImg;
 	unsigned iTextureID;
 	unsigned LeftUpgrade;
 	unsigned RightUpgrade;
