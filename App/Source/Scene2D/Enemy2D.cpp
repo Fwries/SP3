@@ -1004,6 +1004,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 	case DEAD:
 	{
+		if (status == GOLD)
+		{
+			cInventoryItem = cInventoryManager->GetItem("Gold");
+			cInventoryItem->Add(1);
+		}
 		if (enemyType == SKULL || enemyType == SLIMEBABY)
 		{
 			bIsActive = false;
@@ -1563,6 +1568,7 @@ bool CEnemy2D::InteractWithPlayer(void)
 		SetHitBox(false);
 	}
 
+	//Player ranged attack interaction
 	for (unsigned i = 0; i < cPlayer2D->GetBulletGenerator()->GetBulletsVector().size(); ++i)
 	{
 		if (cPlayer2D->GetBulletGenerator()->GetBulletsVector()[i]->GetIsActive() == true)
@@ -1574,6 +1580,11 @@ bool CEnemy2D::InteractWithPlayer(void)
 			}
 			if (HP <= 0)
 			{
+				if (status == GOLD)
+				{
+					cInventoryItem = cInventoryManager->GetItem("Gold");
+					cInventoryItem->Add(1);
+				}
 				sCurrentFSM = DEAD;
 				if (cScene2D->getEnemyVec().size() >= 0 && bIsActive == true)
 				{
@@ -1584,7 +1595,7 @@ bool CEnemy2D::InteractWithPlayer(void)
 		}
 	}
 
-
+	//Player melee attack interaction
 	if (GetHitBox() == true)
 	{
 		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && meleeCounter >= 40)

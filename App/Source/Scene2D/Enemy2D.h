@@ -184,6 +184,7 @@ protected:
 	CPhysics2D cPhysics2D;
 
 	CInventoryManager* cInventoryManager;
+	CInventoryItem* cInventoryItem;
 
 	//Animated Sprite
 	CSpriteAnimation* animatedEnemy;
