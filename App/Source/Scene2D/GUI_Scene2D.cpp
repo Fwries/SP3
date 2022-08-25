@@ -134,12 +134,112 @@ bool CGUI_Scene2D::Init(void)
 
 	// All Turret Images
 	{
-		for(int i=0;i<2;i++)
-		{ 
+		for (int i = 0; i < 76; i++)
+		{
 			TurretImg.push_back(ImageData());
 		}
 		TurretImg[0].fileName = "Image/Turret/StoneTurret.png";
 		TurretImg[1].fileName = "Image/Turret/ElementalTurret.png";
+
+		TurretImg[2].fileName = "Image/Turret/ReinforcedStoneTurret.png";
+		TurretImg[3].fileName = "Image/Turret/MultiPebbleTurret.png";
+		TurretImg[4].fileName = "Image/Turret/RandomDMGTurret.png";
+
+		TurretImg[5].fileName = "Image/Turret/FlameTurret.png";
+		TurretImg[6].fileName = "Image/Turret/FrostTurret.png";
+		TurretImg[7].fileName = "Image/Turret/MysteriousTurret.png";
+
+		TurretImg[8].fileName = "Image/Turret/SharpStoneTurret.png";
+		TurretImg[9].fileName = "Image/Turret/IronTurret.png";
+		TurretImg[10].fileName = "Image/Turret/OreGenerator.png";
+
+		TurretImg[11].fileName = "Image/Turret/StoneBurstTurret.png";
+		TurretImg[12].fileName = "Image/Turret/MultishotTurret.png";
+		TurretImg[13].fileName = "Image/Turret/Turret2.png";
+
+		TurretImg[14].fileName = "Image/Turret/RandomDMGTurretVer2.png";
+		TurretImg[15].fileName = "Image/Turret/GlitchedTurret.png";
+		TurretImg[16].fileName = "Image/Turret/GetRandomTurret.png";
+
+		TurretImg[17].fileName = "Image/Turret/FlameSpearTurret.png";
+		TurretImg[18].fileName = "Image/Turret/FlameThrowerTurret.png";
+		TurretImg[19].fileName = "Image/Turret/FireWallTurret.png";
+
+		TurretImg[20].fileName = "Image/Turret/IceSpearTurret.png";
+		TurretImg[21].fileName = "Image/Turret/SnowballTurret.png";
+		TurretImg[22].fileName = "Image/Turret/IceFloorTurret.png";
+
+		TurretImg[23].fileName = "Image/Turret/WindTurret.png";
+		TurretImg[24].fileName = "Image/Turret/ThunderTurret.png";
+		TurretImg[25].fileName = "Image/Turret/IsteriousTurret.png";
+
+		TurretImg[26].fileName = "Image/Turret/SharperStoneTurret.png";
+		TurretImg[27].fileName = "Image/Turret/SniperTurret.png";
+		TurretImg[28].fileName = "Image/Turret/BluntMetalTurret.png";
+
+		TurretImg[29].fileName = "Image/Turret/ReinforcedIronTurret.png";
+		TurretImg[30].fileName = "Image/Turret/ShinyIronTurret.png";
+		TurretImg[31].fileName = "Image/Turret/Tank.png";
+
+		TurretImg[32].fileName = "Image/Turret/GoldenTurret.png";
+		TurretImg[33].fileName = "Image/Turret/ElementalTurret.png";
+		TurretImg[34].fileName = "Image/Turret/MidasTouch.png";
+
+		TurretImg[35].fileName = "Image/Turret/IronBurstTurret.png";
+		TurretImg[36].fileName = "Image/Turret/HotIronnTurret.png";
+		TurretImg[37].fileName = "Image/Turret/ReinforcedIronTurret.png";
+
+		TurretImg[38].fileName = "Image/Turret/MultimultishotTurret.png";
+		TurretImg[39].fileName = "Image/Turret/StarshotTurret.png";
+		TurretImg[40].fileName = "Image/Turret/WrongDirectionTurret.png";
+
+		TurretImg[41].fileName = "Image/Turret/Turret3.png";
+		TurretImg[42].fileName = "Image/Turret/ShotgunTurret.png";
+		TurretImg[43].fileName = "Image/Turret/TurretInfinity.png";
+
+		TurretImg[44].fileName = "Image/Turret/RandomDMGTurretVer3.png";
+		TurretImg[45].fileName = "Image/Turret/FlipACoinTurret.png";
+		TurretImg[46].fileName = "Image/Turret/RandomDirectionTurret.png";
+
+		TurretImg[47].fileName = "Image/Turret/UpgradedGlitchedTurret.png";
+		TurretImg[48].fileName = "Image/Turret/GetRandomTurret.png";
+		TurretImg[49].fileName = "Image/Turret/RobotPlayer.png";
+
+		TurretImg[50].fileName = "Image/Turret/EternalFlameSpearTurret.png";
+		TurretImg[51].fileName = "Image/Turret/BlueFlameSpearTurret.png";
+		TurretImg[52].fileName = "Image/Turret/DuoFlameSpearTurret.png";
+
+		TurretImg[53].fileName = "Image/Turret/UpgradedFlamethrowerTurret.png";
+		TurretImg[54].fileName = "Image/Turret/FlameblowerTurret.png";
+		TurretImg[55].fileName = "Image/Turret/BlueFlamethrowerTurret.png";
+
+		TurretImg[56].fileName = "Image/Turret/UpgradedFirewallTurret.png";
+		TurretImg[57].fileName = "Image/Turret/MultiFireTurret.png";
+		TurretImg[58].fileName = "Image/Turret/FireTornadoTurret.png";
+
+		TurretImg[59].fileName = "Image/Turret/EternalIceSpearTurret.png";
+		TurretImg[60].fileName = "Image/Turret/FrostbiteTurret.png";
+		TurretImg[61].fileName = "Image/Turret/EternalBlizzardTurret.png";
+
+		TurretImg[62].fileName = "Image/Turret/GiantSnowball.png";
+		TurretImg[63].fileName = "Image/Turret/SnowStarTurret.png";
+		TurretImg[64].fileName = "Image/Turret/EternalBlizzardTurret.png";
+
+		TurretImg[65].fileName = "Image/Turret/UpgradedIceFloorTurret.png";
+		TurretImg[66].fileName = "Image/Turret/FrostbiteTurret.png";
+		TurretImg[67].fileName = "Image/Turret/EternalBlizzardTurret.png";
+
+		TurretImg[68].fileName = "Image/Turret/StrongWindTurret.png";
+		TurretImg[69].fileName = "Image/Turret/BlowbackTurret.png";
+		TurretImg[70].fileName = "Image/Turret/WindyTurret.png";
+
+		TurretImg[71].fileName = "Image/Turret/StormTurret.png";
+		TurretImg[72].fileName = "Image/Turret/FinalThunderTurret.png";
+		TurretImg[73].fileName = "Image/Turret/TripleThunderTurret.png";
+
+		TurretImg[74].fileName = "Image/Turret/YousteriousTurret.png";
+		TurretImg[75].fileName = "Image/Turret/TheysteriousTurret.png";
+		TurretImg[76].fileName = "Image/Turret/WesteriousTurret.png";
 	}
 	for (int i = 0; i < TurretImg.size(); i++)
 	{
@@ -151,6 +251,8 @@ bool CGUI_Scene2D::Init(void)
 	openInventory = false;
 	openUpgrade = false;
 	Upgrade = 0;
+	LeftTowerCosts = 1;
+	RightTowerCosts = 1;
 
 	// Variables for buildings
 	itemEquipped = 0;
@@ -932,153 +1034,180 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							LeftTowerCosts = 1;
 							break;
 						case 2011:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/ReinforcedStoneTurret.png", true);
+							LeftUpgrade = TurretImg[2].textureID;
 							LeftDesc = "A Heavy-Duty Turret with improved Damage and Health.";
 							break;
 						case 2021:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/FlameTurret.png", true);
+							LeftUpgrade = TurretImg[5].textureID;
 							LeftDesc = "A Turret that shoots Elemental Flame Bullets. 20% to Burn.";
 							break;
 						case 3011:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/SharpStoneTurret.png", true);
+							LeftUpgrade = TurretImg[8].textureID;
 							LeftDesc = "An improved Turret. This time shooting sharp rocks!";
 							break;
 						case 3021:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/StoneBurstTurret.png", true);
+							LeftUpgrade = TurretImg[11].textureID;
 							LeftDesc = "A Tower that shoots a burst of bullets and goes on cooldown.";
 							break;
 						case 3031:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/RandomDMGTurretVer2.png", true);
+							LeftUpgrade = TurretImg[14].textureID;
 							LeftDesc = "An upgraded Turret that shoots Bullets that deal a random damage from 6 to 12.";
 							break;
 						case 3041:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/FlameSpearTurret.png", true);
+							LeftUpgrade = TurretImg[17].textureID;
 							LeftDesc = "An upgraded Turret with extra range. 20% to Burn.";
 							break;
 						case 3051:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/IceSpearTurret.png", true);
+							LeftUpgrade = TurretImg[20].textureID;
 							LeftDesc = "An upgraded Turret with extra range. 5% to Freeze.";
 							break;
 						case 3061:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/WindTurret.png", true);
+							LeftUpgrade = TurretImg[23].textureID;
 							LeftDesc = "This mysterious turret consumes and fires bullets, but only air exits the barrel.";
 							break;
 						case 4011:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/SharperStoneTurret.png", true);
+							LeftUpgrade = TurretImg[26].textureID;
 							LeftDesc = "The improved an improved Turret. This time shooting the sharper rocks!";
 							break;
 						case 4021:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/ReinforcedIronTurret.png", true);
+							LeftUpgrade = TurretImg[29].textureID;
 							LeftDesc = "A powerful Turret with high raw stats.";
 							break;
 						case 4031:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/GoldenTurret.png", true);
+							LeftUpgrade = TurretImg[32].textureID;
 							LeftDesc = "A Turret that attracts enemies. Useless otherwise.";
 							break;
 						case 4041:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/IronBurstTurret.png", true);
+							LeftUpgrade = TurretImg[35].textureID;
 							LeftDesc = "An upgraded Turret that shoots a burst of bullets and goes on cooldown.";
 							break;
 						case 4051:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/MultimultishotTurret.png", true);
+							LeftUpgrade = TurretImg[38].textureID;
 							LeftDesc = "A Turret that shoots multiple bullets in 8 directions.";
 							break;
 						case 4061:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/Turret3.png", true);
+							LeftUpgrade = TurretImg[41].textureID;
 							LeftDesc = "A Turret that shoots 3 bullets at once.";
 							break;
 						case 4071:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/RandomDmgTurretVer3.png", true);
+							LeftUpgrade = TurretImg[44].textureID;
 							LeftDesc = "An upgraded Turret that shoots Bullets that deal a random damage from 9 to 15.";
 							break;
 						case 4081:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/UpgradedGlitchTurret.png", true);
+							LeftUpgrade = TurretImg[47].textureID;
 							LeftDesc = "A Turret that shoots bullets at random intervals but faster.";
 							break;
 						case 4091:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/EternalFlameSpearTurret.png", true);
+							LeftUpgrade = TurretImg[50].textureID;
 							LeftDesc = "The improved an improved Turret with extra range. 100% to Burn.";
 							break;
 						case 4111:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/UpgradedFlamethrowerTurret.png", true);
+							LeftUpgrade = TurretImg[53].textureID;
 							LeftDesc = "An upgraded Turret that blows Fire this time with extra range. 100% to Burn.";
 							break;
 						case 4121:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/UpgradedFirewallTurret.png", true);
+							LeftUpgrade = TurretImg[56].textureID;
 							LeftDesc = "A Turret that shoots a Firewall 5 blocks long.";
 							break;
 						case 4131:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/EternalIceSpearTurret.png", true);
+							LeftUpgrade = TurretImg[59].textureID;
 							LeftDesc = "An upgraded Turret with extra range. 50% to Freeze.";
 							break;
 						case 4141:
-							LeftUpgrade = Image->LoadTextureGetID("Image/Turret/GiantSnowballTurret.png", true);
+							LeftUpgrade = TurretImg[62].textureID;
 							LeftDesc = "A Turret that shoots Giant Snowballs dealing damage. 100% to Freeze.";
 							break;
 						case 4151:
+							LeftUpgrade = TurretImg[65].textureID;
 							LeftDesc = "A Turret that shoots an Ice Floor 7 blocks long.";
 							break;
 						case 4161:
+							LeftUpgrade = TurretImg[68].textureID;
 							LeftDesc = "This mysterious turret consumes and fires bullets, deals damage and pushes enemies in a random direction. Knockback works 70% of the time.";
 							break;
 						case 4171:
+							LeftUpgrade = TurretImg[71].textureID;
 							LeftDesc = "Exerts Thunder at enemies at a shorter cooldown. Dealing 16 damage.";
 							break;
 						case 4181:
+							LeftUpgrade = TurretImg[74].textureID;
 							LeftDesc = "A Turret that shoot bullets. That heales enemies. Idk, how about you find out this time.";
 							break;
 							// Rare turrets
-						case 1013:
-							break;
 						case 2013:
+							LeftUpgrade = TurretImg[4].textureID;
 							break;
 						case 2023:
+							LeftUpgrade = TurretImg[7].textureID;
 							break;
 						case 3013:
+							LeftUpgrade = TurretImg[10].textureID;
 							break;
 						case 3023:
+							LeftUpgrade = TurretImg[13].textureID;
 							break;
 						case 3033:
+							LeftUpgrade = TurretImg[16].textureID;
 							break;
 						case 3043:
+							LeftUpgrade = TurretImg[19].textureID;
 							break;
 						case 3053:
+							LeftUpgrade = TurretImg[22].textureID;
 							break;
 						case 3063:
+							LeftUpgrade = TurretImg[25].textureID;
 							break;
 						case 4013:
+							LeftUpgrade = TurretImg[28].textureID;
 							break;
 						case 4023:
+							LeftUpgrade = TurretImg[31].textureID;
 							break;
 						case 4033:
+							LeftUpgrade = TurretImg[34].textureID;
 							break;
 						case 4043:
+							LeftUpgrade = TurretImg[37].textureID;
 							break;
 						case 4053:
+							LeftUpgrade = TurretImg[40].textureID;
 							break;
 						case 4063:
+							LeftUpgrade = TurretImg[43].textureID;
 							break;
 						case 4073:
+							LeftUpgrade = TurretImg[46].textureID;
 							break;
 						case 4083:
+							LeftUpgrade = TurretImg[49].textureID;
 							break;
 						case 4093:
+							LeftUpgrade = TurretImg[52].textureID;
 							break;
 						case 4113:
+							LeftUpgrade = TurretImg[55].textureID;
 							break;
 						case 4123:
+							LeftUpgrade = TurretImg[58].textureID;
 							break;
 						case 4133:
+							LeftUpgrade = TurretImg[61].textureID;
 							break;
 						case 4143:
+							LeftUpgrade = TurretImg[64].textureID;
 							break;
 						case 4153:
+							LeftUpgrade = TurretImg[67].textureID;
 							break;
 						case 4163:
+							LeftUpgrade = TurretImg[69].textureID;
 							break;
 						case 4173:
+							LeftUpgrade = TurretImg[73].textureID;
 							break;
 						case 4183:
+							LeftUpgrade = TurretImg[76].textureID;
 							break;
 						default:
 							break;
@@ -1092,84 +1221,94 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							RightTowerCosts = 1;
 							break;
 						case 2012:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/MultiPebbleTurret.png", true);
+							RightUpgrade = TurretImg[3].textureID;
 							RightDesc = "A Turret with fast Attack Speed.";
 							break;
 						case 2022:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/FrostTurret.png", true);
+							RightUpgrade = TurretImg[6].textureID;
 							RightDesc = "A Turret that shoots Elemental Ice Shards. 5% to Freeze.";
 							break;
 						case 3012:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/IronTurret.png", true);
+							RightUpgrade = TurretImg[9].textureID;
 							RightDesc = "A Heavy-Duty Turret with high Damage and Health.";
 							break;
 						case 3022:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/MultiShotTurret.png", true);
+							RightUpgrade = TurretImg[12].textureID;
 							RightDesc = "A Tower that shoots multiple bullets in 4 directions.";
 							break;
 						case 3032:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/GlitchedTurret.png", true);
+							RightUpgrade = TurretImg[15].textureID;
 							RightDesc = "A Turret that shoots bullets at random intervals.";
 							break;
 						case 3042:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/FlamethrowerTurret.png", true);
+							RightUpgrade = TurretImg[18].textureID;
 							RightDesc = "A Turret that blows Fire. 100% to Burn.";
 							break;
 						case 3052:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/SnowballTurret.png", true);
+							RightUpgrade = TurretImg[21].textureID;
 							RightDesc = "A Turret that shoots Snowballs dealing no damage. 50% to Freeze.";
 							break;
 						case 3062:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/ThunderTurret.png", true);
+							RightUpgrade = TurretImg[24].textureID;
 							RightDesc = "Exerts Thunder at enemies. Dealing 16 damage.";
 							break;
 						case 4012:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/SniperTurret.png", true);
+							RightUpgrade = TurretImg[27].textureID;
 							RightDesc = "A Turret with extrandory range. But can only shoot straight.";
 							break;
 						case 4022:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/ShinyIronTurret.png", true);
+							RightUpgrade = TurretImg[30].textureID;
 							RightDesc = "A very VERY Shiny Turret attracts enemies.";
 							break;
 						case 4032:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/ElementalTurret2.png", true);
+							RightUpgrade = TurretImg[33].textureID;
 							RightDesc = "Base Class for Elemental Damage.";
 							break;
 						case 4042:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/HotIronTurret.png", true);
+							RightUpgrade = TurretImg[36].textureID;
 							RightDesc = "A Turret that shoots hot bullets. 10% to Burn.";
 							break;
 						case 4052:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/StarShotTurret.png", true);
+							RightUpgrade = TurretImg[39].textureID;
 							RightDesc = "A Turret that shoots multiple bullets in 5 directions with increased damage.";
 							break;
 						case 4062:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/ShotgunTurret.png", true);
+							RightUpgrade = TurretImg[42].textureID;
 							RightDesc = "A Turret that shoots 3 bullets at once in a 1x3 line.";
 							break;
 						case 4072:
+							RightUpgrade = TurretImg[45].textureID;
 							break;
 						case 4082:
+							RightUpgrade = TurretImg[48].textureID;
 							break;
 						case 4092:
-							RightUpgrade = Image->LoadTextureGetID("Image/Turret/BlueFlameSpearTurret.png", true);
+							RightUpgrade = TurretImg[51].textureID;
 							RightDesc = "An upgraded Turret with extra range. 20% to Burn. 10% to Freeze.";
 							break;
 						case 4112:
+							RightUpgrade = TurretImg[54].textureID;
 							break;
 						case 4122:
+							RightUpgrade = TurretImg[57].textureID;
 							break;
 						case 4132:
+							RightUpgrade = TurretImg[60].textureID;
 							break;
 						case 4142:
+							RightUpgrade = TurretImg[63].textureID;
 							break;
 						case 4152:
+							RightUpgrade = TurretImg[66].textureID;
 							break;
 						case 4162:
+							RightUpgrade = TurretImg[70].textureID;
 							break;
 						case 4172:
+							RightUpgrade = TurretImg[72].textureID;
 							break;
 						case 4182:
+							RightUpgrade = TurretImg[75].textureID;
 							break;
 						// Rare turrets
 						case 1013:
