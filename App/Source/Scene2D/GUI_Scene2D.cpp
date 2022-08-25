@@ -1043,99 +1043,123 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							break;
 						case 2021:
 							LeftUpgrade = TurretImg[5].textureID;
-							LeftDesc = "A Turret that shoots Elemental Flame Bullets. 20% to Burn.";
+							LeftDesc = "A Turret that shoots Elemental Flame Bullets. 20% to Burn."; 
+							LeftTowerCosts = 3;
 							break;
 						case 3011:
 							LeftUpgrade = TurretImg[8].textureID;
 							LeftDesc = "An improved Turret. This time shooting sharp rocks!";
+							LeftTowerCosts = 4;
 							break;
 						case 3021:
 							LeftUpgrade = TurretImg[11].textureID;
 							LeftDesc = "A Tower that shoots a burst of bullets and goes on cooldown.";
+							LeftTowerCosts = 5;
 							break;
 						case 3031:
 							LeftUpgrade = TurretImg[14].textureID;
 							LeftDesc = "An upgraded Turret that shoots Bullets that deal a random damage from 6 to 12.";
+							LeftTowerCosts = 6;
 							break;
 						case 3041:
 							LeftUpgrade = TurretImg[17].textureID;
 							LeftDesc = "An upgraded Turret with extra range. 20% to Burn.";
+							LeftTowerCosts = 7;
 							break;
 						case 3051:
 							LeftUpgrade = TurretImg[20].textureID;
 							LeftDesc = "An upgraded Turret with extra range. 5% to Freeze.";
+							LeftTowerCosts = 8;
 							break;
 						case 3061:
 							LeftUpgrade = TurretImg[23].textureID;
 							LeftDesc = "This mysterious turret consumes and fires bullets, but only air exits the barrel.";
+							LeftTowerCosts = 9;
 							break;
 						case 4011:
 							LeftUpgrade = TurretImg[26].textureID;
 							LeftDesc = "The improved an improved Turret. This time shooting the sharper rocks!";
+							LeftTowerCosts = 10;
 							break;
 						case 4021:
 							LeftUpgrade = TurretImg[29].textureID;
 							LeftDesc = "A powerful Turret with high raw stats.";
+							LeftTowerCosts = 11;
 							break;
 						case 4031:
 							LeftUpgrade = TurretImg[32].textureID;
 							LeftDesc = "A Turret that attracts enemies. Useless otherwise.";
+							LeftTowerCosts = 12;
 							break;
 						case 4041:
 							LeftUpgrade = TurretImg[35].textureID;
 							LeftDesc = "An upgraded Turret that shoots a burst of bullets and goes on cooldown.";
+							LeftTowerCosts = 13;
 							break;
 						case 4051:
 							LeftUpgrade = TurretImg[38].textureID;
 							LeftDesc = "A Turret that shoots multiple bullets in 8 directions.";
+							LeftTowerCosts = 14;
 							break;
 						case 4061:
 							LeftUpgrade = TurretImg[41].textureID;
 							LeftDesc = "A Turret that shoots 3 bullets at once.";
+							LeftTowerCosts = 15;
 							break;
 						case 4071:
 							LeftUpgrade = TurretImg[44].textureID;
 							LeftDesc = "An upgraded Turret that shoots Bullets that deal a random damage from 9 to 15.";
+							LeftTowerCosts = 16;
 							break;
 						case 4081:
 							LeftUpgrade = TurretImg[47].textureID;
 							LeftDesc = "A Turret that shoots bullets at random intervals but faster.";
+							LeftTowerCosts = 17;
 							break;
 						case 4091:
 							LeftUpgrade = TurretImg[50].textureID;
 							LeftDesc = "The improved an improved Turret with extra range. 100% to Burn.";
+							LeftTowerCosts = 18;
 							break;
 						case 4111:
 							LeftUpgrade = TurretImg[53].textureID;
 							LeftDesc = "An upgraded Turret that blows Fire this time with extra range. 100% to Burn.";
+							LeftTowerCosts = 19;
 							break;
 						case 4121:
 							LeftUpgrade = TurretImg[56].textureID;
 							LeftDesc = "A Turret that shoots a Firewall 5 blocks long.";
+							LeftTowerCosts = 20;
 							break;
 						case 4131:
 							LeftUpgrade = TurretImg[59].textureID;
 							LeftDesc = "An upgraded Turret with extra range. 50% to Freeze.";
+							LeftTowerCosts = 21;
 							break;
 						case 4141:
 							LeftUpgrade = TurretImg[62].textureID;
 							LeftDesc = "A Turret that shoots Giant Snowballs dealing damage. 100% to Freeze.";
+							LeftTowerCosts = 22;
 							break;
 						case 4151:
 							LeftUpgrade = TurretImg[65].textureID;
 							LeftDesc = "A Turret that shoots an Ice Floor 7 blocks long.";
+							LeftTowerCosts = 23;
 							break;
 						case 4161:
 							LeftUpgrade = TurretImg[68].textureID;
 							LeftDesc = "This mysterious turret consumes and fires bullets, deals damage and pushes enemies in a random direction. Knockback works 70% of the time.";
+							LeftTowerCosts = 24;
 							break;
 						case 4171:
 							LeftUpgrade = TurretImg[71].textureID;
 							LeftDesc = "Exerts Thunder at enemies at a shorter cooldown. Dealing 16 damage.";
+							LeftTowerCosts = 25;
 							break;
 						case 4181:
 							LeftUpgrade = TurretImg[74].textureID;
 							LeftDesc = "A Turret that shoot bullets. That heales enemies. Idk, how about you find out this time.";
+							LeftTowerCosts = 26;
 							break;
 							// Rare turrets
 						case 2013:
@@ -1455,59 +1479,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							break;
 						}
 						// Turret Costs 
-						switch (LeftTowerCosts)
-						{
-						// Tier 1 Physical===================================================
-						case 1:
-							cInventoryItem = cInventoryManager->GetItem("Stone");
-							Material1 = cInventoryItem->GetTextureID();
-							Cost1 = "1";
-							cInventoryItem = cInventoryManager->GetItem("Iron");
-							Material2 = cInventoryItem->GetTextureID();
-							Cost2 = "1";
-							cInventoryItem = cInventoryManager->GetItem("Bronze");
-							Material3 = cInventoryItem->GetTextureID();
-							Cost3 = "1";
-							break;
-						// ==================================================================
-						// Tier 2 Physical===================================================
-						case 2:
-							cInventoryItem = cInventoryManager->GetItem("Stone");
-							Material1 = cInventoryItem->GetTextureID();
-							Cost1 = "2";
-							cInventoryItem = cInventoryManager->GetItem("Iron");
-							Material2 = cInventoryItem->GetTextureID();
-							Cost2 = "2";
-							cInventoryItem = cInventoryManager->GetItem("Bronze");
-							Material3 = cInventoryItem->GetTextureID();
-							Cost3 = "1";
-							break;
-						// ==================================================================
-						// Tier 2 Elemental==================================================
-						case 3:
-							break;
-						// ==================================================================
-						default:
-							break;
-						}
-						switch (RightTowerCosts)
-						{
-						// Tier 1 Elemental===================================================
-						case 1:
-							cInventoryItem = cInventoryManager->GetItem("Stone");
-							Material4 = cInventoryItem->GetTextureID();
-							Cost4 = "1";
-							cInventoryItem = cInventoryManager->GetItem("Iron");
-							Material5 = cInventoryItem->GetTextureID();
-							Cost5 = "1";
-							cInventoryItem = cInventoryManager->GetItem("Silver");
-							Material6 = cInventoryItem->GetTextureID();
-							Cost6 = "1";
-							break;
-						// ====================================================================
-						default:
-							break;
-						}
+						ChangeTurretCosts();
 						ImGui::SetNextWindowPos(ImVec2((float)cSettings->iWindowWidth * 0.15f, (float)cSettings->iWindowHeight * 0.25f));
 						ImGui::BeginChild("Left Upgrade Icons", ImVec2(300.0f * relativeScale_x, 600.0f * relativeScale_y), false, ImGuiWindowFlags_NoScrollbar);
 						{
@@ -1516,17 +1488,17 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::Image((ImTextureID)Material1, ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%s", Cost1.c_str());
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", Cost1.c_str());
 
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.1f);
 								ImGui::Image((ImTextureID)Material2, ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.18f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%s",Cost2.c_str());
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s",Cost2.c_str());
 
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.2f);
 								ImGui::Image((ImTextureID)Material3, ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.28f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%s",Cost3.c_str());
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s",Cost3.c_str());
 							}
 							ImGui::EndChild();
 
@@ -1555,17 +1527,17 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								ImGui::Image((ImTextureID)Material4, ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%s", Cost4.c_str());
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", Cost4.c_str());
 
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.1f);
 								ImGui::Image((ImTextureID)Material5, ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.18f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%s", Cost5.c_str());
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", Cost5.c_str());
 
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.2f);
 								ImGui::Image((ImTextureID)Material6, ImVec2(60.0f * relativeScale_x, 60.0f * relativeScale_y), ImVec2(0, 1), ImVec2(1, 0));
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.28f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x%s", Cost6.c_str());
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", Cost6.c_str());
 							}
 							ImGui::EndChild();
 
@@ -1603,20 +1575,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								if (ImGui::Button(" ", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
 								{
-									switch (LeftTowerCosts)
-									{
-									case 1:
-										if (cInventoryManager->GetItem("Stone")->GetCount() >= 1 && cInventoryManager->GetItem("Iron")->GetCount() >= 1 && cInventoryManager->GetItem("Bronze")->GetCount() >= 1)
-										{
-											cInventoryManager->GetItem("Stone")->Remove(1);
-											cInventoryManager->GetItem("Iron")->Remove(1);
-											cInventoryManager->GetItem("Bronze")->Remove(1);
-											turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
-										}
-										break;
-									default:
-										break;
-									}
+									LeftCostRemove();
 									openUpgrade = false;
 								}
 							}
@@ -1642,20 +1601,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								if (ImGui::Button(" ", ImVec2(100.0f * relativeScale_x, 30.0f * relativeScale_y)))
 								{
-									switch (RightTowerCosts)
-									{
-									case 1:
-										if (cInventoryManager->GetItem("Stone")->GetCount() >= 1 && cInventoryManager->GetItem("Iron")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 1)
-										{
-											cInventoryManager->GetItem("Stone")->Remove(1);
-											cInventoryManager->GetItem("Iron")->Remove(1);
-											cInventoryManager->GetItem("Silver")->Remove(1);
-											turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(false);
-										}
-										break;
-									default:
-										break;
-									}
+									RightCostRemove();
 									openUpgrade = false;
 								}
 							}
@@ -1952,4 +1898,612 @@ bool CGUI_Scene2D::UpgradeState()
 int CGUI_Scene2D::Checkupgrade()
 {
 	return Upgrade;
+}
+
+void CGUI_Scene2D::ChangeTurretCosts()
+{
+	switch (LeftTowerCosts)
+	{
+	case 1:
+		// Stone Turret==========================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = " ";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ======================================================================
+	case 2:
+		// Reinforced Stone Turret===================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 3:
+		// Flame Turret===================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 4:
+		// Sharp Stone Turret==================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 5:
+		// Stone Burst Turret================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x4";
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 6:
+		// Random Dmg turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 7:
+		// Flame Spear Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x1";
+		break;
+		// ==================================================================
+	case 8:
+		// Ice Spear Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x1";
+		break;
+		// ==================================================================
+	case 9:
+		// Wind Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 10:
+		// Sharper Stone Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x1";
+		break;
+		// ==================================================================
+	case 11:
+		// Reinforced Iron Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 12:
+		// Golden Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Gold");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = " ";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 13:
+		// Iron burst Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 14:
+		// MultiShot Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 15:
+		// Turret3=================================================
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 16:
+		// Random Damage Turret V2=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 17:
+		// Upgraded Glitch Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = " ";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 18:
+		// Eternal Flame Spear Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x4";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x2";
+		break;
+		// ==================================================================
+	case 19:
+		// Upgraded Flamethrower Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x4";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x2";
+		break;
+		// ==================================================================
+	case 20:
+		// Upgraded Firewall Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x2";
+		break;
+		// ==================================================================
+	case 21:
+		// Eternal Ice Spear Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x4";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x2";
+		break;
+		// ==================================================================
+	case 22:
+		// Giant snowball Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x4";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x2";
+		break;
+		// ==================================================================
+	case 23:
+		// Upgraded IceFloor Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Bronze");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x2";
+		break;
+		// ==================================================================
+	case 24:
+		// Strong wind Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x5";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x2";
+		cInventoryItem = cInventoryManager->GetItem("Blank");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = " ";
+		break;
+		// ==================================================================
+	case 25:
+		// Storm Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x3";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x2";
+		break;
+		// ==================================================================
+	case 26:
+		// Yousterious Turret=================================================
+		cInventoryItem = cInventoryManager->GetItem("Plank");
+		Material1 = cInventoryItem->GetTextureID();
+		Cost1 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material2 = cInventoryItem->GetTextureID();
+		Cost2 = "x1";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material3 = cInventoryItem->GetTextureID();
+		Cost3 = "x1";
+		break;
+		// ==================================================================
+	default:
+		break;
+	}
+	switch (RightTowerCosts)
+	{
+		// Tier 1 Elemental===================================================
+	case 1:
+		cInventoryItem = cInventoryManager->GetItem("Stone");
+		Material4 = cInventoryItem->GetTextureID();
+		Cost4 = "1";
+		cInventoryItem = cInventoryManager->GetItem("Iron");
+		Material5 = cInventoryItem->GetTextureID();
+		Cost5 = "1";
+		cInventoryItem = cInventoryManager->GetItem("Silver");
+		Material6 = cInventoryItem->GetTextureID();
+		Cost6 = "1";
+		break;
+		// ====================================================================
+	default:
+		break;
+	}
+}
+
+void CGUI_Scene2D::LeftCostRemove()
+{
+	switch (LeftTowerCosts)
+	{
+	case 1:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 3)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(3);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 2:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 2 && cInventoryManager->GetItem("Iron")->GetCount() >= 1)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(2);
+			cInventoryManager->GetItem("Iron")->Remove(1);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 3:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 2 && cInventoryManager->GetItem("Silver")->GetCount() >= 1)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(2);
+			cInventoryManager->GetItem("Silver")->Remove(1);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 4:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 2 && cInventoryManager->GetItem("Iron")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(2);
+			cInventoryManager->GetItem("Iron")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 5:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 4 && cInventoryManager->GetItem("Iron")->GetCount() >= 1)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(4);
+			cInventoryManager->GetItem("Iron")->Remove(1);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 6:
+		if (cInventoryManager->GetItem("Plank")->GetCount() >= 3 && cInventoryManager->GetItem("Stone")->GetCount() >= 3)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(3);
+			cInventoryManager->GetItem("Iron")->Remove(3);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 7:
+		if (cInventoryManager->GetItem("Plank")->GetCount() >= 2 && cInventoryManager->GetItem("Iron")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 1)
+		{
+			cInventoryManager->GetItem("Plank")->Remove(2);
+			cInventoryManager->GetItem("Iron")->Remove(1);
+			cInventoryManager->GetItem("Silver")->Remove(1);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 8:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 2 && cInventoryManager->GetItem("Iron")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 1)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(2);
+			cInventoryManager->GetItem("Iron")->Remove(1);
+			cInventoryManager->GetItem("Silver")->Remove(1);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 9:
+		if (cInventoryManager->GetItem("Plank")->GetCount() >= 2 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Plank")->Remove(2);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 10:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 3 && cInventoryManager->GetItem("Iron")->GetCount() >= 2 && cInventoryManager->GetItem("Bronze")->GetCount() >= 1)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(3);
+			cInventoryManager->GetItem("Iron")->Remove(2);
+			cInventoryManager->GetItem("Bronze")->Remove(1);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 11:
+		if (cInventoryManager->GetItem("Iron")->GetCount() >= 2 && cInventoryManager->GetItem("Bronze")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Iron")->Remove(2);
+			cInventoryManager->GetItem("Bronze")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 12:
+		if (cInventoryManager->GetItem("Gold")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Gold")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 13:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 2 && cInventoryManager->GetItem("Iron")->GetCount() >= 3)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(2);
+			cInventoryManager->GetItem("Iron")->Remove(3);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 14:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 2 && cInventoryManager->GetItem("Bronze")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(2);
+			cInventoryManager->GetItem("Bronze")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 15:
+		if (cInventoryManager->GetItem("Iron")->GetCount() >= 1 && cInventoryManager->GetItem("Bronze")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Iron")->Remove(1);
+			cInventoryManager->GetItem("Bronze")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 16:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 3 && cInventoryManager->GetItem("Plank")->GetCount() >= 3)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(3);
+			cInventoryManager->GetItem("Plank")->Remove(3);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 17:
+		if (cInventoryManager->GetItem("Bronze")->GetCount() >= 3)
+		{
+			cInventoryManager->GetItem("Bronze")->Remove(3);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 18:
+		if (cInventoryManager->GetItem("Plank")->GetCount() >= 4 && cInventoryManager->GetItem("Bronze")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Plank")->Remove(4);
+			cInventoryManager->GetItem("Bronze")->Remove(1);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 19:
+		if (cInventoryManager->GetItem("Plank")->GetCount() >= 4 && cInventoryManager->GetItem("Bronze")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Plank")->Remove(4);
+			cInventoryManager->GetItem("Bronze")->Remove(1);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 20:
+		if (cInventoryManager->GetItem("Plank")->GetCount() >= 3 && cInventoryManager->GetItem("Bronze")->GetCount() >= 2 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Plank")->Remove(3);
+			cInventoryManager->GetItem("Bronze")->Remove(2);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 21:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 4 && cInventoryManager->GetItem("Bronze")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(4);
+			cInventoryManager->GetItem("Bronze")->Remove(1);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 22:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 4 && cInventoryManager->GetItem("Bronze")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(4);
+			cInventoryManager->GetItem("Bronze")->Remove(1);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 23:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 3 && cInventoryManager->GetItem("Bronze")->GetCount() >= 2 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(3);
+			cInventoryManager->GetItem("Bronze")->Remove(2);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 24:
+		if (cInventoryManager->GetItem("Plank")->GetCount() >= 5 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Plank")->Remove(5);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 25:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 3 && cInventoryManager->GetItem("Plank")->GetCount() >= 3 && cInventoryManager->GetItem("Silver")->GetCount() >= 2)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(3);
+			cInventoryManager->GetItem("Plank")->Remove(3);
+			cInventoryManager->GetItem("Silver")->Remove(2);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	case 26:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 1 && cInventoryManager->GetItem("Plank")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 1)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(1);
+			cInventoryManager->GetItem("Plank")->Remove(1);
+			cInventoryManager->GetItem("Silver")->Remove(1);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(true);
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void CGUI_Scene2D::RightCostRemove()
+{
+	switch (RightTowerCosts)
+	{
+	case 1:
+		if (cInventoryManager->GetItem("Stone")->GetCount() >= 1 && cInventoryManager->GetItem("Iron")->GetCount() >= 1 && cInventoryManager->GetItem("Silver")->GetCount() >= 1)
+		{
+			cInventoryManager->GetItem("Stone")->Remove(1);
+			cInventoryManager->GetItem("Iron")->Remove(1);
+			cInventoryManager->GetItem("Silver")->Remove(1);
+			turretVector[cScene2D->GetTurretNo()]->UpgradeTurret(false);
+		}
+		break;
+	default:
+		break;
+	}
 }
