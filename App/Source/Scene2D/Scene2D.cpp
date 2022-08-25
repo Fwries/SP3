@@ -13,6 +13,7 @@ using namespace std;
 
 #include "System\filesystem.h"
 
+
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -20,6 +21,7 @@ CScene2D::CScene2D(void)
 	: cMap2D(NULL)
 	, cPlayer2D(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, cGUI_Scene2D(NULL)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
@@ -96,8 +98,17 @@ bool CScene2D::Init(void)
 	CShaderManager::GetInstance()->Use("Shader2D");
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
+	// Initialise Inventory
+	cInventoryManager = cInventoryManager->GetInstance();
+
 	elapsed = 0;
-	spawnRate = 0.03;
+	timeElapsed = 0.025;
+	spawnRate = 8;
+
+	waveLevel = 1;
+	spawnBoss = false;
+
+	spawnDeterminer = 2;
 
 	// Create and initialise the Map 2D
 	cMap2D = CMap2D::GetInstance();
@@ -178,6 +189,9 @@ bool CScene2D::Init(void)
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 
+	// Store the keyboard controller singleton instance here
+	cMouseController = CMouseController::GetInstance();
+
 	// Store the cGUI_Scene2D singleton instance here
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 	cGUI_Scene2D->Init();
@@ -197,6 +211,10 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_deathscream_alien2.wav"), 7, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_deathscream_robot2.wav"), 8, true);
 
+	//sounds for damage
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretHit.ogg"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyHit.ogg"), 10, true);
+
 	return true;
 }
 
@@ -209,10 +227,9 @@ bool CScene2D::Update(const double dElapsedTime)
 	cPlayer2D->Update(dElapsedTime);
 	cSoundController->PlaySoundByID(1);
 
-	elapsed += spawnRate;
-	int intElapsed = round(elapsed);
+	elapsed += timeElapsed;
 	//cout << intElapsed << endl;
-	if (remainder(elapsed, 8) >= 0 && remainder(elapsed, 8) <= 0.03)
+	if (remainder(elapsed, spawnRate) >= 0 && remainder(elapsed, spawnRate) <= 0.025)
 	{
 		CEnemy2D* cEnemy2D = new CEnemy2D();
 		// Pass shader to cEnemy2D
@@ -224,46 +241,55 @@ bool CScene2D::Update(const double dElapsedTime)
 			enemyVector.push_back(cEnemy2D);
 		}
 	}
+	if (spawnBoss == true)
+	{
+		CEnemy2D* cEnemy2D = new CEnemy2D();
+		// Pass shader to cEnemy2D
+		cEnemy2D->SetShader("Shader2D_Colour");
+		// Initialise the instance
+		if (cEnemy2D->slimeBossInit() == true)
+		{
+			cEnemy2D->SetPlayer2D(cPlayer2D);
+			enemyVector.push_back(cEnemy2D);
+		}
+		spawnBoss = false;
+	}
+	//cout << remainder(elapsed, 60) << endl;
+	if (remainder(elapsed, 5) >= 0 && remainder(elapsed, 5) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
+	{
+		if (spawnRate > 4)
+		{
+			spawnRate = spawnRate - 4;
+		}
+		else if (spawnRate > 2)
+		{
+			spawnRate = spawnRate - 2;
+		}
+		else if (spawnRate > 1)
+		{
+			spawnRate = spawnRate - 1;
+		}
+		waveLevel += 1;
+		if (waveLevel % 2 != 0 && waveLevel != 1)
+		{
+			spawnBoss = true;
+		}
+		if (waveLevel == 4)
+		{
+			spawnDeterminer = 3;
+		}
+		else if (waveLevel == 6)
+		{
+			spawnDeterminer = 4;
+		}
+	}
+	else if (remainder(elapsed, 60) >= 0 && remainder(elapsed, 60) <= 0.025 && waveLevel == 10)
+	{
 
-	// Call all the cEnemy2D's update method before Map2D 
-	// as we want to capture the updates before map2D update	
-	//for (int i = 0; i < enemyVector.size(); i++)
-	//{
-	//	
-	//	if (enemyVector[i]->GetIsActive())
-	//	{
-	//		//cout << "aaaa" << endl;
-	//		Closest = i;
-	//	}
-	//}
-	//
-	//for (int i = 0; i < enemyVector.size(); i++)
-	//{
-	//	if (glm::length(enemyVector[i]->vec2Index - cPlayer2D->vec2Index) < glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index)
-	//		&& enemyVector[i]->GetIsActive())
-	//	{
-	//		//cout << "Change" << endl;
-	//		Closest = i;
-	//	}
-	//}
+	}
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
-		/*if (i != Closest)
-		{
-			enemyVector[i]->SetHitBox(false);
-		}
-		else
-		{
-			if (glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index) <= 2)
-			{
-				enemyVector[Closest]->SetHitBox(true);
-			}
-			else if (glm::length(enemyVector[Closest]->vec2Index - cPlayer2D->vec2Index) > 2)
-			{
-				enemyVector[Closest]->SetHitBox(false);
-			}
-		}*/
 		enemyVector[i]->Update(dElapsedTime);
 	}
 	
@@ -274,6 +300,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	for (int i = 0; i < turretVector.size(); i++)
 	{
+		turretVector[i]->SetEnemyVector(enemyVector);
 		turretVector[i]->Update(dElapsedTime);
 	}
 	
@@ -311,12 +338,6 @@ bool CScene2D::Update(const double dElapsedTime)
 		}
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel()+1);
 		cPlayer2D->Reset();
-
-		/*if (cTeamMate2D != nullptr)
-		{
-			delete cTeamMate2D;
-			CTeamMate2D* cTeamMate2D = new CTeamMate2D();
-		}*/
 
 		// Create and initialise the CEnemy2D
 		enemyVector.clear();
@@ -375,20 +396,333 @@ bool CScene2D::Update(const double dElapsedTime)
 		return false;
 	}
 
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
+	if (cGUI_Scene2D->GetEquipped() != 0)
 	{
-		//cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
-
-		CTurret* cTurret = new CTurret();
-		// Pass shader to cEnemy2D
-		cTurret->SetShader("Shader2D_Colour");
-		// Initialise the instance
-		if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == true)
+		if (cMouseController->IsButtonReleased(GLFW_MOUSE_BUTTON_LEFT))
 		{
-			cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
-			cTurret->SetPlayer2D(cPlayer2D);
-			cTurret->SetEnemyVector(enemyVector);
-			turretVector.push_back(cTurret);
+			//cout << cMouseController->GetMousePositionX() << " " << cMouseController->GetMousePositionY() << endl;
+		}
+
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
+		{
+			//cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+			int WallType = cGUI_Scene2D->GetEquipped() - 1;
+			switch (cGUI_Scene2D->GetEquipped())
+			{
+			case 1:
+				if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 0)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0
+						&& cPlayer2D->getPlayerDirection() == 1)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0
+						&& cPlayer2D->getPlayerDirection() == 2)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0
+						&& cPlayer2D->getPlayerDirection() == 3)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("Turret")->Remove(1);
+					}
+					break;
+				}
+				break;
+			case 2:
+				if (cInventoryManager->GetItem("WoodWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 0)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("WoodWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("WoodWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 1)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("WoodWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("WoodWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 2)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("WoodWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("WoodWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 3)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("WoodWall")->Remove(1);
+					}
+					break;
+				}
+				break;
+			case 3:
+				if (cInventoryManager->GetItem("StoneWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 0)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("StoneWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("StoneWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 1)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("StoneWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("StoneWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 2)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("StoneWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("StoneWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 3)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("StoneWall")->Remove(1);
+					}
+					break;
+				}
+				break;
+			case 4:
+				if (cInventoryManager->GetItem("IronWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 0)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("IronWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("IronWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0
+					&& cPlayer2D->getPlayerDirection() == 1)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("IronWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("IronWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 2)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("IronWall")->Remove(1);
+					}
+					break;
+				}
+				else if (cInventoryManager->GetItem("IronWall")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0
+					&& cPlayer2D->getPlayerDirection() == 3)
+				{
+					CTurret* cTurret = new CTurret();
+					// Pass shader to cEnemy2D
+					cTurret->SetShader("Shader2D_Colour");
+					// Initialise the instance
+					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
+					{
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cTurret->SetEnemyVector(enemyVector);
+						turretVector.push_back(cTurret);
+						cInventoryManager->GetItem("IronWall")->Remove(1);
+					}
+					break;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	if (cKeyboardController->IsKeyPressed('H'))
+	{
+		if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 150)
+		{
+			for (int i = 0; i < turretVector.size(); i++)
+			{
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x - 1,cPlayer2D->vec2Index.y))
+				{
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
+				}
+			}
+		}
+		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 150)
+		{
+			for (int i = 0; i < turretVector.size(); i++)
+			{
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x + 1, cPlayer2D->vec2Index.y))
+				{
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
+				}
+			}
+		}
+		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 150)
+		{
+			for (int i = 0; i < turretVector.size(); i++)
+			{
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.y - 1))
+				{
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
+				}
+			}
+		}
+		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 150)
+		{
+			for (int i = 0; i < turretVector.size(); i++)
+			{
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.y + 1))
+				{
+					cGUI_Scene2D->OpenUpgrade();
+					TurretNo = i;
+				}
+			}
 		}
 	}
 
@@ -416,47 +750,10 @@ void CScene2D::PreRender(void)
  */
 void CScene2D::Render(void)
 {
-	glm::mat4 view(1.f), projection(1.f);
-
-	// Idea is to use player's index / number of tiles in the axis to position the camera
-	// Make use of micro steps for smooth camera movement
-	// Divide by number of tiles to get the ratio because glm::lookAt's eye, center, and up ranges from -0.5f to 0.5f (Same applies for number of steps per tile)
-	glm::vec2 viewPosition = ((cPlayer2D->vec2NumMicroSteps / (float)CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS) + cPlayer2D->vec2Index) / (float)CSettings::GetInstance()->NUM_TILES_XAXIS;
-	// Ensure that the character spawns at world origin
-	// Doing this because the map origin starts from bottom left while the world origin starts from the center
-	static const glm::vec2 VIEW_POS_OFFSET = viewPosition;
-	viewPosition -= VIEW_POS_OFFSET;
-	// Ensure that the view position always matches the scale of the projection matrix below
-	static const float VIEW_POS_MULTIPLIER = (float)CSettings::GetInstance()->NUM_TILES_MULTIPLIERX / 2.f;
-	viewPosition *= VIEW_POS_MULTIPLIER;
-
-	// Boundary check
-	static const float PROJ_MIN_MAX = 1.f / (float)CSettings::GetInstance()->NUM_TILES_MULTIPLIERX;
-	static const float VIEW_POS_MIN = 0.f - (VIEW_POS_MULTIPLIER / 2.f) + PROJ_MIN_MAX;
-	static const float VIEW_POS_MAX = 0.f + (VIEW_POS_MULTIPLIER / 2.f) - PROJ_MIN_MAX;
-	if (viewPosition.x < VIEW_POS_MIN)
-		viewPosition.x = VIEW_POS_MIN;
-	else if (viewPosition.x > VIEW_POS_MAX)
-		viewPosition.x = VIEW_POS_MAX;
-	if (viewPosition.y < VIEW_POS_MIN)
-		viewPosition.y = VIEW_POS_MIN;
-	else if (viewPosition.y > VIEW_POS_MAX)
-		viewPosition.y = VIEW_POS_MAX;
-
-	view = glm::lookAt(
-		glm::vec3(viewPosition, 1.f),
-		glm::vec3(viewPosition, 0.f),
-		glm::vec3(0.f, 1.f, 0.f)
-	);
-
-	// We dont want to zoom in the camera, instead, we want to clip away the objects that are out of sight for efficiency
-	// Same effect as zooming in the camera by 4x (glm::ortho ranges from -1.f to 1.f)
-	projection = glm::ortho(-PROJ_MIN_MAX, PROJ_MIN_MAX, -PROJ_MIN_MAX, PROJ_MIN_MAX, -10.f, 10.f);
-
 	// Call the Map2D's PreRender()
 	cMap2D->PreRender();
 	// Call the Map2D's Render()
-	cMap2D->Render(view, projection);
+	cMap2D->Render();
 	// Call the Map2D's PostRender()
 	cMap2D->PostRender();
 
@@ -465,7 +762,7 @@ void CScene2D::Render(void)
 		// Call the CEnemy2D's PreRender()
 		enemyVector[i]->PreRender();
 		// Call the CEnemy2D's Render()
-		enemyVector[i]->Render(view, projection);
+		enemyVector[i]->Render();
 		// Call the CEnemy2D's PostRender()
 		enemyVector[i]->PostRender();
 	}
@@ -475,7 +772,7 @@ void CScene2D::Render(void)
 		// Call the CMisc2D's PreRender()
 		miscVector[i]->PreRender();
 		// Call the CMisc2D's Render()
-		miscVector[i]->Render(view, projection);
+		miscVector[i]->Render();
 		// Call the CMisc2D's PostRender()
 		miscVector[i]->PostRender();
 	}
@@ -485,7 +782,7 @@ void CScene2D::Render(void)
 		// Call the CMisc2D's PreRender()
 		turretVector[i]->PreRender();
 		// Call the CMisc2D's Render()
-		turretVector[i]->Render(view, projection);
+		turretVector[i]->Render();
 		// Call the CMisc2D's PostRender()
 		turretVector[i]->PostRender();
 	}
@@ -493,7 +790,7 @@ void CScene2D::Render(void)
 	// Call the CPlayer2D's PreRender()
 	cPlayer2D->PreRender();
 	// Call the CPlayer2D's Render()
-	cPlayer2D->Render(view, projection);
+	cPlayer2D->Render();
 	// Call the CPlayer2D's PostRender()
 	cPlayer2D->PostRender();
 
@@ -515,4 +812,81 @@ void CScene2D::PostRender(void)
 bool CScene2D::GetPlayerWon()
 {
 	return PlayerWon;
+}
+
+vector<CTurret*>& CScene2D::getTurretVec(void)
+{
+	return turretVector;
+}
+vector<CEntity2D*>& CScene2D::getEnemyVec(void)
+{
+	return enemyVector;
+}
+
+
+void CScene2D::spawnExtraEnemy(int i)
+{
+	for (unsigned j = 0; j < i; ++j)
+	{
+		CEnemy2D* cEnemy2D = new CEnemy2D();
+		// Pass shader to cEnemy2D
+		cEnemy2D->SetShader("Shader2D_Colour");
+		// Initialise the instance
+		if (j == 0)
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x, slimeBossPos.y + 1)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else if (j == 1)
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x + 1, slimeBossPos.y)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else if (j == 2)
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x, slimeBossPos.y - 1)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+		else
+		{
+			if (cEnemy2D->babySlimeInit(glm::vec2(slimeBossPos.x - 1, slimeBossPos.y)) == true)
+			{
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemyVector.push_back(cEnemy2D);
+			}
+		}
+	}
+}
+
+void CScene2D::setSlimeBPos(glm::vec2 pos)
+{
+	slimeBossPos = pos;
+}
+glm::vec2 CScene2D::getSlimePos()
+{
+	return slimeBossPos;
+}
+
+int CScene2D::GetTurretNo(void)
+{
+	return TurretNo;
+}
+
+int CScene2D::getWaveLevel(void)
+{
+	return waveLevel;
+}
+
+int CScene2D::getSpawnDeterminer(void)
+{
+	return spawnDeterminer;
 }

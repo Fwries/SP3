@@ -6,8 +6,6 @@
  */
 #pragma once
 
-//aaaaa
-
 // Include SingletonTemplate
 #include "DesignPatterns\SingletonTemplate.h"
 
@@ -21,6 +19,11 @@
 #include <includes/glm.hpp>
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
+
+class CEnemy2D;
+class CTurret;
+class CGUI_Scene2D;
+class CPlayer2D;
 
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
@@ -41,6 +44,9 @@
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
+
+// Include Mouse controller
+#include "Inputs\MouseController.h"
 
 // GUI_Scene2D
 #include "GUI_Scene2D.h"
@@ -69,13 +75,25 @@ public:
 
 	bool GetPlayerWon();
 
+	vector<CTurret*>& getTurretVec(void);
+
+	vector<CEntity2D*>& getEnemyVec(void);
+
+	void spawnExtraEnemy(int i);
+	void setSlimeBPos(glm::vec2 pos);
+	glm::vec2 getSlimePos();
+
+	int GetTurretNo(void);
+
+	int getWaveLevel(void);
+
+	int getSpawnDeterminer(void);
 protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
 	// The handler containing the instance of CPlayer2Ds
 	CPlayer2D* cPlayer2D;
 	// The handler containing the instance of CPlayer2Ds
-	CMisc2D* cMisc2D;
 	// The handler containing the instance of CPlayer2Ds
 	CTurret* cTurret;
 	// A vector containing the instance of CEnemy2Ds
@@ -83,10 +101,11 @@ protected:
 	// A vector containing the instance of CMisc2Ds
 	vector<CEntity2D*> miscVector;
 	// A vector containing the instance of CTurret2Ds
-	vector<CEntity2D*> turretVector;
+	vector<CTurret*> turretVector;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
+	CMouseController* cMouseController;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
@@ -97,14 +116,29 @@ protected:
 	// Game Manager
 	CGameManager* cGameManager;
 
+	// Inventory
+	CInventoryItem* cInventoryItem;
+	CInventoryManager* cInventoryManager;
+
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
 
 	int Closest;
 	bool PlayerWon;
 
+	int spawnDeterminer;
+
 	double elapsed;
-	double spawnRate;
+	double timeElapsed;
+	int spawnRate;
+	int TurretNo;
+
+	int waveLevel;
+	bool spawnBoss;
+
+	bool extraEnemyToSpawn;
+
+	glm::vec2 slimeBossPos;
 
 	// Constructor
 	CScene2D(void);

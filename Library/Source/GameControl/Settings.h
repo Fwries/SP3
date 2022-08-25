@@ -55,8 +55,8 @@ public:
 
 	// 2D Settings
 	// The variables which stores the specifications of the map
-	unsigned int NUM_TILES_XAXIS; // For rendering
-	unsigned int NUM_TILES_YAXIS; // For rendering
+	unsigned int NUM_TILES_XAXIS;
+	unsigned int NUM_TILES_YAXIS;
 
 	const unsigned NUM_TILES_MULTIPLIERX = 4;
 	const unsigned NUM_TILES_MULTIPLIERY = 4;
