@@ -1723,19 +1723,6 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 			//FlipHorizontalDirection();
 			//vec2Index = i32vec2OldIndex;
 			i32vec2NumMicroSteps.x = 0;
-			if (i32vec2Direction == glm::vec2(-1, 0))
-			{
-				if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
-				{
-					i32vec2NumMicroSteps.y += SPE;
-
-					if (i32vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
-					{
-						i32vec2NumMicroSteps.y = 0;
-						vec2Index.y++;
-					}
-				}
-			}
 		}
 
 		faceLeft = true;
