@@ -36,6 +36,8 @@ class CMap2D;
 
 #include "Scene2D.h"
 
+#include "InventoryManager.h"
+
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
 #include "Inputs\MouseController.h"
@@ -181,6 +183,8 @@ protected:
 	// Physics
 	CPhysics2D cPhysics2D;
 
+	CInventoryManager* cInventoryManager;
+
 	//Animated Sprite
 	CSpriteAnimation* animatedEnemy;
 
@@ -215,6 +219,7 @@ protected:
 
 	//variables for game
 	int HP;
+	float MAXHP;
 	int ATK;
 	float SPE;
 	int TRGE;

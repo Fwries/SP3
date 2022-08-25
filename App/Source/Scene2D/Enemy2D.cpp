@@ -110,6 +110,8 @@ bool CEnemy2D::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	cInventoryManager = CInventoryManager::GetInstance();
+
 	cMouseController = CMouseController::GetInstance();
 
 	// Get the handler to the CMap2D instance
@@ -200,36 +202,42 @@ bool CEnemy2D::Init(void)
 	case 0:
 		enemyType = SKELE1;
 		HP = 20 * statMultiplier;
+		MAXHP = 20 * statMultiplier;
 		ATK = 1 * statMultiplier;
 		SPE = 1 * statMultiplier;
 		break;
 	case 1:
 		enemyType = SKULL;
 		HP = 4 * statMultiplier;
+		MAXHP = 4 * statMultiplier;
 		ATK = 4 * statMultiplier;
 		SPE = 1.5 * statMultiplier;
 		break;
 	case 2:
 		enemyType = VAMPIRE;
 		HP = 20 * statMultiplier;
+		MAXHP = 20 * statMultiplier;
 		ATK = 1 * statMultiplier;
 		SPE = 1 * statMultiplier;
 		break;
 	case 3:
 		enemyType = GOBLIN;
 		HP = 24 * statMultiplier;
+		MAXHP = 24 * statMultiplier;
 		ATK = 2 * statMultiplier;
 		SPE = 2 * statMultiplier;
 		break;
 	case 4:
 		enemyType = SLIMEBOSS;
-		HP = 1 * statMultiplier;
+		HP = 60 * statMultiplier;
+		MAXHP = 60 * statMultiplier;
 		ATK = 4 * statMultiplier;
 		SPE = 0.9 * statMultiplier;
 		break;
 	default:
 		enemyType = SKELE1;
 		HP = 20 * statMultiplier;
+		MAXHP = 20 * statMultiplier;
 		ATK = 1 * statMultiplier;
 		SPE = 1 * statMultiplier;
 		break;
@@ -386,6 +394,8 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	cInventoryManager = CInventoryManager::GetInstance();
+
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 
@@ -403,6 +413,7 @@ bool CEnemy2D::babySlimeInit(glm::vec2 bossPos)
 	//Determining enemy type randomly
 	enemyType = SLIMEBABY;
 	HP = 12 * statMultiplier;
+	MAXHP = 12 * statMultiplier;
 	ATK = 1 * statMultiplier;
 	SPE = 1 * statMultiplier;
 
@@ -501,6 +512,8 @@ bool CEnemy2D::slimeBossInit(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	cInventoryManager = CInventoryManager::GetInstance();
+
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 
@@ -522,6 +535,7 @@ bool CEnemy2D::slimeBossInit(void)
 	//Determining enemy type randomly
 	enemyType = SLIMEBOSS;
 	HP = 12 * statMultiplier;
+	MAXHP = 12 * statMultiplier;
 	ATK = 1 * statMultiplier;
 	SPE = 1 * statMultiplier;
 
@@ -600,6 +614,16 @@ bool CEnemy2D::slimeBossInit(void)
  */
 void CEnemy2D::Update(const double dElapsedTime)
 {
+	//Color tint display for HP
+	if (HP < (MAXHP / 2))
+	{
+		runtimeColour = glm::vec4(1.0, 0.67, 0.0, 1.0);
+	}
+	if (HP < ((MAXHP / 100) * 30))
+	{
+		runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+	}
+
 	//Melee attack cooldown
 	if (meleeCounter < 100)
 	{
