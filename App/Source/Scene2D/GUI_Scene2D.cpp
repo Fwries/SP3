@@ -1769,7 +1769,51 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::End();
 	if (prevWave < cScene2D->getPrevLevel())
 	{
-
+		ImGui::Begin("WAVE INCREASE ANNOUNCEMENT", NULL, wavesWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.05f, cSettings->iWindowHeight * 0.3f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(2.5f * relativeScale_y);
+		switch (cScene2D->getWaveLevel())
+		{
+			
+			case 3:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !! Monsters are coming faster!!!", cScene2D->getWaveLevel());
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "      BOSS SLIME HAS SPAWNED!!!         ");
+				break;
+				break;
+			}
+			case 2:
+			case 4:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !! Monsters are coming faster!!!", cScene2D->getWaveLevel());
+				break;
+			}
+			case 5:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !!   A NEW monster appears   !!!", cScene2D->getWaveLevel());
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "      BOSS SLIME HAS SPAWNED!!!         ");
+				break;
+			}
+			case 6:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !!   A NEW monster appears   !!!", cScene2D->getWaveLevel());
+				break;
+			}
+			case 7:
+			case 9:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "Wave %d !! The monsters are much stronger!!!", cScene2D->getWaveLevel());
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "        BOSS SLIME HAS SPAWNED!!!           ");
+				break;
+			}
+			default:
+			{
+				ImGui::TextColored(ImVec4(1, 0.67, 0, 1), "                Wave %d !!              ", cScene2D->getWaveLevel());
+				break;
+			}
+		}
+		ImGui::End();
 	}
 	//-------------------------------------------------------------------------------------------------------------------------------
 

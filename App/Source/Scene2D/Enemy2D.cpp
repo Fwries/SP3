@@ -189,17 +189,13 @@ bool CEnemy2D::Init(void)
 
 
 	//Determine monster difficulty
-	if (cScene2D->getWaveLevel() == 5)
+	if (cScene2D->getWaveLevel() == 7)
 	{
 		statMultiplier = 2;
 	}
-	else if (cScene2D->getWaveLevel() == 8)
+	else if (cScene2D->getWaveLevel() == 9)
 	{
 		statMultiplier = 3;
-	}
-	else if (cScene2D->getWaveLevel() == 10)
-	{
-		statMultiplier = 4;
 	}
 	//int randType = 3;
 	switch (randType)

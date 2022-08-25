@@ -277,7 +277,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			spawnBoss = true;
 		}
-		if (waveLevel == 4)
+		if (waveLevel == 5)
 		{
 			spawnDeterminer = 3;
 		}
