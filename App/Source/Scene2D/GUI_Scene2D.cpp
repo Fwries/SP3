@@ -186,7 +186,7 @@ bool CGUI_Scene2D::Init(void)
 		TurretImg[34].fileName = "Image/Turret/MidasTouch.png";
 
 		TurretImg[35].fileName = "Image/Turret/IronBurstTurret.png";
-		TurretImg[36].fileName = "Image/Turret/HotIronnTurret.png";
+		TurretImg[36].fileName = "Image/Turret/HotIronTurret.png";
 		TurretImg[37].fileName = "Image/Turret/ReinforcedIronTurret.png";
 
 		TurretImg[38].fileName = "Image/Turret/MultimultishotTurret.png";
@@ -221,7 +221,7 @@ bool CGUI_Scene2D::Init(void)
 		TurretImg[60].fileName = "Image/Turret/FrostbiteTurret.png";
 		TurretImg[61].fileName = "Image/Turret/EternalBlizzardTurret.png";
 
-		TurretImg[62].fileName = "Image/Turret/GiantSnowball.png";
+		TurretImg[62].fileName = "Image/Turret/GiantSnowballTurret.png";
 		TurretImg[63].fileName = "Image/Turret/SnowStarTurret.png";
 		TurretImg[64].fileName = "Image/Turret/EternalBlizzardTurret.png";
 
@@ -237,7 +237,7 @@ bool CGUI_Scene2D::Init(void)
 		TurretImg[72].fileName = "Image/Turret/FinalThunderTurret.png";
 		TurretImg[73].fileName = "Image/Turret/TripleThunderTurret.png";
 
-		TurretImg[74].fileName = "Image/Turret/YousteriousTurret.png";
+		TurretImg[74].fileName = "Image/Turret/Yousterious.png";
 		TurretImg[75].fileName = "Image/Turret/TheysteriousTurret.png";
 		TurretImg[76].fileName = "Image/Turret/WesteriousTurret.png";
 	}
@@ -1024,7 +1024,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				{
 					//Turret Upgrade Icons
 					{
-						CImageLoader* Image = CImageLoader::GetInstance();
 						// Left side Upgrades
 						switch (turretVector[cScene2D->GetTurretNo()]->GetNextTurret(true))
 						{
@@ -1036,6 +1035,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						case 2011:
 							LeftUpgrade = TurretImg[2].textureID;
 							LeftDesc = "A Heavy-Duty Turret with improved Damage and Health.";
+							LeftTowerCosts = 2;
 							break;
 						case 2021:
 							LeftUpgrade = TurretImg[5].textureID;
@@ -1248,6 +1248,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						case 2012:
 							RightUpgrade = TurretImg[3].textureID;
 							RightDesc = "A Turret with fast Attack Speed.";
+							RightTowerCosts = 2;
 							break;
 						case 2022:
 							RightUpgrade = TurretImg[6].textureID;
@@ -1452,6 +1453,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 						// Turret Costs 
 						switch (LeftTowerCosts)
 						{
+						// Tier 1 Physical===================================================
 						case 1:
 							cInventoryItem = cInventoryManager->GetItem("Stone");
 							Material1 = cInventoryItem->GetTextureID();
@@ -1463,11 +1465,30 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							Material3 = cInventoryItem->GetTextureID();
 							Cost3 = "1";
 							break;
+						// ==================================================================
+						// Tier 2 Physical===================================================
+						case 2:
+							cInventoryItem = cInventoryManager->GetItem("Stone");
+							Material1 = cInventoryItem->GetTextureID();
+							Cost1 = "2";
+							cInventoryItem = cInventoryManager->GetItem("Iron");
+							Material2 = cInventoryItem->GetTextureID();
+							Cost2 = "2";
+							cInventoryItem = cInventoryManager->GetItem("Bronze");
+							Material3 = cInventoryItem->GetTextureID();
+							Cost3 = "1";
+							break;
+						// ==================================================================
+						// Tier 2 Elemental==================================================
+						case 3:
+							break;
+						// ==================================================================
 						default:
 							break;
 						}
 						switch (RightTowerCosts)
 						{
+						// Tier 1 Elemental===================================================
 						case 1:
 							cInventoryItem = cInventoryManager->GetItem("Stone");
 							Material4 = cInventoryItem->GetTextureID();
@@ -1479,6 +1500,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							Material6 = cInventoryItem->GetTextureID();
 							Cost6 = "1";
 							break;
+						// ====================================================================
 						default:
 							break;
 						}
