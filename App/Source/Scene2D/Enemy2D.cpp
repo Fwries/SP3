@@ -523,7 +523,7 @@ bool CEnemy2D::slimeBossInit(void)
 
 	//Set the position of the enemy randomly on the edge of the map
 	int edge = rand() % 4;
-	int X = 1, Y = 1;
+	int X = 32, Y = 1;
 	if (cMap2D->GetMapInfo(X, Y) != 0)
 	{
 		return false;
@@ -1721,7 +1721,7 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipHorizontalDirection();
 			//vec2Index = i32vec2OldIndex;
-			i32vec2NumMicroSteps.x = 0;
+			//i32vec2NumMicroSteps.x = 0;
 		}
 
 		faceLeft = true;
@@ -1750,7 +1750,7 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipHorizontalDirection();
 			//vec2Index = i32vec2OldIndex;
-			i32vec2NumMicroSteps.x = 0;
+			//i32vec2NumMicroSteps.x = 0;
 		}
 
 		faceLeft = false;
@@ -1781,7 +1781,7 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipVerticalDirection();
 			//vec2Index = i32vec2OldIndex;
-			i32vec2NumMicroSteps.y = 0;
+			//i32vec2NumMicroSteps.y = 0;
 		}
 		InteractWithPlayer();
 	}
@@ -1807,7 +1807,7 @@ void CEnemy2D::UpdatePosition(glm::vec2 destination)
 		{
 			//FlipVerticalDirection();
 			//vec2Index = i32vec2OldIndex;
-			i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS);
+			//i32vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS);
 		}
 		InteractWithPlayer();
 	}
