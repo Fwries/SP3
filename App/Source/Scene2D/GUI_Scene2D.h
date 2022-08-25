@@ -136,6 +136,9 @@ protected:
 	int LeftTowerCosts;
 	// Right Tower Costs(1 = Tier 1 Elemental | 2 = Tier 2 Elemental| 3 = Tier 3 Elemental)
 	int RightTowerCosts;
+	void ChangeTurretCosts();
+	void LeftCostRemove();
+	void RightCostRemove();
 
 	int prevWave;
 
