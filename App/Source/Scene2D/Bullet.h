@@ -70,7 +70,7 @@ public:
 
 	void PreRender();
 
-	void Render();
+	void Render(const glm::mat4& view, const glm::mat4& projection);
 
 	void PostRender();
 

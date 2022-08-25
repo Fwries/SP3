@@ -172,6 +172,29 @@ void CEntity2D::Render(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void CEntity2D::Render(const glm::mat4& view, const glm::mat4& projection)
+{
+	// get matrix's uniform location and set matrix
+	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
+	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
+		vec2UVCoordinate.y,
+		0.0f));
+	// Update the shaders with the latest transform
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(projection * view * transform));
+
+	// Get the texture to be rendered
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, iTextureID);
+	glBindVertexArray(VAO);
+
+	//CS: Use mesh to render
+	mesh->Render();
+
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */

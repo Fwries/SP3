@@ -653,7 +653,7 @@ void CTurret::PreRender(void)
 /**
  @brief Render this instance
  */
-void CTurret::Render(void)
+void CTurret::Render(const glm::mat4& view, const glm::mat4& projection)
 {
 	if (!bIsActive)
 		return;
@@ -669,7 +669,7 @@ void CTurret::Render(void)
 		vec2UVCoordinate.y,
 		0.0f));
 	// Update the shaders with the latest transform
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(projection * view * transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
 
 	// Get the texture to be rendered
@@ -680,7 +680,7 @@ void CTurret::Render(void)
 	quadMesh->Render();
 	//animatedMisc->Render();
 	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
-		cBulletGenerator->GetBulletsVector()[i]->Render();
+		cBulletGenerator->GetBulletsVector()[i]->Render(view, projection);
 	glBindVertexArray(0);
 
 }

@@ -63,7 +63,7 @@ public:
 	void PreRender(void);
 
 	// Render
-	void Render(void);
+	void Render(const glm::mat4& view, const glm::mat4& projection);
 
 	// PostRender
 	void PostRender(void);

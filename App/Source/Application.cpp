@@ -226,6 +226,9 @@ bool Application::Init(void)
 		return false;
 	}
 
+	// For https://docs.gl/
+	std::cout << glGetString(GL_VERSION) << std::endl;
+
 	// Initialise the CSoundController singleton
 	CSoundController::GetInstance()->Init();
 
@@ -349,22 +352,6 @@ void Application::Destroy(void)
 
 	// Destroy the CSettings instance
 	CSettings::GetInstance()->Destroy();
-}
-
-/**
- @brief Get window height
- */
-int Application::GetWindowHeight(void) const
-{
-	return cSettings->iWindowHeight;
-}
-
-/**
- @brief Get window width
- */
-int Application::GetWindowWidth(void) const
-{
-	return cSettings->iWindowWidth;
 }
 
 /**

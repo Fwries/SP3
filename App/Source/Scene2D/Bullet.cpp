@@ -210,7 +210,7 @@ void CBullet::PreRender()
 	CShaderManager::GetInstance()->Use(sShaderName);
 }
 
-void CBullet::Render()
+void CBullet::Render(const glm::mat4& view, const glm::mat4& projection)
 {
 	if (!bIsActive)
 		return;
@@ -219,13 +219,11 @@ void CBullet::Render()
 	// Get matrix's uniform location and set matrix
 	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
 	unsigned int colorLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "runtimeColour");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 	//transform = glm::rotate(transform, RotateAngle * (3.14159256f / 180), glm::vec3(1.0f, 0.0f, 0.0f));
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x, vec2UVCoordinate.y, 0.0f));
 	// Update the shaders with the latest transform
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(projection * view * transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
 
 	// Bind textures on corresponding texture units

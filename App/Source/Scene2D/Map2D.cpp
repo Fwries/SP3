@@ -646,12 +646,11 @@ void CMap2D::PreRender(void)
 /**
  @brief Render Render this instance
  */
-void CMap2D::Render(void)
+void CMap2D::Render(const glm::mat4& view, const glm::mat4& projection)
 {
 	// get matrix's uniform location and set matrix
 	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-	//cout << cPlayer2D->vec2Index.x << "   " << cPlayer2D->vec2Index.y << endl;
 	// Render
 	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
@@ -661,12 +660,9 @@ void CMap2D::Render(void)
 			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
 															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
 															0.0f));
-			/*transform = glm::translate(transform, -glm::vec3(cPlayer2D->vec2Index.x * 0.0625f - (cSettings->NUM_TILES_XAXIS / 2 * 0.0625f),
-				cPlayer2D->vec2Index.y * 0.08333f - (cSettings->NUM_TILES_YAXIS / 2 * 0.08333f), 0.0f));*/
-			//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
 			// Update the shaders with the latest transform
-			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(projection * view * transform));
 
 			// Render a tile
 			RenderTile(uiRow, uiCol);
