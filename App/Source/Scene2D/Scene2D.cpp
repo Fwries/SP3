@@ -255,7 +255,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		spawnBoss = false;
 	}
 	//cout << remainder(elapsed, 60) << endl;
-	if (remainder(elapsed, 5) >= 0 && remainder(elapsed, 5) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
+	if (remainder(elapsed, 30) >= 0 && remainder(elapsed, 30) <= 0.025 && elapsed >= 6 && waveLevel <= 9)
 	{
 		if (spawnRate > 4)
 		{
@@ -680,7 +680,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	}
 	if (cKeyboardController->IsKeyPressed('H'))
 	{
-		if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 150)
+		if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 150)
 		{
 			for (int i = 0; i < turretVector.size(); i++)
 			{
@@ -691,7 +691,7 @@ bool CScene2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 150)
+		else if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 150)
 		{
 			for (int i = 0; i < turretVector.size(); i++)
 			{
@@ -702,7 +702,7 @@ bool CScene2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 150)
+		else if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 150)
 		{
 			for (int i = 0; i < turretVector.size(); i++)
 			{
@@ -713,7 +713,7 @@ bool CScene2D::Update(const double dElapsedTime)
 				}
 			}
 		}
-		else if (cInventoryManager->GetItem("Turret")->GetCount() > 0 && cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 150)
+		else if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 150)
 		{
 			for (int i = 0; i < turretVector.size(); i++)
 			{

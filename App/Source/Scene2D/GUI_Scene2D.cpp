@@ -125,7 +125,7 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Bronze", "Image/Materials/Bronze.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
-	cInventoryItem = cInventoryManager->Add("Turret", "Image/Turret/Turret.png", 999, 100);
+	cInventoryItem = cInventoryManager->Add("Turret", "Image/Turret/Turret.png", 999, 00);
 	cInventoryItem = cInventoryManager->Add("WoodWall", "Image/Turret/WoodWall.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("StoneWall", "Image/Turret/StoneWall.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("IronWall", "Image/Turret/IronWall.png", 999, 100);
@@ -1678,7 +1678,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	}
 	ImGui::PopStyleColor(1);
 	ImGui::End();
-
+	//This is the line that I cannot cross
+	
 	// Render the Lives
 	ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoBackground |
