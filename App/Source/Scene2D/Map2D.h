@@ -133,6 +133,8 @@ public:
 	// Print out details about this class instance in the console window
 	void PrintSelf(void) const;
 
+	const glm::vec2& GetPlayerSpawnIndex() const;
+
 	bool bIsActive;
 	bool hitBox;
 
@@ -160,6 +162,8 @@ protected:
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
+
+	glm::vec2 playerSpawnIndex;
 
 	// Constructor
 	CMap2D(void);

@@ -792,6 +792,8 @@ bool CMap2D::LoadMap(string filename, const unsigned int uiCurLevel)
 		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
 		{
 			arrMapInfo[uiCurLevel][uiRow][uiCol].value = (int)stoi(row[uiCol]);
+			if (arrMapInfo[uiCurLevel][uiRow][uiCol].value == 200)
+				playerSpawnIndex = glm::vec2((float)uiCol, (float)(cSettings->NUM_TILES_YAXIS - uiRow) - 1.f);
 		}
 	}
 
@@ -1161,4 +1163,9 @@ unsigned int heuristic::euclidean(const glm::vec2& v1, const glm::vec2& v2, int 
 {
 	glm::vec2 delta = v2 - v1;
 	return static_cast<unsigned int>(weight * sqrt((delta.x * delta.x) + (delta.y * delta.y)));
+}
+
+const glm::vec2& CMap2D::GetPlayerSpawnIndex() const
+{
+	return playerSpawnIndex;
 }

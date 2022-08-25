@@ -144,7 +144,7 @@ bool CPlayer2D::Init(void)
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();
 	// Add a Lives icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 20, 20);
+	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 20, 1);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Bullets", "Image/Scene2D/Bullet.png", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -216,6 +216,23 @@ void CPlayer2D::Update(const double dElapsedTime)
 {
 	static double time = 0.0;
 	time += dElapsedTime;
+
+	if (cInventoryManager->GetItem("Lives")->GetCount() <= 0)
+	{
+		vec2Index = cMap2D->GetPlayerSpawnIndex();
+		vec2NumMicroSteps.x = vec2NumMicroSteps.y = 0.f;
+		cInventoryManager->GetItem("Lives")->Add(100);
+		cInventoryManager->GetItem("Plank")->Remove(cInventoryManager->GetItem("Plank")->GetCount());
+		cInventoryManager->GetItem("Stone")->Remove(cInventoryManager->GetItem("Stone")->GetCount());
+		cInventoryManager->GetItem("Iron")->Remove(cInventoryManager->GetItem("Iron")->GetCount());
+		cInventoryManager->GetItem("Silver")->Remove(cInventoryManager->GetItem("Silver")->GetCount());
+		cInventoryManager->GetItem("Bronze")->Remove(cInventoryManager->GetItem("Bronze")->GetCount());
+		cInventoryManager->GetItem("Gold")->Remove(cInventoryManager->GetItem("Gold")->GetCount());
+		cInventoryManager->GetItem("Turret")->Remove(cInventoryManager->GetItem("Turret")->GetCount());
+		cInventoryManager->GetItem("WoodWall")->Remove(cInventoryManager->GetItem("WoodWall")->GetCount());
+		cInventoryManager->GetItem("StoneWall")->Remove(cInventoryManager->GetItem("StoneWall")->GetCount());
+		cInventoryManager->GetItem("IronWall")->Remove(cInventoryManager->GetItem("IronWall")->GetCount());
+	}
 
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -482,20 +499,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	// Interact with the Map
 	InteractWithMap();
-
-	if (cInventoryManager->GetItem("Lives")->GetCount() <= 0)
-	{
-		vec2Index = glm::vec2((float)cSettings->NUM_TILES_XAXIS / 2.f, (float)cSettings->NUM_TILES_YAXIS / 2.f);
-		cInventoryManager->GetItem("Plank")->Remove(cInventoryManager->GetItem("Plank")->GetCount());
-		cInventoryManager->GetItem("Stone")->Remove(cInventoryManager->GetItem("Stone")->GetCount());
-		cInventoryManager->GetItem("Iron")->Remove(cInventoryManager->GetItem("Iron")->GetCount());
-		cInventoryManager->GetItem("Silver")->Remove(cInventoryManager->GetItem("Silver")->GetCount());
-		cInventoryManager->GetItem("Bronze")->Remove(cInventoryManager->GetItem("Bronze")->GetCount());
-		cInventoryManager->GetItem("Gold")->Remove(cInventoryManager->GetItem("Gold")->GetCount());
-		cInventoryManager->GetItem("Coal")->Remove(cInventoryManager->GetItem("Coal")->GetCount());
-		cInventoryManager->GetItem("Coin")->Remove(cInventoryManager->GetItem("Coin")->GetCount());
-		cInventoryManager->GetItem("Lives")->Add(100);
-	}
 
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_F8))
 	{
