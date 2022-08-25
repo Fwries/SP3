@@ -471,6 +471,40 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				// Store the texture ID into MapOfTextureIDs
 				MapOfTextureIDs.insert(pair<int, int>(150, iTextureID));
 			}
+
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WoodWall.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Turret/WoodWall.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(152, iTextureID));
+			}
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneWall.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Turret/StoneWall.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(153, iTextureID));
+			}
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronWall.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Turret/IronWall.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(154, iTextureID));
+			}
 		}
 
 		//Base

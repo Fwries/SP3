@@ -537,8 +537,8 @@ bool CEnemy2D::slimeBossInit(void)
 	enemyType = SLIMEBOSS;
 	HP = 120 * statMultiplier;
 	MAXHP = 12 * statMultiplier;
-	ATK = 1 * statMultiplier;
-	SPE = 1 * statMultiplier;
+	ATK = 3 * statMultiplier;
+	SPE = 0.6 * statMultiplier;
 
 	//cout << enemyType << endl;
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
