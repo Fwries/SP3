@@ -39,13 +39,13 @@ CTurret::CTurret(void)
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
 
 	// Initialise vecIndex
-	vec2Index = glm::i32vec2(0);
+	//vec2Index = glm::i32vec2(0);
 
 	// Initialise vecNumMicroSteps
 	i32vec2NumMicroSteps = glm::i32vec2(0);
 
 	// Initialise vec2UVCoordinate
-	vec2UVCoordinate = glm::vec2(0.0f);
+	//vec2UVCoordinate = glm::vec2(0.0f);
 
 	i32vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
 	i32vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
@@ -1427,6 +1427,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		range = 1000.0;
 		break;
 
 	case FLAME_SPEAR_TURRET:
@@ -1941,6 +1942,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		range = 1000.0;
 		break;
 	case ROBOT_PLAYER:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RobotPlayer.png", true);

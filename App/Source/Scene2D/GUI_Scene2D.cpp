@@ -125,7 +125,7 @@ bool CGUI_Scene2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Bronze", "Image/Materials/Bronze.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Gold", "Image/Materials/Gold.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("Coal", "Image/Materials/Coal.png", 999, 0);
-	cInventoryItem = cInventoryManager->Add("Turret", "Image/Turret/Turret.png", 999, 100);
+	cInventoryItem = cInventoryManager->Add("Turret", "Image/Turret/Turret.png", 999, 00);
 	cInventoryItem = cInventoryManager->Add("WoodWall", "Image/Turret/WoodWall.png", 999, 0);
 	cInventoryItem = cInventoryManager->Add("StoneWall", "Image/Turret/StoneWall.png", 999, 100);
 	cInventoryItem = cInventoryManager->Add("IronWall", "Image/Turret/IronWall.png", 999, 100);
@@ -1700,8 +1700,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	}
 	ImGui::PopStyleColor(1);
 	ImGui::End();
-
-	// Render the Lives
+	//This is the line that I cannot cross
+	
+	// Render the Lives---------------------------------------------------------------------------------------------------
 	ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
@@ -1731,15 +1732,42 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d", cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 	ImGui::End();
-	// Render Prommpt 
+	//-------------------------------------------------------------------------------------------------------------------------------
+	// Render Prommpt ---------------------------------------------------------------------------------------------------------------
 	if (cPlayer2D->GetMaterialRange() == true)
 	{
 		ImGui::Begin("Prompt", NULL, livesWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.35f, cSettings->iWindowHeight * 0.45f));
 		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5 * relativeScale_y);
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press 'X' to collect materials");
 		ImGui::End();
 	}
+	//-------------------------------------------------------------------------------------------------------------------------------
+	// Wave level--------------------------------------------------------------------------------------------------------------------
+	ImGuiWindowFlags wavesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("Wave level", NULL, wavesWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.0f, cSettings->iWindowHeight * 0.01f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Wave Level: %d", cScene2D->getWaveLevel());
+	ImGui::End();
+	ImGui::Begin("Elapsed time", NULL, wavesWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.0f, cSettings->iWindowHeight * 0.09f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Time elapsed: %d", cScene2D->getElapsed());
+	ImGui::End();
+	//-------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 	/*ImGui::Begin("Invisible window", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));

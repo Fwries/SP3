@@ -492,7 +492,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cInventoryManager->GetItem("Silver")->Remove(cInventoryManager->GetItem("Silver")->GetCount());
 		cInventoryManager->GetItem("Bronze")->Remove(cInventoryManager->GetItem("Bronze")->GetCount());
 		cInventoryManager->GetItem("Gold")->Remove(cInventoryManager->GetItem("Gold")->GetCount());
-		cInventoryManager->GetItem("Coal")->Remove(cInventoryManager->GetItem("Coal")->GetCount());
 		cInventoryManager->GetItem("Coin")->Remove(cInventoryManager->GetItem("Coin")->GetCount());
 		cInventoryManager->GetItem("Lives")->Add(100);
 	}
@@ -505,7 +504,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cInventoryManager->GetItem("Silver")->Add(cInventoryItem->GetMaxCount());
 		cInventoryManager->GetItem("Bronze")->Add(cInventoryItem->GetMaxCount());
 		cInventoryManager->GetItem("Gold")->Add(cInventoryItem->GetMaxCount());
-		cInventoryManager->GetItem("Coal")->Add(cInventoryItem->GetMaxCount());
+		cInventoryManager->GetItem("Turret")->Add(cInventoryItem->GetMaxCount());
 	}
 
 	// Randomly generates tiles
