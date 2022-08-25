@@ -1427,6 +1427,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		range = 1000.0;
 		break;
 
 	case FLAME_SPEAR_TURRET:
@@ -1941,6 +1942,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		range = 1000.0;
 		break;
 	case ROBOT_PLAYER:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RobotPlayer.png", true);
