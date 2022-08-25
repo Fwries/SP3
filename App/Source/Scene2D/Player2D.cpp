@@ -454,6 +454,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	for (unsigned i = 0; i < cBulletGenerator->GetBulletsVector().size(); ++i)
 	{
 		cBulletGenerator->GetBulletsVector()[i]->Update();
+		cBulletGenerator->GetBulletsVector()[i]->SetEnemyVector(cScene2D->getEnemyVec());
 	}
 
 	if (FaceDirection == LEFT)

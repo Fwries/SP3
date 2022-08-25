@@ -279,7 +279,6 @@ void CBullet::findNearestEnemy()
 {
 	glm::vec2 NEWLive;
 	nearestEnemy = nullptr;
-	cout << enemyVector.size() << endl;
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 		glm::vec2 currIndex = glm::vec2(enemyVector[i]->vec2Index.x, enemyVector[i]->vec2Index.y);
