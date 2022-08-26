@@ -184,7 +184,7 @@ bool CEnemy2D::Init(void)
 
 	//Determining enemy type randomly
 	//randType = rand() % cScene2D->getSpawnDeterminer();
-	randType = 3;
+	randType = 69;
 	
 
 
