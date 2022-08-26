@@ -218,6 +218,9 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\goblinSteal.wav"), 11, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_damage_hit1.wav"), 12, true);
 
+	//Other sounds
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\crafting.wav"), 13, true);
+
 	return true;
 }
 
