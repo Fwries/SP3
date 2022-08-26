@@ -820,20 +820,22 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKULL:
 			case GOBLIN:
 			{
-				//Pathfinding method
 				auto path = cMap2D->PathFind(vec2Index, cPlayer2D->vec2Index, heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
+				int firstDest = 0;
 				for (const auto& coord : path)
 				{
+					/*std::cout << coord.x << ", " << coord.y << "\n";*/
 					if (bFirstPosition == true)
 					{
-						// Set a destination
-						i32vec2Destination = coord;
-						// Calculate the direction between enemy2D and this destination
-						i32vec2Direction = i32vec2Destination - vec2Index;
-						/*std::cout << coord.x << ", " << coord.y << "\n";*/
-						bFirstPosition = false;
+						if (firstDest == 0)
+						{
+							// Set a destination
+							i32vec2Destination = coord;
+							// Calculate the direction between enemy2D and this destination
+							i32vec2Direction = i32vec2Destination - vec2Index;
+						}
 					}
 					else
 					{
@@ -847,6 +849,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 							break;
 						}
 					}
+					firstDest++;
 				}
 				UpdatePosition(cPlayer2D->vec2Index);
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
@@ -883,16 +886,19 @@ void CEnemy2D::Update(const double dElapsedTime)
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 					//Calculate new destination
 					bool bFirstPosition = true;
+					int firstDest = 0;
 					for (const auto& coord : path)
 					{
+						/*std::cout << coord.x << ", " << coord.y << "\n";*/
 						if (bFirstPosition == true)
 						{
-							// Set a destination
-							i32vec2Destination = coord;
-							// Calculate the direction between enemy2D and this destination
-							i32vec2Direction = i32vec2Destination - vec2Index;
-							/*std::cout << coord.x << ", " << coord.y << "\n";*/
-							bFirstPosition = false;
+							if (firstDest == 0)
+							{
+								// Set a destination
+								i32vec2Destination = coord;
+								// Calculate the direction between enemy2D and this destination
+								i32vec2Direction = i32vec2Destination - vec2Index;
+							}
 						}
 						else
 						{
@@ -906,6 +912,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 								break;
 							}
 						}
+						firstDest++;
 					}
 					UpdatePosition(posToGo);
 					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
@@ -926,23 +933,21 @@ void CEnemy2D::Update(const double dElapsedTime)
 					glm::vec2 posToGo = findNearestBasePart();
 					//cout << posToGo.x << "   " << posToGo.y << endl;
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
-					if (path.size() == 0)
-					{
-						sCurrentFSM = BLOCKED;
-						iFSMCounter = 0;
-					}
 					//Calculate new destination
 					bool bFirstPosition = true;
+					int firstDest = 0;
 					for (const auto& coord : path)
 					{
+						/*std::cout << coord.x << ", " << coord.y << "\n";*/
 						if (bFirstPosition == true)
 						{
-							// Set a destination
-							i32vec2Destination = coord;
-							// Calculate the direction between enemy2D and this destination
-							i32vec2Direction = i32vec2Destination - vec2Index;
-							/*std::cout << coord.x << ", " << coord.y << "\n";*/
-							bFirstPosition = false;
+							if (firstDest == 0)
+							{
+								// Set a destination
+								i32vec2Destination = coord;
+								// Calculate the direction between enemy2D and this destination
+								i32vec2Direction = i32vec2Destination - vec2Index;
+							}
 						}
 						else
 						{
@@ -956,6 +961,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 								break;
 							}
 						}
+						firstDest++;
 					}
 					UpdatePosition(glm::vec2(30, 34));
 					glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
