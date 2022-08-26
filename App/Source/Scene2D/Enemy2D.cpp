@@ -184,7 +184,7 @@ bool CEnemy2D::Init(void)
 
 	//Determining enemy type randomly
 	//randType = rand() % cScene2D->getSpawnDeterminer();
-	randType = 69;
+	randType = 3;
 	
 
 
@@ -768,7 +768,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKELE1:
 			case SLIMEBOSS:
 			case SLIMEBABY:
-			case GOBLIN:
 			{
 				glm::vec2 posToGo = findNearestBasePart();
 				//auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
@@ -847,6 +846,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 
 			case SKULL:
+			case GOBLIN:
 			{
 				//Pathfinding method
 				auto path = cMap2D->PathFind(vec2Index, cPlayer2D->vec2Index, heuristic::euclidean, 10);
@@ -1019,7 +1019,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKELE1:
 			case SLIMEBOSS:
 			case SLIMEBABY:
-			case GOBLIN:
 			{
 				if (iFSMCounter >= 40)
 				{
@@ -1065,6 +1064,53 @@ void CEnemy2D::Update(const double dElapsedTime)
 							/*cout << cScene2D->getTurretVec()[i]->GetTurretHP() << "     " << cScene2D->getTurretVec().size() << endl;*/
 						}
 					}
+				}
+				break;
+			}
+			case GOBLIN:
+			{
+				if (iFSMCounter >= 40)
+				{
+					if (cInventoryManager->GetItem("Iron")->GetCount() > 0 || cInventoryManager->GetItem("Bronze")->GetCount() > 0 ||
+						cInventoryManager->GetItem("Silver")->GetCount() > 0 || cInventoryManager->GetItem("Gold")->GetCount() > 0)
+					{
+						if (cInventoryManager->GetItem("Iron")->GetCount() > 0)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Iron");
+							cInventoryItem->Remove(1);
+						}
+						if (cInventoryManager->GetItem("Bronze")->GetCount() > 0)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Bronze");
+							cInventoryItem->Remove(1);
+						}
+						if (cInventoryManager->GetItem("Silver")->GetCount() > 0)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Silver");
+							cInventoryItem->Remove(1);
+						}
+						if (cInventoryManager->GetItem("Gold")->GetCount() > 0)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Gold");
+							cInventoryItem->Remove(1);
+						}
+						cSoundController->PlaySoundByID(11);
+					}
+					else
+					{
+						if (iFSMCounter >= 40)
+						{
+							cPlayer2D->UpdateHealthLives();
+							cSoundController->PlaySoundByID(12);
+							iFSMCounter = 0;
+						}
+					}
+					iFSMCounter = 0;
+				}
+				if (distance(vec2Index, cPlayer2D->vec2Index) >= 2)
+				{
+					sCurrentFSM = MOVING;
+					iFSMCounter = 0;
 				}
 				break;
 			}

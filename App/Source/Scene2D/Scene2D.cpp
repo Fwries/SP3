@@ -215,6 +215,8 @@ bool CScene2D::Init(void)
 	//sounds for damage
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretHit.ogg"), 9, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyHit.ogg"), 10, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\goblinSteal.wav"), 11, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_damage_hit1.wav"), 12, true);
 
 	return true;
 }
