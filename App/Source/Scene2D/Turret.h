@@ -340,8 +340,6 @@ protected:
 
 	int FaceDirection;
 
-	float oreGeneratorTimer;
-
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
 

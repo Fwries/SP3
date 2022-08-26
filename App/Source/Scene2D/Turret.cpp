@@ -132,10 +132,8 @@ bool CTurret::Init(int uiRow, int uiCol)
 	TurretCooldown = 1.5;
 	range = 10.0;
 	Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
-	upgradeLeft = ORE_GENERATOR;
+	upgradeLeft = STONE_TURRET;
 	upgradeRight = ELEMENTAL_TURRET;
-
-	oreGeneratorTimer = 0;
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
@@ -295,7 +293,7 @@ void CTurret::Update(const double dElapsedTime)
 					{
 						Path = 3;
 					}
-					int Tier = rand() % 5 + 1;
+					int Tier = rand() % 3 + 1;
 					int BranchNo = 0;
 					switch (Tier)
 					{
@@ -303,17 +301,17 @@ void CTurret::Update(const double dElapsedTime)
 						BranchNo = 1;
 						if (Path == 3)
 						{
-							Path = rand() % 3 + 1;
+							Path = rand() % 1 + 1;
 						}
 						break;
 					case 2:
-						BranchNo = rand() % 3 + 1;
+						BranchNo = rand() % 2 + 1;
 						break;
 					case 3:
-						BranchNo = rand() % 7 + 1;
+						BranchNo = rand() % 5 + 1;
 						break;
 					case 4:
-						BranchNo = rand() % 19 + 1;
+						BranchNo = rand() % 17 + 1;
 						break;
 					}
 					upgradeLeft = int(Path + BranchNo * 10 + Tier * 1000);
@@ -329,7 +327,6 @@ void CTurret::Update(const double dElapsedTime)
 					cInventoryItem->Add(1);
 					cInventoryItem = cInventoryManager->GetItem("Bronze");
 					cInventoryItem->Add(1);
-					oreGeneratorTimer = 0;
 					break;
 
 				case ROBOT_PLAYER:
