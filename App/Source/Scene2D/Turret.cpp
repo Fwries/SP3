@@ -89,6 +89,8 @@ bool CTurret::Init(int uiRow, int uiCol)
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 
+	cInventoryManager = CInventoryManager::GetInstance();
+
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
