@@ -692,7 +692,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			for (int i = 0; i < turretVector.size(); i++)
 			{
-				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x - 1,cPlayer2D->vec2Index.y))
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x - 1,cPlayer2D->vec2Index.y) && turretVector[i]->GetNextTurret(true)!=-1)
 				{
 					cGUI_Scene2D->OpenUpgrade();
 					TurretNo = i;
@@ -703,7 +703,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			for (int i = 0; i < turretVector.size(); i++)
 			{
-				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x + 1, cPlayer2D->vec2Index.y))
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x + 1, cPlayer2D->vec2Index.y) && turretVector[i]->GetNextTurret(true) != -1)
 				{
 					cGUI_Scene2D->OpenUpgrade();
 					TurretNo = i;
@@ -714,7 +714,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			for (int i = 0; i < turretVector.size(); i++)
 			{
-				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.y - 1))
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.y - 1) && turretVector[i]->GetNextTurret(true) != -1)
 				{
 					cGUI_Scene2D->OpenUpgrade();
 					TurretNo = i;
@@ -725,7 +725,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		{
 			for (int i = 0; i < turretVector.size(); i++)
 			{
-				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.y + 1))
+				if (turretVector[i]->getTurretPos() == glm::vec2(cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.y + 1) && turretVector[i]->GetNextTurret(true) != -1)
 				{
 					cGUI_Scene2D->OpenUpgrade();
 					TurretNo = i;
