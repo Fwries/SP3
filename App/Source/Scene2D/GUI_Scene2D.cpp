@@ -805,7 +805,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 								ImGui::EndChild();
 								ImGui::SetWindowFontScale(1.5 * relativeScale_y);
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x3");
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x1");
 							}
 							ImGui::EndChild();
 						}
@@ -840,7 +840,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 								ImGui::EndChild();
 								ImGui::SetWindowFontScale(1.5 * relativeScale_y);
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x3");
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x1");
 							}
 							ImGui::EndChild();
 						}
@@ -875,7 +875,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 								ImGui::EndChild();
 								ImGui::SetWindowFontScale(1.5 * relativeScale_y);
 								ImGui::SameLine((float)cSettings->iWindowWidth * 0.08f);
-								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x3");
+								ImGui::TextColored(ImVec4(1, 1, 1, 1), "x1");
 							}
 							ImGui::EndChild();
 						}
@@ -904,23 +904,23 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 											}
 											break;
 										case 1:
-											if (cInventoryManager->GetItem("Plank")->GetCount() >= 3)
+											if (cInventoryManager->GetItem("Plank")->GetCount() >= 1)
 											{
-												cInventoryManager->GetItem("Plank")->Remove(3);
+												cInventoryManager->GetItem("Plank")->Remove(1);
 												cInventoryManager->GetItem("WoodWall")->Add(1);
 											}
 											break; 
 										case 2:
-											if (cInventoryManager->GetItem("Stone")->GetCount() >= 3)
+											if (cInventoryManager->GetItem("Stone")->GetCount() >= 1)
 											{
-												cInventoryManager->GetItem("Stone")->Remove(3);
+												cInventoryManager->GetItem("Stone")->Remove(1);
 												cInventoryManager->GetItem("StoneWall")->Add(1);
 											}
 											break;
 										case 3:
-											if (cInventoryManager->GetItem("Iron")->GetCount() >= 3)
+											if (cInventoryManager->GetItem("Iron")->GetCount() >= 1)
 											{
-												cInventoryManager->GetItem("Iron")->Remove(3);
+												cInventoryManager->GetItem("Iron")->Remove(1);
 												cInventoryManager->GetItem("IronWall")->Add(1);
 											}
 											break;
