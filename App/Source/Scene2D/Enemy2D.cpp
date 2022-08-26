@@ -183,8 +183,8 @@ bool CEnemy2D::Init(void)
 
 
 	//Determining enemy type randomly
-	randType = rand() % cScene2D->getSpawnDeterminer();
-	//randType = 2;
+	//randType = rand() % cScene2D->getSpawnDeterminer();
+	randType = 3;
 	
 
 
@@ -537,8 +537,8 @@ bool CEnemy2D::slimeBossInit(void)
 	enemyType = SLIMEBOSS;
 	HP = 120 * statMultiplier;
 	MAXHP = 12 * statMultiplier;
-	ATK = 1 * statMultiplier;
-	SPE = 1 * statMultiplier;
+	ATK = 3 * statMultiplier;
+	SPE = 0.6 * statMultiplier;
 
 	//cout << enemyType << endl;
 	Startvec2Index = vec2Index = glm::i32vec2(X, Y);
@@ -692,6 +692,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		}
 	}
 
+	//Status handler
 	switch (status)
 	{
 		case BURN:
@@ -734,6 +735,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	MoveCooldown += dElapsedTime;
 	AttackCooldown += dElapsedTime;
 
+	//FSM handler
 	switch (sCurrentFSM)
 	{
 	case MOVING:
@@ -766,22 +768,53 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKELE1:
 			case SLIMEBOSS:
 			case SLIMEBABY:
-			case GOBLIN:
 			{
 				glm::vec2 posToGo = findNearestBasePart();
+				//auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
+				////Calculate new destination
+				//bool bFirstPosition = true;
+				//for (const auto& coord : path)
+				//{
+				//	if (bFirstPosition == true)
+				//	{
+				//		// Set a destination
+				//		i32vec2Destination = coord;
+				//		// Calculate the direction between enemy2D and this destination
+				//		i32vec2Direction = i32vec2Destination - vec2Index;
+				//		bFirstPosition = false;
+				//		cout << coord.x << "  " << coord.y << endl;
+				//	}
+				//	else
+				//	{
+				//		if ((coord - i32vec2Destination) == i32vec2Direction)
+				//		{
+				//			// Set a destination:
+				//			i32vec2Destination = coord;
+				//			//cout << coord.x << "  " << coord.y << endl;
+				//		}
+				//		else
+				//		{
+				//			//cout << coord.x << "  " << coord.y << endl;
+				//			break;
+				//		}
+				//	}
+				//}
 				auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
 				//Calculate new destination
 				bool bFirstPosition = true;
+				int firstDest = 0;
 				for (const auto& coord : path)
 				{
+					/*std::cout << coord.x << ", " << coord.y << "\n";*/
 					if (bFirstPosition == true)
 					{
-						// Set a destination
-						i32vec2Destination = coord;
-						// Calculate the direction between enemy2D and this destination
-						i32vec2Direction = i32vec2Destination - vec2Index;
-						/*std::cout << coord.x << ", " << coord.y << "\n";*/
-						bFirstPosition = false;
+						if (firstDest == 0)
+						{
+							// Set a destination
+							i32vec2Destination = coord;
+							// Calculate the direction between enemy2D and this destination
+							i32vec2Direction = i32vec2Destination - vec2Index;
+						}
 					}
 					else
 					{
@@ -795,6 +828,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 							break;
 						}
 					}
+					firstDest++;
 				}
 				UpdatePosition(glm::vec2(30, 34));
 				glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
@@ -803,10 +837,16 @@ void CEnemy2D::Update(const double dElapsedTime)
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
 				}
+				//else if (path.size() == 0)
+				//{
+				//	sCurrentFSM = BLOCKED;
+				//	iFSMCounter = 0;
+				//}
 				break;
 			}
 
 			case SKULL:
+			case GOBLIN:
 			{
 				//Pathfinding method
 				auto path = cMap2D->PathFind(vec2Index, cPlayer2D->vec2Index, heuristic::euclidean, 10);
@@ -903,12 +943,22 @@ void CEnemy2D::Update(const double dElapsedTime)
 						sCurrentFSM = ATTACK;
 						iFSMCounter = 0;
 					}
+					//else if (path.size() == 0)
+					//{
+					//	sCurrentFSM = BLOCKED;
+					//	iFSMCounter = 0;
+					//}
 				}
 				else
 				{
 					glm::vec2 posToGo = findNearestBasePart();
 					//cout << posToGo.x << "   " << posToGo.y << endl;
 					auto path = cMap2D->PathFind(vec2Index, posToGo, heuristic::euclidean, 10);
+					if (path.size() == 0)
+					{
+						sCurrentFSM = BLOCKED;
+						iFSMCounter = 0;
+					}
 					//Calculate new destination
 					bool bFirstPosition = true;
 					for (const auto& coord : path)
@@ -942,6 +992,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 						sCurrentFSM = ATTACK;
 						iFSMCounter = 0;
 					}
+					//else if (path.size() == 0)
+					//{
+					//	sCurrentFSM = BLOCKED;
+					//	iFSMCounter = 0;
+					//}
 					break;
 				}
 			}
@@ -953,7 +1008,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	}
 	case BLOCKED:
 	{
-		
+		runtimeColour = glm::vec4(0.67, 0.0, 0.50, 1.0);
 		iFSMCounter++;
 		break;
 	}
@@ -964,7 +1019,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 			case SKELE1:
 			case SLIMEBOSS:
 			case SLIMEBABY:
-			case GOBLIN:
 			{
 				if (iFSMCounter >= 40)
 				{
@@ -1010,6 +1064,53 @@ void CEnemy2D::Update(const double dElapsedTime)
 							/*cout << cScene2D->getTurretVec()[i]->GetTurretHP() << "     " << cScene2D->getTurretVec().size() << endl;*/
 						}
 					}
+				}
+				break;
+			}
+			case GOBLIN:
+			{
+				if (iFSMCounter >= 40)
+				{
+					if (cInventoryManager->GetItem("Iron")->GetCount() > 0 || cInventoryManager->GetItem("Bronze")->GetCount() > 0 ||
+						cInventoryManager->GetItem("Silver")->GetCount() > 0 || cInventoryManager->GetItem("Gold")->GetCount() > 0)
+					{
+						if (cInventoryManager->GetItem("Iron")->GetCount() > 0)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Iron");
+							cInventoryItem->Remove(1);
+						}
+						if (cInventoryManager->GetItem("Bronze")->GetCount() > 0)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Bronze");
+							cInventoryItem->Remove(1);
+						}
+						if (cInventoryManager->GetItem("Silver")->GetCount() > 0)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Silver");
+							cInventoryItem->Remove(1);
+						}
+						if (cInventoryManager->GetItem("Gold")->GetCount() > 0)
+						{
+							cInventoryItem = cInventoryManager->GetItem("Gold");
+							cInventoryItem->Remove(1);
+						}
+						cSoundController->PlaySoundByID(11);
+					}
+					else
+					{
+						if (iFSMCounter >= 40)
+						{
+							cPlayer2D->UpdateHealthLives();
+							cSoundController->PlaySoundByID(12);
+							iFSMCounter = 0;
+						}
+					}
+					iFSMCounter = 0;
+				}
+				if (distance(vec2Index, cPlayer2D->vec2Index) >= 2)
+				{
+					sCurrentFSM = MOVING;
+					iFSMCounter = 0;
 				}
 				break;
 			}

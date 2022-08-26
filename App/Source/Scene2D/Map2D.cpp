@@ -471,6 +471,40 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 				// Store the texture ID into MapOfTextureIDs
 				MapOfTextureIDs.insert(pair<int, int>(150, iTextureID));
 			}
+
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/WoodWall.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Turret/WoodWall.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(152, iTextureID));
+			}
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/StoneWall.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Turret/StoneWall.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(153, iTextureID));
+			}
+			iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/IronWall.png", true);
+			if (iTextureID == 0)
+			{
+				cout << "Image/Turret/IronWall.png" << endl;
+				return false;
+			}
+			else
+			{
+				// Store the texture ID into MapOfTextureIDs
+				MapOfTextureIDs.insert(pair<int, int>(154, iTextureID));
+			}
 		}
 
 		//Base
@@ -1077,7 +1111,7 @@ bool CMap2D::isBlocked(const unsigned int uiRow, const unsigned int uiCol, const
 	{
 		if ((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 100) &&
 			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 200) &&
-			((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value <= 136) && (arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 139)) &&
+			((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 136) || (arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value > 139)) &&
 			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value != 150))
 			return true;
 		else

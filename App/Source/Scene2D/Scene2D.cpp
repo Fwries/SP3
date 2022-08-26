@@ -215,6 +215,11 @@ bool CScene2D::Init(void)
 	//sounds for damage
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretHit.ogg"), 9, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyHit.ogg"), 10, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\goblinSteal.wav"), 11, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_damage_hit1.wav"), 12, true);
+
+	//Other sounds
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\crafting.wav"), 13, true);
 
 	return true;
 }
@@ -488,7 +493,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 152);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("WoodWall")->Remove(1);
@@ -504,7 +509,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 152);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("WoodWall")->Remove(1);
@@ -520,7 +525,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 152);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("WoodWall")->Remove(1);
@@ -536,7 +541,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 152);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("WoodWall")->Remove(1);
@@ -554,7 +559,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 153);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("StoneWall")->Remove(1);
@@ -570,7 +575,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 153);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("StoneWall")->Remove(1);
@@ -586,7 +591,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 153);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("StoneWall")->Remove(1);
@@ -602,7 +607,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 153);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("StoneWall")->Remove(1);
@@ -620,7 +625,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, 154);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("IronWall")->Remove(1);
@@ -636,7 +641,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, 154);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("IronWall")->Remove(1);
@@ -652,7 +657,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, 154);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("IronWall")->Remove(1);
@@ -668,7 +673,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					// Initialise the instance
 					if (cTurret->Init(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, WallType) == true)
 					{
-						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 150);
+						cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, 154);
 						cTurret->SetEnemyVector(enemyVector);
 						turretVector.push_back(cTurret);
 						cInventoryManager->GetItem("IronWall")->Remove(1);

@@ -95,6 +95,8 @@ protected:
 	// FPS Control
 	CFPSCounter* cFPSCounter;
 
+	CSoundController* cSoundController;
+
 	// Flags for IMGUI
 	ImGuiWindowFlags window_flags;
 	float m_fProgressBar;
