@@ -273,7 +273,71 @@ void CTurret::Update(const double dElapsedTime)
 		{
 			if (range == 0)
 			{
+				CurrTime = Time;
+				switch (turretType)
+				{
+					// GetRandomTurret
+				case GETRANDOMTURRET:
+				case GETRANDOMTURRET2:
+				{
+					int Path = rand() % 4;
+					if (Path == 0 || Path == 1)
+					{
+						Path = 1;
+					}
+					else if (Path == 2 || Path == 3)
+					{
+						Path = 2;
+					}
+					else
+					{
+						Path = 3;
+					}
+					int Tier = rand() % 5 + 1;
+					int BranchNo = 0;
+					switch (Tier)
+					{
+					case 1:
+						BranchNo = 1;
+						if (Path == 3)
+						{
+							Path = rand() % 3 + 1;
+						}
+						break;
+					case 2:
+						BranchNo = rand() % 3 + 1;
+						break;
+					case 3:
+						BranchNo = rand() % 7 + 1;
+						break;
+					case 4:
+						BranchNo = rand() % 19 + 1;
+						break;
+					}
+					upgradeLeft = int(Path + BranchNo * 10 + Tier * 1000);
+					UpgradeTurret(true);
+					break;
+				}
 
+				// Misc
+				case ORE_GENERATOR:
+					cInventoryItem = cInventoryManager->GetItem("Iron");
+					cInventoryItem->Add(1);
+					cInventoryItem = cInventoryManager->GetItem("Silver");
+					cInventoryItem->Add(1);
+					cInventoryItem = cInventoryManager->GetItem("Bronze");
+					cInventoryItem->Add(1);
+					oreGeneratorTimer = 0;
+					break;
+
+				case ROBOT_PLAYER:
+					UpdatePosition();
+					break;
+				case TANK:
+					UpdatePosition();
+					break;
+
+				}
 			}
 			else if (glm::length(vec2Index - nearestLive) <= range && nearestEnemy != nullptr)
 			{
@@ -360,49 +424,6 @@ void CTurret::Update(const double dElapsedTime)
 				case RANDOM_DMG_TURRETV3:
 					cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, rand() % 15 + 9, TurretElement, Colour);
 					break;
-
-				// GetRandomTurret
-				case GETRANDOMTURRET:
-				case GETRANDOMTURRET2:
-				{
-					int Path = rand() % 4;
-					if (Path == 0 || Path == 1)
-					{
-						Path = 1;
-					}
-					else if (Path == 2 || Path == 3)
-					{
-						Path = 2;
-					}
-					else
-					{
-						Path = 3;
-					}
-					int Tier = rand() % 5 + 1;
-					int BranchNo = 0;
-					switch (Tier)
-					{
-					case 1:
-						BranchNo = 1;
-						if (Path == 3)
-						{
-							Path = rand() % 3 + 1;
-						}
-						break;
-					case 2:
-						BranchNo = rand() % 3 + 1;
-						break;
-					case 3:
-						BranchNo = rand() % 7 + 1;
-						break;
-					case 4:
-						BranchNo = rand() % 19 + 1;
-						break;
-					}
-					upgradeLeft = int(Path + BranchNo * 10 + Tier * 1000);
-					UpgradeTurret(true);
-					break;
-				}
 
 				// TuretTuretTuret
 				case TURRET3:
@@ -563,20 +584,7 @@ void CTurret::Update(const double dElapsedTime)
 					break;
 				}
 
-				// Misc
-				case ORE_GENERATOR:
-					oreGeneratorTimer++;
-					if (oreGeneratorTimer >= 80)
-					{
-						cInventoryItem = cInventoryManager->GetItem("Iron");
-						cInventoryItem->Add(1);
-						cInventoryItem = cInventoryManager->GetItem("Silver");
-						cInventoryItem->Add(1);
-						cInventoryItem = cInventoryManager->GetItem("Bronze");
-						cInventoryItem->Add(1);
-						oreGeneratorTimer = 0;
-					}
-					break;
+					// Misc
 				case THUNDER_TURRET:
 				case FINAL_THUNDER:
 					cBulletGenerator->GenerateBullet(glm::vec2(nearestEnemy->vec2Index.x, nearestEnemy->vec2Index.y + 5), 3, TurretDamage, TurretElement, Colour);
@@ -622,13 +630,6 @@ void CTurret::Update(const double dElapsedTime)
 					cBulletGenerator->GenerateBullet(this->vec2Index, Direction);
 					break;
 				}
-				case ROBOT_PLAYER:
-					UpdatePosition();
-					break;
-				case TANK:
-					UpdatePosition();
-					break;
-
 				}
 			}
 		}
@@ -1348,7 +1349,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretHP = 8;
 		TurretElement = NORMAL;
 		TurretCooldown = 10.0;
-		range = 1000.0;
+		range = 0;
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 
@@ -1444,7 +1445,8 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
-		range = 1000.0;
+		TurretCooldown = 0;
+		range = 0;
 		break;
 
 	case FLAME_SPEAR_TURRET:
@@ -1682,7 +1684,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretHP = 24;
 		TurretElement = NORMAL;
 		TurretCooldown = 1.5;
-		range = 15.0;
+		range = 0;
 		Colour = glm::vec4(0.f, 0.f, 0.f, 1.f);
 		break;
 
@@ -1959,7 +1961,8 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
-		range = 1000.0;
+		TurretCooldown = 0;
+		range = 0;
 		break;
 	case ROBOT_PLAYER:
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Turret/RobotPlayer.png", true);
@@ -1970,6 +1973,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		range = 0;
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
 		break;
 
@@ -2103,6 +2107,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
+		range = 20.0;
 		break;
 
 	case ETERNAL_ICE_SPEAR_TURRET:
