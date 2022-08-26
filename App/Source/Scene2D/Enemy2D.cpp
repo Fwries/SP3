@@ -123,34 +123,6 @@ bool CEnemy2D::Init(void)
 	cMap2D = CMap2D::GetInstance();
 
 	cScene2D = CScene2D::GetInstance();
-	//// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
-	//unsigned int uiRow = -1;
-	//unsigned int uiCol = -1;
-	////if (cMap2D->FindValue(300, uiRow, uiCol) == false)
-	////{
-	////	return false;	// Unable to find the start position of the player, so quit this game
-	////}
-	//
-	//if (cMap2D->FindValue(300, uiRow, uiCol) == true)
-	//{
-	//	enemyType = SKULL;
-	//}
-	//else if (cMap2D->FindValue(301, uiRow, uiCol) == true)
-	//{
-	//	enemyType = SKELE1;
-	//}
-	//else if (cMap2D->FindValue(302, uiRow, uiCol) == true)
-	//{
-	//	enemyType = VAMPIRE;
-	//}
-	//else
-	//{
-	//	return false;	// Unable to find the start position of the player, so quit this game
-	//}
-
-	//// Erase the value of the player in the arrMapInfo
-	//cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
 
 	//Set the position of the enemy randomly on the edge of the map
 	int edge= rand() % 4;

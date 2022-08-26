@@ -130,8 +130,10 @@ bool CTurret::Init(int uiRow, int uiCol)
 	TurretCooldown = 1.5;
 	range = 10.0;
 	Colour = glm::vec4(0.588f, 0.294f, 0.f, 1.f);
-	upgradeLeft = STONE_TURRET;
+	upgradeLeft = ORE_GENERATOR;
 	upgradeRight = ELEMENTAL_TURRET;
+
+	oreGeneratorTimer = 0;
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
@@ -269,7 +271,11 @@ void CTurret::Update(const double dElapsedTime)
 		// Generate bullet & limit its firing rate to 1 bullet every 0.2s
 		if (Time > (CurrTime + TurretCooldown))
 		{
-			if (glm::length(vec2Index - nearestLive) <= range && nearestEnemy != nullptr)
+			if (range == 0)
+			{
+
+			}
+			else if (glm::length(vec2Index - nearestLive) <= range && nearestEnemy != nullptr)
 			{
 				CurrTime = Time;
 				switch (turretType)
@@ -559,6 +565,17 @@ void CTurret::Update(const double dElapsedTime)
 
 				// Misc
 				case ORE_GENERATOR:
+					oreGeneratorTimer++;
+					if (oreGeneratorTimer >= 80)
+					{
+						cInventoryItem = cInventoryManager->GetItem("Iron");
+						cInventoryItem->Add(1);
+						cInventoryItem = cInventoryManager->GetItem("Silver");
+						cInventoryItem->Add(1);
+						cInventoryItem = cInventoryManager->GetItem("Bronze");
+						cInventoryItem->Add(1);
+						oreGeneratorTimer = 0;
+					}
 					break;
 				case THUNDER_TURRET:
 				case FINAL_THUNDER:
@@ -1331,7 +1348,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretHP = 8;
 		TurretElement = NORMAL;
 		TurretCooldown = 10.0;
-		range = 100.0;
+		range = 1000.0;
 		Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		break;
 
