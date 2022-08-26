@@ -234,6 +234,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cInventoryManager->GetItem("IronWall")->Remove(cInventoryManager->GetItem("IronWall")->GetCount());
 	}
 
+	if (cInventoryManager->GetItem("Base HP")->GetCount() <= 0)
+		CGameManager::GetInstance()->bPlayerLost = true;
+
+	if (cScene2D->getWaveLevel() >= 11)
+		CGameManager::GetInstance()->bPlayerWon = true;
+
 	// Store the old position
 	vec2OldIndex = vec2Index;
 	vec2OldMicroSteps = vec2NumMicroSteps;

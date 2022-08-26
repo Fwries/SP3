@@ -42,7 +42,6 @@ class CScene2D;
 
 #include "Scene2D.h"
 
-
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
