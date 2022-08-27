@@ -133,17 +133,13 @@ bool CGameWinState::Update(const double dElapsedTime)
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.FrameRounding = 200.0f;
 
-		// Add codes for Start button here
-		if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_SPACE))
+		if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_R))
 		{
-			cSoundController->StopPlayByID(2);
-
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 
 			// Load the menu state
-			cout << "Loading PlayGameState" << endl;
-			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
 		}
 		// Add codes for Exit button here
 		if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
