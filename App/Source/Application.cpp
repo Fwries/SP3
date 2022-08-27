@@ -259,7 +259,7 @@ bool Application::Init(void)
 	CGameStateManager::GetInstance()->AddGameState("GameLoseState", new CGameLoseState());
 
 	// Set the active scene
-	CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+	CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
 
 	return true;
 }
