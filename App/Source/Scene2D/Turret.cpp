@@ -349,10 +349,16 @@ void CTurret::Update(const double dElapsedTime)
 					break;
 
 				case ROBOT_PLAYER:
-					UpdatePosition();
+					// Had Code here but broke the game so yeaaa
+					//UpdatePosition();
+					upgradeLeft = RANDOM_DMG_TURRET;
+					UpgradeTurret(true);
 					break;
 				case TANK:
-					UpdatePosition();
+					// Had Code here but broke the game so yeaaa
+					//UpdatePosition();
+					upgradeLeft = RANDOM_DMG_TURRET;
+					UpgradeTurret(true);
 					break;
 
 				}
@@ -576,11 +582,17 @@ void CTurret::Update(const double dElapsedTime)
 					// FireWall
 				case FIREWALL_TURRET:
 				case UPGRADED_FIREWALL_TURRET:
+					// Had Code here but broke the game so yeaaa
+					upgradeLeft = RANDOM_DMG_TURRET;
+					UpgradeTurret(true);
 					break;
 
 					// Ice Floor
 				case ICE_FLOOR_TURRET:
 				case UPGRADED_ICE_FLOOR_TURRET:
+					// Had Code here but broke the game so yeaaa
+					upgradeLeft = RANDOM_DMG_TURRET;
+					UpgradeTurret(true);
 					break;
 
 					// Misc
@@ -1259,7 +1271,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		}
 		upgradeLeft = FLAME_SPEAR_TURRET;
 		upgradeRight = FLAMETHROWER_TURRET;
-		upgradeRare = FIREWALL_TURRET;
+		upgradeRare = NONE;
 		TurretDamage = 8;
 		TurretHP = 8;
 		TurretElement = BURN;
@@ -1276,7 +1288,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		}
 		upgradeLeft = ICE_SPEAR_TURRET;
 		upgradeRight = SNOWBALL_TURRET;
-		upgradeRare = ICE_FLOOR_TURRET;
+		upgradeRare = NONE;
 		TurretDamage = 5;
 		TurretHP = 8;
 		TurretElement = FROZEN;
@@ -1327,7 +1339,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		}
 		upgradeLeft = REINFORCED_IRON_TURRET;
 		upgradeRight = SHINY_IRON_TURRET;
-		upgradeRare = TANK;
+		upgradeRare = NONE;
 		TurretDamage = 8;
 		TurretHP = 22;
 		TurretElement = NORMAL;
@@ -1427,7 +1439,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		}
 		upgradeLeft = UPGRADED_GLITCHED_TURRET;
 		upgradeRight = GETRANDOMTURRET2;
-		upgradeRare = ROBOT_PLAYER;
+		upgradeRare = NONE;
 		TurretDamage = 4;
 		TurretHP = 10;
 		TurretElement = NORMAL;
