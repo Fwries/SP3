@@ -159,11 +159,11 @@ bool CPlayer2D::Init(void)
 
 	// Materials
 	n_wood = 20;
-	n_stone = 20;
-	n_iron = 10;
+	n_stone = 30;
+	n_iron = 15;
 	n_bronze = 10;
 	n_gold = 5;
-	n_silver = 5;
+	n_silver = 10;
 	X = Y = 0;
 	MaterialRange = false;
 
