@@ -319,6 +319,25 @@ void CTurret::Update(const double dElapsedTime)
 					break;
 				}
 
+				// Tornado
+				case FIRE_TORNADO_TURRET:
+				case ETERNAL_BLIZZARD_TURRET:
+				case ETERNAL_BLIZZARD_TURRET2:
+				case ETERNAL_BLIZZARD_TURRET3:
+				{
+					int RandX = rand() % cSettings->NUM_TILES_XAXIS + 1;
+					int RandY = rand() % cSettings->NUM_TILES_YAXIS + 1;
+					if (rand() % 101 <= ElementChance)
+					{
+						cBulletGenerator->GenerateBullet(glm::vec2(RandX, RandY + 5), 3, TurretDamage, TurretElement, Colour);
+					}
+					else
+					{
+						cBulletGenerator->GenerateBullet(glm::vec2(RandX, RandY + 5), 3, TurretDamage, NORMAL, Colour);
+					}
+					break;
+				}
+
 				// Misc
 				case ORE_GENERATOR:
 					cInventoryItem = cInventoryManager->GetItem("Iron");
@@ -393,9 +412,9 @@ void CTurret::Update(const double dElapsedTime)
 					break;
 				case BLUE_FLAME_TURRET:
 				case DUO_FLAME_SPEAR_TURRET:
-					if (rand() % 101 <= ElementChance)
+					if (rand() % 100 <= 50)
 					{
-						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, TurretElement, Colour);
+						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, BURN, Colour);
 					}
 					else
 					{
@@ -403,7 +422,7 @@ void CTurret::Update(const double dElapsedTime)
 					}
 					break;
 				case BLUE_FLAMETHROWER_TURRET:
-					if (rand() % 101 <= 80)
+					if (rand() % 100 <= 50)
 					{
 						cBulletGenerator->GenerateBullet(this->vec2Index, nearestEnemy->vec2Index, TurretDamage, BURN, Colour);
 					}
@@ -437,7 +456,7 @@ void CTurret::Update(const double dElapsedTime)
 				case IRON_BURST_TURRET:
 					if (Burst > CurrBurst)
 					{
-						TurretCooldown = 0;
+						TurretCooldown = 0.1;
 						CurrBurst++;
 					}
 					else
@@ -520,7 +539,7 @@ void CTurret::Update(const double dElapsedTime)
 					cBulletGenerator->GenerateBullet(this->vec2Index, 7, TurretDamage, TurretElement, Colour);
 					break;
 				case MULTIFIRE_TURRET:
-					if (rand() % 101 <= ElementChance)
+					if (rand() % 100 <= ElementChance)
 					{
 						cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, TurretElement, Colour);
 						cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, TurretElement, Colour);
@@ -536,7 +555,7 @@ void CTurret::Update(const double dElapsedTime)
 					}
 					break;
 				case SNOWSTAR_TURRET:
-					if (rand() % 101 <= ElementChance)
+					if (rand() % 100 <= ElementChance)
 					{
 						cBulletGenerator->GenerateBullet(this->vec2Index, 0, TurretDamage, TurretElement, Colour);
 						cBulletGenerator->GenerateBullet(this->vec2Index, 1, TurretDamage, TurretElement, Colour);
@@ -563,25 +582,6 @@ void CTurret::Update(const double dElapsedTime)
 				case ICE_FLOOR_TURRET:
 				case UPGRADED_ICE_FLOOR_TURRET:
 					break;
-
-					// Tornado
-				case FIRE_TORNADO_TURRET:
-				case ETERNAL_BLIZZARD_TURRET:
-				case ETERNAL_BLIZZARD_TURRET2:
-				case ETERNAL_BLIZZARD_TURRET3:
-				{
-					int RandX = rand() % cSettings->NUM_TILES_XAXIS + 1;
-					int RandY = rand() % cSettings->NUM_TILES_YAXIS + 1;
-					if (rand() % 101 <= ElementChance)
-					{
-						cBulletGenerator->GenerateBullet(glm::vec2(RandX, RandY + 5), 3, TurretDamage, TurretElement, Colour);
-					}
-					else
-					{
-						cBulletGenerator->GenerateBullet(glm::vec2(RandX, RandY + 5), 3, TurretDamage, NORMAL, Colour);
-					}
-					break;
-				}
 
 					// Misc
 				case THUNDER_TURRET:
@@ -2106,7 +2106,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		upgradeLeft = NONE;
 		upgradeRight = NONE;
 		upgradeRare = NONE;
-		range = 20.0;
+		range = 0;
 		break;
 
 	case ETERNAL_ICE_SPEAR_TURRET:
@@ -2157,7 +2157,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretElement = FROZEN;
 		ElementChance = 50;
 		TurretCooldown = 1.5;
-		range = 20.0;
+		range = 0;
 		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 
@@ -2209,7 +2209,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretElement = FROZEN;
 		ElementChance = 50;
 		TurretCooldown = 1.5;
-		range = 20.0;
+		range = 0;
 		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 
@@ -2254,7 +2254,7 @@ void CTurret::UpgradeTurret(bool IsLeft)
 		TurretElement = FROZEN;
 		ElementChance = 50;
 		TurretCooldown = 1.5;
-		range = 20.0;
+		range = 0;
 		Colour = glm::vec4(0.678f, 0.847f, 0.902f, 1.f);
 		break;
 
