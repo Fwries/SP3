@@ -1632,7 +1632,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 								{
 									LeftCostRemove();
 									openUpgrade = false;
-									cSoundController->PlaySoundByID(13);
+									cSoundController->PlaySoundByID(14);
 								}
 							}
 							ImGui::PopStyleColor(3);
@@ -1659,7 +1659,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 								{
 									RightCostRemove();
 									openUpgrade = false;
-									cSoundController->PlaySoundByID(13);
+									cSoundController->PlaySoundByID(14);
 								}
 							}
 							ImGui::PopStyleColor(3);
@@ -1684,6 +1684,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 							{
 								if (ImGui::Button(" ", ImVec2(35.0f * relativeScale_x, 35.0f * relativeScale_y)))
 								{
+									cSoundController->PlaySoundByID(15);
 									turretVector[cScene2D->GetTurretNo()]->SetGetTurretHP(0);
 									openUpgrade = false;
 								}

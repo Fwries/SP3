@@ -203,7 +203,7 @@ bool CScene2D::Init(void)
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Hero.ogg"), 1, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Hero.wav"), 1, true);
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_coin_double1.wav"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_weapon_singleshot2.wav"), 4, true);
@@ -213,13 +213,15 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_deathscream_robot2.wav"), 8, true);
 
 	//sounds for damage
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretHit.ogg"), 9, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyHit.ogg"), 10, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretHit.wav"), 9, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyHit.wav"), 10, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\goblinSteal.wav"), 11, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\sfx_damage_hit1.wav"), 12, true);
 
 	//Other sounds
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\crafting.wav"), 13, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\upgrade.wav"), 14, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\turretDestroy.wav"), 15, true);
 
 	return true;
 }
