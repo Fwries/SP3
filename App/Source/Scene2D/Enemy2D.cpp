@@ -90,7 +90,7 @@ bool CEnemy2D::Init(void)
 {
 
 	// Rand seeding
-	srand(time(NULL));
+	//srand(time(NULL));
 
 
 	MoveCooldown = 0;
