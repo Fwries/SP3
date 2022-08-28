@@ -156,7 +156,7 @@ bool CMenuState::Update(const double dElapsedTime)
 
 			// Load the menu state
 			cout << "Loading PlayGameState" << endl;
-			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
 		}
 		// Add codes for Play3D button here
 		if (ImGui::ImageButton((ImTextureID)play3DButtonData.textureID,

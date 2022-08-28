@@ -84,7 +84,7 @@ bool CIntroState::Update(const double dElapsedTime)
 
 		// Load the menu state
 		cout << "Loading MenuState" << endl;
-		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
+		CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 		return true;
 	}
 
