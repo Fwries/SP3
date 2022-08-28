@@ -762,40 +762,40 @@ void CScene2D::Render(void)
 {
 	glm::mat4 view(1.f), projection(1.f);
 
-	//// Idea is to use player's index / number of tiles in the axis to position the camera
-	//// Make use of micro steps for smooth camera movement
-	//// Divide by number of tiles to get the ratio because glm::lookAt's eye, center, and up ranges from -0.5f to 0.5f (Same applies for number of steps per tile)
-	//glm::vec2 viewPosition = ((cPlayer2D->vec2NumMicroSteps / (float)CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS) + cPlayer2D->vec2Index) / (float)CSettings::GetInstance()->NUM_TILES_XAXIS;
-	//// Ensure that the character spawns at world origin
-	//// Doing this because the map origin starts from bottom left while the world origin starts from the center
-	//static const glm::vec2 VIEW_POS_OFFSET = viewPosition;
-	//viewPosition -= VIEW_POS_OFFSET;
-	//// Ensure that the view position always matches the scale of the projection matrix below
-	//static const float VIEW_POS_MULTIPLIER = (float)CSettings::GetInstance()->NUM_TILES_MULTIPLIERX / 2.f;
-	//viewPosition *= VIEW_POS_MULTIPLIER;
+	// Idea is to use player's index / number of tiles in the axis to position the camera
+	// Make use of micro steps for smooth camera movement
+	// Divide by number of tiles to get the ratio because glm::lookAt's eye, center, and up ranges from -0.5f to 0.5f (Same applies for number of steps per tile)
+	glm::vec2 viewPosition = ((cPlayer2D->vec2NumMicroSteps / (float)CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS) + cPlayer2D->vec2Index) / (float)CSettings::GetInstance()->NUM_TILES_XAXIS;
+	// Ensure that the character spawns at world origin
+	// Doing this because the map origin starts from bottom left while the world origin starts from the center
+	static const glm::vec2 VIEW_POS_OFFSET = viewPosition;
+	viewPosition -= VIEW_POS_OFFSET;
+	// Ensure that the view position always matches the scale of the projection matrix below
+	static const float VIEW_POS_MULTIPLIER = (float)CSettings::GetInstance()->NUM_TILES_MULTIPLIERX / 2.f;
+	viewPosition *= VIEW_POS_MULTIPLIER;
 
-	//// Boundary check
-	//static const float PROJ_MIN_MAX = 1.f / (float)CSettings::GetInstance()->NUM_TILES_MULTIPLIERX;
-	//static const float VIEW_POS_MIN = 0.f - (VIEW_POS_MULTIPLIER / 2.f) + PROJ_MIN_MAX;
-	//static const float VIEW_POS_MAX = 0.f + (VIEW_POS_MULTIPLIER / 2.f) - PROJ_MIN_MAX;
-	//if (viewPosition.x < VIEW_POS_MIN)
-	//	viewPosition.x = VIEW_POS_MIN;
-	//else if (viewPosition.x > VIEW_POS_MAX)
-	//	viewPosition.x = VIEW_POS_MAX;
-	//if (viewPosition.y < VIEW_POS_MIN)
-	//	viewPosition.y = VIEW_POS_MIN;
-	//else if (viewPosition.y > VIEW_POS_MAX)
-	//	viewPosition.y = VIEW_POS_MAX;
+	// Boundary check
+	static const float PROJ_MIN_MAX = 1.f / (float)CSettings::GetInstance()->NUM_TILES_MULTIPLIERX;
+	static const float VIEW_POS_MIN = 0.f - (VIEW_POS_MULTIPLIER / 2.f) + PROJ_MIN_MAX;
+	static const float VIEW_POS_MAX = 0.f + (VIEW_POS_MULTIPLIER / 2.f) - PROJ_MIN_MAX;
+	if (viewPosition.x < VIEW_POS_MIN)
+		viewPosition.x = VIEW_POS_MIN;
+	else if (viewPosition.x > VIEW_POS_MAX)
+		viewPosition.x = VIEW_POS_MAX;
+	if (viewPosition.y < VIEW_POS_MIN)
+		viewPosition.y = VIEW_POS_MIN;
+	else if (viewPosition.y > VIEW_POS_MAX)
+		viewPosition.y = VIEW_POS_MAX;
 
-	//view = glm::lookAt(
-	//	glm::vec3(viewPosition, 1.f),
-	//	glm::vec3(viewPosition, 0.f),
-	//	glm::vec3(0.f, 1.f, 0.f)
-	//);
+	view = glm::lookAt(
+		glm::vec3(viewPosition, 1.f),
+		glm::vec3(viewPosition, 0.f),
+		glm::vec3(0.f, 1.f, 0.f)
+	);
 
-	//// We dont want to zoom in the camera, instead, we want to clip away the objects that are out of sight for efficiency
-	//// Same effect as zooming in the camera by 4x (glm::ortho ranges from -1.f to 1.f)
-	//projection = glm::ortho(-PROJ_MIN_MAX, PROJ_MIN_MAX, -PROJ_MIN_MAX, PROJ_MIN_MAX, -10.f, 10.f);
+	// We dont want to zoom in the camera, instead, we want to clip away the objects that are out of sight for efficiency
+	// Same effect as zooming in the camera by 4x (glm::ortho ranges from -1.f to 1.f)
+	projection = glm::ortho(-PROJ_MIN_MAX, PROJ_MIN_MAX, -PROJ_MIN_MAX, PROJ_MIN_MAX, -10.f, 10.f);
 
 	// Call the Map2D's PreRender()
 	cMap2D->PreRender();
